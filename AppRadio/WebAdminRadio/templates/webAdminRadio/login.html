@@ -1,0 +1,28 @@
+{% extends 'webAdminRadio/layout.html' %}
+{% load static from staticfiles %}
+{% block styles %}<link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/login.css' %}">{% endblock %}
+{% block content %}
+<div class="main-div">
+    <div class="panel">
+        <div class="img-container">
+            <img src="{% static 'webAdminRadio/images/logo.png' %}">
+        </div>
+        <div class="login-header">
+            <h4 class="login-title">Administración de AppRadio</h4>
+        </div>
+        <div class="login-container">
+            <div class="form-group">
+                <label>Nombre de usuario</label>
+                <input type="email" class="form-control" id="email">
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" class="form-control" id="password">
+            </div>
+            <div class="btn-login">
+                <button type="submit" class="btn btn-primary login">Iniciar Sesión</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -25,7 +25,7 @@ SECRET_KEY = '_r8snwos&rjb$@w!q%yud@7584jtcz&8^m6fm99jmsved-pib='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["appradio.pythonanywhere.com","http://127.0.0.1:8000/", "jsaverio.pythonanywhere.com"]
+ALLOWED_HOSTS = ["appradio.pythonanywhere.com","127.0.0.1", "jsaverio.pythonanywhere.com"]
 
 
 # Application definition
