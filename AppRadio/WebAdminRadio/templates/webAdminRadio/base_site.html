@@ -1,0 +1,81 @@
+{% extends 'webAdminRadio/base.html' %}
+{% load static from staticfiles %}
+{% block styles %}<link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/base.css' %}">{% endblock %}
+{% block navigation %}
+<div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <img src="{% static 'webAdminRadio/images/logo.png' %}">
+        </div>
+        <ul class="list-unstyled components">
+            <p>Menú</p>
+            <li class="active">
+                <a href="#"><i class="fas fa-home fa-fw"></i><span></span>Principal</a>
+            </li>
+            <li>
+                <a href="#emisorasSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-broadcast-tower"></i>Emisoras</a>
+                <ul class="collapse list-unstyled" id="emisorasSubmenu">
+                    <li>
+                        <a href="#">Emisora 1</a>
+                    </li>
+                    <li>
+                        <a href="#">Emisora 2</a>
+                    </li>
+                    <li>
+                        <a href="#">Emisora 3</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#segmentosSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-microphone"></i>Segmentos</a>
+                <ul class="collapse list-unstyled" id="segmentosSubmenu">
+                    <li>
+                        <a href="#">Segmento 1</a>
+                    </li>
+                    <li>
+                        <a href="#">Segmento 2</a>
+                    </li>
+                    <li>
+                        <a href="#">Segmento 3</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-headset"></i>Locutores</a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-award"></i>Concursos</a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-clipboard-list"></i>Encuestas</a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-user-friends"></i>Usuarios</a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-edit"></i>Sugerencias</a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-ad"></i>Publicidad</a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-file-alt"></i>Reportes</a>
+            </li>
+        </ul>
+    </nav>
+    <!-- Contenido de la página -->
+    <div id="content" class="">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-custom">
+            <div class="container-fluid">
+                <button type="button" id="sidebarCollapse" class="btn btn-info btn-navbar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+        <h2>Aquí va el contenido de la página</h2>
+        <p>Lorem ipsum :v</p>
+    </div>
+</div>
+{% endblock %}
+{% block script %}<script src="{% static 'webAdminRadio/js/navbar.js' %}"></script>{% endblock %}
