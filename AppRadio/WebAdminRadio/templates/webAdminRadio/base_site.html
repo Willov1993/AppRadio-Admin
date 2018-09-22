@@ -1,6 +1,6 @@
 {% extends 'webAdminRadio/base.html' %}
 {% load static from staticfiles %}
-{% block styles %}<link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/base.css' %}">{% endblock %}
+{% block styles %}<link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/base_site.css' %}">{% endblock %}
 {% block navigation %}
 <div class="wrapper">
     <!-- Sidebar -->
@@ -73,8 +73,16 @@
                 </button>
             </div>
         </nav>
-        <h2>Aquí va el contenido de la página</h2>
-        <p>Lorem ipsum :v</p>
+        <div class="navbar navbar-expand-lg navbar-light bg-light navbar-title">
+            <h2><b>{{title}}</b></h2>
+        </div>
+        <div class="panel">
+            <div class="panel-body">
+                <!-- Este bloque es donde va el contenido de la página -->
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -118,9 +118,34 @@ a[data-toggle="collapse"] {
 }
 
 /* Espaciado entre ícono y texto */
-#sidebar i {
+i {
     margin-right: 1rem;
 }
+
+/* Reglas para el contenido de la página */
+.panel {
+    padding: 30px;
+    background-color: #EBEFF5;
+}
+
+.panel-body {
+    padding: 15px;
+    border-color: #3A7390;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 20px;
+    background-color: white;
+}
+
+/* Reglas para la barra de navegación con títutlo */
+.navbar-title {
+    background-color: white !important;
+}
+
+ul ul a {
+    padding-left: 30px !important;
+}
+
 
 /* Para pantallas pequeñas */ 
 @media (max-width: 768px) {
@@ -131,9 +156,7 @@ a[data-toggle="collapse"] {
     #sidebar.active {
         margin-left: 0;
     }
+
 }
 
-ul ul a {
-    padding-left: 30px !important;
-}
 

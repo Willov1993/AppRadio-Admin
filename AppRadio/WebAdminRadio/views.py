@@ -4,5 +4,5 @@ from django.shortcuts import render
 def login(request):
     return render(request, 'WebAdminRadio/login.html', {'title': 'Login'})
 
-def principal(request):
-    return render(request, 'WebAdminRadio/base_site.html', {'title': 'Principal'})
+def agregar_segmento(request):
+    return render(request, 'WebAdminRadio/agregar_segmento.html', {'title': 'Agregar Segmento'})

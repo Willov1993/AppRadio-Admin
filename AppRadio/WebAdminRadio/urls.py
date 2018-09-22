@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     path('', views.login, name='login'),
-    path('admin', views.principal, name="pincipal")
+    path('segmento/agregar', views.agregar_segmento, name="ag_segmento")
 ]
