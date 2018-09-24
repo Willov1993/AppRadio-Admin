@@ -39,3 +39,11 @@
 .form-control:focus {
     background-color: #FAFFBD;
 }
+
+i {
+    margin-right: 0.5rem;
+}
+
+small {
+    color: red;
+}

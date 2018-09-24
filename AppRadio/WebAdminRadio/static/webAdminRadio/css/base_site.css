@@ -46,6 +46,7 @@
     z-index: 999;
     color: #5A6978;
     transition: all 0.3s;
+    overflow-y: auto;
 
 /* Esta regla significa que Sidebar es oculta */
 }
@@ -78,7 +79,7 @@ a[data-toggle="collapse"] {
 }
 
 #sidebar .sidebar-header img {
-    height: auto;
+    height: 100%;
     width: 30%;
 }
 
@@ -118,7 +119,7 @@ a[data-toggle="collapse"] {
 }
 
 /* Espaciado entre ícono y texto */
-i {
+a i, .submit i {
     margin-right: 1rem;
 }
 
@@ -131,7 +132,7 @@ i {
 .panel-body {
     padding: 15px;
     border-color: #3A7390;
-    border-style: solid;
+    border-style: none;
     border-width: 1px;
     border-radius: 20px;
     background-color: white;

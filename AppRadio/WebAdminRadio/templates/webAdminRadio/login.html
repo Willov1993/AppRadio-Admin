@@ -5,25 +5,33 @@
 <div class="container">
     <div class="main-div">
         <div class="panel">
-            <div class="img-container">
-                <img src="{% static 'webAdminRadio/images/logo.png' %}">
-            </div>
-            <div class="login-header">
-                <h4 class="login-title">Administración de AppRadio</h4>
-            </div>
-            <div class="login-container">
-                <div class="form-group">
-                    <label>Nombre de usuario</label>
-                    <input type="email" class="form-control" id="email">
+            <form name="loginForm" method="post">
+                {% csrf_token %}
+                <div class="img-container">
+                    <img src="{% static 'webAdminRadio/images/logo.png' %}">
                 </div>
-                <div class="form-group">
-                    <label>Contraseña</label>
-                    <input type="password" class="form-control" id="password">
+                <!-- Tiene que mostrarse solo si el login falla -->
+                <small><i class="fas fa-exclamation-triangle"></i>Nombre de usuario o contraseña incorrectos</small>
+                <div class="login-header">
+                    <h4 class="login-title">Administración de AppRadio</h4>
                 </div>
-                <div class="btn-login">
-                    <button type="submit" class="btn btn-primary login">Iniciar Sesión</button>
+                <div class="login-container">
+                    <div class="form-group">
+                        <label>Nombre de usuario</label>
+                        <input type="text" class="form-control" id="username" name="username">
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" class="form-control" id="password" name="password">
+                    </div>
+                    <div class="btn-login">
+                        <button type="submit" class="btn btn-primary login">Iniciar Sesión</button>
+                    </div>
+                    {% if request.GET.next %}
+                        <input type="hidden" name="next" value="{{ next }}">
+                    {% endif %}
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
