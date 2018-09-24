@@ -1,0 +1,70 @@
+{% extends 'webAdminRadio/base_site.html' %}
+{% load static from staticfiles %}
+{% block page_style %}<link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/segmento.css' %}">{% endblock %}
+{% block content %}
+    <h4><b>Información del segmento</b></h4>
+    <form id="addSegmento">
+        <div class="form-group">
+            <label for="nombreInput">Nombre</label>
+            <input required id="nombreInput" type="text" class="form-control" placeholder="Ingrese el nombre de la emisora">
+        </div>
+        <div class="form-group">
+            <label for="frecuenciaInput">Frecuencia o Dial</label>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <input required id="frecuenciaInput" type="text" class="form-control" placeholder="Ejemplo: 105.4">
+                </div>
+                <div class="form-group col-md-2">
+                <select id="frecTipoInput" class="custom-select form-control">
+                    <option value="FM">FM</option>
+                    <option value="AM">AM</option>
+                </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="descInput">Descripción</label>
+            <textarea required class="form-control" id="descInput" rows="3" placeholder="Ingrese una breve descripción de la emisora"></textarea>
+        </div>
+        <div class="form-group">
+            <label required for="streamingInput">URL de streaming</label>
+            <input id="streamingInput" type="url" class="form-control" placeholder="Ingrese el url de transmision de la radio">
+        </div>
+        <div class="form-group">  
+            <label for="">Teléfono</label>
+            <div id="componente_telefono">
+                <telf ></telf>
+            </div>
+            <!--div required class="form-row">
+                <div class="form-group col-md-8">
+                    <input id="telefonoInput" type="tel" class="form-control" placeholder="Ingrese el numero de telefono de la radio">
+                </div>
+                <div class="form-group col-md-2">
+                    <button type="button" class="btn btn-primary" id="addTelefono">Ingresar otro telefono</button>
+                </div>
+            </div-->
+        </div>
+        <div class="form-group">
+                <label for="webInput">Sitio Web (Opcional)</label>
+                <input id="webInput" type="url" class="form-control" placeholder="Ingrese el url del sitio web de la radio">
+        </div>
+        <div class="form-group">
+            <div class="custom-file">
+                <label for="imgEmisora" class="custom-file-label">Logotipo</label>
+                <input type="file" class="custom-file-input" id="imgEmisora" accept=".png, .jpg, .jpeg">
+                <div class="img-holder">
+                    <img id="preview" src="{% static 'webAdminRadio/images/placeholder.png' %}">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+                <label for="direccionInput">Dirección</label>
+                <input required id="direccionInput" type="text" class="form-control" placeholder="Direccion de la emisora">
+            </div>
+        <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-plus-circle"></i>Agregar Emisora</button>
+    </form>
+{% endblock %}
+{% block page_script %}
+<script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>
+<script src="{% static 'webAdminRadio/js/componentes/Telefono.js' %}"></script>
+{% endblock %}
