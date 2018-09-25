@@ -14,32 +14,10 @@
                 <a href="#"><i class="fas fa-home fa-fw"></i><span></span>Principal</a>
             </li>
             <li>
-                <a href="#emisorasSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-broadcast-tower"></i>Emisoras</a>
-                <ul class="collapse list-unstyled" id="emisorasSubmenu">
-                    <li>
-                        <a href="#">Emisora 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Emisora 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Emisora 3</a>
-                    </li>
-                </ul>
+                <a href="#"><i class="fas fa-broadcast-tower"></i>Emisoras</a>
             </li>
             <li>
-                <a href="#segmentosSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-microphone"></i>Segmentos</a>
-                <ul class="collapse list-unstyled" id="segmentosSubmenu">
-                    <li>
-                        <a href="#">Segmento 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Segmento 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Segmento 3</a>
-                    </li>
-                </ul>
+                <a href="#"><i class="fas fa-microphone"></i>Segmentos</a>
             </li>
             <li>
                 <a href="#"><i class="fas fa-headset"></i>Locutores</a>
@@ -71,7 +49,19 @@
                 <button type="button" id="sidebarCollapse" class="btn btn-info btn-navbar">
                     <i class="fas fa-bars"></i>
                 </button>
-                <span class="navbar-text">{{ user.username }}</span>
+                <ul class="navbar-nav ml-auto flex-nowrap">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-bell"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-cog"></i></a>
+                    </li>
+                    <!-- Botón provisional para Logout-->
+                    <form class="form-inline" action="{% url 'accounts:logout' %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-primary btn-sm" type="submit">Cerrar Sesión</button>
+                    </form>
+                </ul>
             </div>
         </nav>
         <div class="navbar navbar-expand-lg navbar-light bg-light navbar-title">

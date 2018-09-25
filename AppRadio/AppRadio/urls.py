@@ -7,6 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('webadmin/', include('WebAdminRadio.urls')), # WebAdmin es un placeholder para no confundirlo con el default
+    path('', include('accounts.urls')),
 ]
 
 if settings.DEBUG:

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'WebAdminRadio',
     'api',
+    'accounts',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -139,4 +140,4 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn")
 
-LOGIN_URL = 'login'
+LOGIN_URL = '/login/'
