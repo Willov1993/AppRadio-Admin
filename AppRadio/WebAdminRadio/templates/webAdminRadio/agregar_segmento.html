@@ -25,9 +25,11 @@
             <label for="descInput">Descripción</label>
             <textarea class="form-control" id="descInput" rows="3" placeholder="Ingrese una breve descripción del segmento"></textarea>
         </div>
-        <label>Horairos</label>
+        <label>Horarios</label>
         <div class="form-group">
-            <div class="form-row">
+            <div id="componente_horario">
+                <horario></horario>
+                <!--
                 <div class="form-group col-md-4">
                     <label for="diaInput">Dia</label>
                     <select id="diaInput" class="custom-select form-control">
@@ -45,8 +47,7 @@
                 <div class="form-group col-md-4">
                     <label for="finInput">Hora fin</label>
                     <input id="finInput" type="time" class="form-control">
-                </div>
-                <button type="button" class="btn btn-primary" id="addHorario">Agregar otro horario</button>
+                </div>-->
             </div>
         </div>
         <div class="form-group">
@@ -61,4 +62,7 @@
         <button type="submit" class="btn btn-primary btn-lg submit"><i class="fas fa-plus-circle"></i>Agregar Emisora</button>
     </form>
 {% endblock %}
-{% block page_script %}<script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>{% endblock %}
+{% block page_script %}
+<script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>
+<script src="{% static 'webAdminRadio/js/componentes/Horarios.js' %}"></script>
+{% endblock %}

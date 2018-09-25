@@ -44,7 +44,7 @@ const Telefono=  {
 var contenedorTelefonos = new Vue({
   el: '#componente_telefono',
   components: {
-    'telefonos' : {}
+    'telf' : Telefono
   },
   data:{
     bar: "foo"
