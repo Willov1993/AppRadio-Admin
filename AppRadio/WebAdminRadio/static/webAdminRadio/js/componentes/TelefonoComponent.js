@@ -27,7 +27,7 @@ const Telefono=  {
   <div>
     <div v-for="(tel,index) in telefonos" v-bind:key="index" class="form-row">
       <div class="form-group col-md-4">
-          <input v-model="tel.num" id="telefonoInput" type="tel" class="form-control" placeholder="Ingrese el numero de telefono">
+          <input v-model="tel.num" type="tel" class="form-control" placeholder="Ingrese el numero de telefono">
       </div>
       <div v-if="index != 0" class="form-group col-md-2">
           <button type="button" class="btn btn-primary" @click="eliminarRegistro(index)" >Eliminar</button>
@@ -44,7 +44,7 @@ const Telefono=  {
 var contenedorTelefonos = new Vue({
   el: '#componente_telefono',
   components: {
-    'telefonos' : {}
+    'telf' : Telefono
   },
   data:{
     bar: "foo"

@@ -3,7 +3,8 @@
 {% block page_style %}<link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/segmento.css' %}">{% endblock %}
 {% block content %}
     <h4><b>Información del segmento</b></h4>
-    <form id="addSegmento">
+    <form id="addSegmento" method="POST" action="{% url 'webadminradio:agregar_emisora' %}">
+        {% csrf_token %}
         <div class="form-group">
             <label for="nombreInput">Nombre</label>
             <input required id="nombreInput" type="text" class="form-control" placeholder="Ingrese el nombre de la emisora">
@@ -35,14 +36,6 @@
             <div id="componente_telefono">
                 <telf ></telf>
             </div>
-            <!--div required class="form-row">
-                <div class="form-group col-md-8">
-                    <input id="telefonoInput" type="tel" class="form-control" placeholder="Ingrese el numero de telefono de la radio">
-                </div>
-                <div class="form-group col-md-2">
-                    <button type="button" class="btn btn-primary" id="addTelefono">Ingresar otro telefono</button>
-                </div>
-            </div-->
         </div>
         <div class="form-group">
                 <label for="webInput">Sitio Web (Opcional)</label>
@@ -50,8 +43,8 @@
         </div>
         <div class="form-group">
             <div class="custom-file">
-                <label for="imgEmisora" class="custom-file-label">Logotipo</label>
-                <input type="file" class="custom-file-input" id="imgEmisora" accept=".png, .jpg, .jpeg">
+                <label for="imgSegmento" class="custom-file-label">Logotipo</label>
+                <input type="file" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg">
                 <div class="img-holder">
                     <img id="preview" src="{% static 'webAdminRadio/images/placeholder.png' %}">
                 </div>
@@ -60,11 +53,18 @@
         <div class="form-group">
                 <label for="direccionInput">Dirección</label>
                 <input required id="direccionInput" type="text" class="form-control" placeholder="Direccion de la emisora">
+        </div>
+        <div class="form-group">
+            <label for="">Redes Sociales (Opcional)</label>
+            <div id="componente_redsocial">
+                <redsocial></redsocial>
             </div>
+        </div>
         <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-plus-circle"></i>Agregar Emisora</button>
     </form>
 {% endblock %}
 {% block page_script %}
 <script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>
-<script src="{% static 'webAdminRadio/js/componentes/Telefono.js' %}"></script>
+<script src="{% static 'webAdminRadio/js/componentes/TelefonoComponent.js' %}"></script>
+<script src="{% static 'webAdminRadio/js/componentes/RedSocialComponent.js' %}"></script>
 {% endblock %}
