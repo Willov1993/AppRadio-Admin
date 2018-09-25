@@ -45,8 +45,10 @@ const Horario = {
                 <label>Hora fin</label>
                 <input v-model="horario.fin" type="time" class="form-control">
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-3" id="btn-eliminar-div">
+                <div id="btn-eliminar"">
                 <button v-if="index != 0" type="button" class="btn btn-primary" id="addHorario" @click="eliminarDia">Eliminar</button>
+                </div>
             </div>
         </div>
         <button type="button" class="btn btn-primary" id="addHorario" @click="agregarDia">Agregar otro horario</button>
