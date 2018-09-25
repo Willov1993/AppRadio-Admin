@@ -1,0 +1,49 @@
+.main-div {
+    margin: 3rem auto 30px;
+    max-width: 38%;
+}
+
+.img-container {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 5rem;
+}
+
+.login-header { 
+    background-color: #417690;
+    padding: 0.3rem;
+}
+
+.login-title {
+    text-align: center;
+    color: white;
+}
+
+.login-container {
+    border: 1px solid #417690;
+    padding: 1rem;
+}
+
+.btn-login {
+    text-align: center;
+}
+
+.login {
+    background-color: #417690;
+}
+
+.form-control {
+    background-color: #FAFFBD;
+}
+
+.form-control:focus {
+    background-color: #FAFFBD;
+}
+
+i {
+    margin-right: 0.5rem;
+}
+
+small {
+    color: red;
+}

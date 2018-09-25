@@ -14,4 +14,8 @@ def home(request):
 
 @login_required
 def agregar_segmento(request):
+
+    if request.POST:
+        print("POSTING DATA!")
+
     return render(request, 'webAdminRadio/agregar_segmento.html', {'title': 'Agregar Segmento'})

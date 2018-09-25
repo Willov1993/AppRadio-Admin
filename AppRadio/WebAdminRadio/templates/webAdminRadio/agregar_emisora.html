@@ -5,55 +5,111 @@
     <h4><b>Información del segmento</b></h4>
     <form id="addSegmento" method="POST" action="{% url 'webadminradio:agregar_emisora' %}">
         {% csrf_token %}
+
+        <!-- Div de Nombre -->
         <div class="form-group">
             <label for="nombreInput">Nombre</label>
-            <input required id="nombreInput" type="text" class="form-control" placeholder="Ingrese el nombre de la emisora">
+            <input required name="nombre" id="nombreInput" type="text" class="form-control" placeholder="Ingrese el nombre de la emisora" maxlength=150>
         </div>
+
+        <!-- Div de frecuencia -->
         <div class="form-group">
             <label for="frecuenciaInput">Frecuencia o Dial</label>
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <input required id="frecuenciaInput" type="text" class="form-control" placeholder="Ejemplo: 105.4">
+                    <input required name="frecuencia" id="frecuenciaInput" type="text" class="form-control" placeholder="Ejemplo: 105.4" pattern="[0-9]{2,4}\.[0-9]">
                 </div>
                 <div class="form-group col-md-2">
-                <select id="frecTipoInput" class="custom-select form-control">
+                <select name="tipoFrecuencia" id="frecTipoInput" class="custom-select form-control">
                     <option value="FM">FM</option>
                     <option value="AM">AM</option>
                 </select>
                 </div>
             </div>
         </div>
+
+        <!-- Div de descripcion -->
         <div class="form-group">
             <label for="descInput">Descripción</label>
-            <textarea required class="form-control" id="descInput" rows="3" placeholder="Ingrese una breve descripción de la emisora"></textarea>
+            <textarea required class="form-control" name="descripcion" id="descInput" rows="3" placeholder="Ingrese una breve descripción de la emisora" maxlength=300></textarea>
         </div>
+
+        <!-- Div de Streaming -->
         <div class="form-group">
             <label required for="streamingInput">URL de streaming</label>
-            <input id="streamingInput" type="url" class="form-control" placeholder="Ingrese el url de transmision de la radio">
+            <input required name="streaming" id="streamingInput" type="url" class="form-control" placeholder="Ingrese el url de transmision de la radio">
         </div>
-        <div class="form-group">  
+
+        <!-- Div de telefono -->
+        <div class="form-group">
             <label for="">Teléfono</label>
             <div id="componente_telefono">
                 <telf></telf>
             </div>
         </div>
+
+        <!-- Div de Sitio Web -->
         <div class="form-group">
                 <label for="webInput">Sitio Web (Opcional)</label>
-                <input id="webInput" type="url" class="form-control" placeholder="Ingrese el url del sitio web de la radio">
+                <input name="sitioweb" id="webInput" type="url" class="form-control" placeholder="Ingrese el url del sitio web de la radio">
         </div>
+
+        <!-- Div de imagen -->
         <div class="form-group">
             <div class="custom-file">
                 <label for="imgSegmento" class="custom-file-label">Logotipo</label>
-                <input type="file" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg">
+                <input name="logo" type="file" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg">
                 <div class="img-holder">
                     <img id="preview" src="{% static 'webAdminRadio/images/placeholder.png' %}">
                 </div>
             </div>
         </div>
+
+        <!-- Div de direccion -->
         <div class="form-group">
-                <label for="direccionInput">Dirección</label>
-                <input required id="direccionInput" type="text" class="form-control" placeholder="Direccion de la emisora">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="direccionInput">Dirección</label>
+                    <input required name="direccion" id="direccionInput" type="text" class="form-control" placeholder="Direccion de la emisora">
+                </div>
+                <div class="form-group col-md-2">
+                 <label>Provincia</label>
+                 <select name="provincia" class="custom-select form-control">
+                     <option disabled selected value="">Provincia</option>
+                     <option value="Azuay" selected="selected">Azuay</option>
+                     <option value="Cañar">Cañar</option>
+                     <option value="Loja">Loja</option>
+                     <option value="Carchi">Carchi</option>
+                     <option value="Imbabura">Imbabura</option>
+                     <option value="Pichincha">Pichincha</option>
+                     <option value="Cotopaxi">Cotopaxi</option>
+                     <option value="Tungurahua">Tungurahua</option>
+                     <option value="Bolívar">Bolívar</option>
+                     <option value="Chimborazo">Chimborazo</option>
+                     <option value="Sto. Domingo de los Tsachilas">Sto. Domingo de los Tsachilas</option>
+                     <option value="Esmeraldas">Esmeraldas</option>
+                     <option value="Manabí">Manabí</option>
+                     <option value="Guayas">Guayas</option>
+                     <option value="Los Ríos">Los Ríos</option>
+                     <option value="El Oro">El Oro</option>
+                     <option value="Santa Elena">Santa Elena</option>
+                     <option value="Sucumbíos">Sucumbíos</option>
+                     <option value="Napo">Napo</option>
+                     <option value="Pastaza">Pastaza</option>
+                     <option value="Orellana">Orellana</option>
+                     <option value="Morona Santiago">Morona Santiago</option>
+                     <option value="Zamora Chinchipe">Zamora Chinchipe</option>
+                     <option value="Galápagos">Galápagos</option>
+                 </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label>Ciudad</label>
+                    <input required name="ciudad" type="text" class="form-control" placeholder="Ciudad" pattern="[A-Za-z]+">
+                </div>
+            </div>
         </div>
+
+        <!-- Div de Redes Sociales-->
         <div class="form-group">
             <label for="">Redes Sociales (Opcional)</label>
             <div id="componente_redsocial">

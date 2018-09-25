@@ -1,7 +1,7 @@
 
 /*-- componente telefono --
   este componente crea el elemento html para el input de telefonos, con los botones
-  de agregar y eliminar, los cuales al ser presionados generaran mas inputs o eliminaran los
+  de agregar y eliminar, los cuales al ser presionados generaran mas inputs o eliminaran los 
   existentes, ademas de que se puede acceder a toda la data de los inputs desde su atributo telefonos
 */
 const Telefono=  {
@@ -27,8 +27,7 @@ const Telefono=  {
   <div>
     <div v-for="(tel,index) in telefonos" v-bind:key="index" class="form-row">
       <div class="form-group col-md-4">
-          <input v-if="index == 0" v-model="tel.num" v-bind:name="'telefono' + (index + 1)" required type="tel" class="form-control" placeholder="Ingrese el numero de telefono">
-          <input v-else v-model="tel.num" v-bind:name="'telefono' + (index + 1)" type="tel" class="form-control" placeholder="Ingrese el numero de telefono">
+          <input v-model="tel.num" type="tel" class="form-control" placeholder="Ingrese el numero de telefono">
       </div>
       <div v-if="index != 0" class="form-group col-md-2">
           <button type="button" class="btn btn-primary" @click="eliminarRegistro(index)" >Eliminar</button>

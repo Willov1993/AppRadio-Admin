@@ -15,6 +15,7 @@ const RedSocial=  {
       verificarOtraRed(e,indice){
         this.redes_sociales[indice].nombre= e.target.value
         this.redes_sociales[indice].esOtra= (this.redes_sociales[indice].nombre == "Otra")
+        alert(e.target.value)
       }
     },
     mounted () {
@@ -24,10 +25,10 @@ const RedSocial=  {
     <div>
       <div v-for="(red,index) in redes_sociales" v-bind:key="index" class="form-row">
         <div class="form-group col-md-4">
-            <input v-model="red.url" v-bind:name="'red_social_url' + (index + 1)" type="url" class="form-control" placeholder="Ingrese la url de la red social">
+            <input v-model="red.url" type="url" class="form-control" placeholder="Ingrese la url de la red social">
         </div>
         <div class="form-group col-md-2">
-            <select @change="verificarOtraRed($event,index)" v-bind:name="'red_social_nombre' + (index + 1)" class="custom-select form-control">
+            <select @change="verificarOtraRed($event,index)" class="custom-select form-control">
                 <option disabled selected value="">Red Social</option>
                 <option value="Facebook">Facebook</option>
                 <option value="Twitter">Twitter</option>
@@ -36,7 +37,7 @@ const RedSocial=  {
             </select>
         </div>
         <div v-if="red.esOtra == true" class="form-group col-md-2">
-            <input v-model="red.nombre" class="form-control" v-bind:name="'red_social_nombre' + (index + 1)" placeholder="Ingrese el nombre de la red social">
+            <input v-model="red.nombre" class="form-control" placeholder="Ingrese el nombre de la red social">
         </div>
         <div v-if="index != 0" class="form-group col-md-2">
             <button type="button" class="btn btn-primary" @click="eliminarRegistro(index)" >Eliminar</button>
@@ -48,7 +49,7 @@ const RedSocial=  {
     </div>
     `
   }
-
+  
   /* Variable contenedora de la instancia del componente telefono*/
   var contenedorRedesSociales = new Vue({
     el: '#componente_redsocial',
