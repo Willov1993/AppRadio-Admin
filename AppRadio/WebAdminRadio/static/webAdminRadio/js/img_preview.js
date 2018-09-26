@@ -11,3 +11,10 @@ function previewImg(input) {
 $('#imgSegmento').change(function(){
     previewImg(this);
 })
+
+/* Función para validar el SelectBox */
+function validate() {
+    var select = document.getElementById('emisoraSelect');
+    console.log("asdads");
+    return !select.value == 0;
+}

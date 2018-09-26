@@ -2,7 +2,7 @@
 {% load static from staticfiles %}
 {% block page_style %}<link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/segmento.css' %}">{% endblock %}
 {% block content %}
-    <h4><b>Información del segmento</b></h4>
+    <h4><b>Información de la emisora</b></h4>
     <form id="addSegmento" method="POST" action="{% url 'webadminradio:agregar_emisora' %}">
         {% csrf_token %}
 
