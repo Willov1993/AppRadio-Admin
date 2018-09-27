@@ -19,6 +19,7 @@ class Usuario(models.Model):
     fecha_nac = models.DateField()
     imagen = models.ImageField(upload_to=upload_location, blank=True)
     rol = models.CharField(max_length=1)
+    activo = models.CharField(max_length = 1, default='A')
 
 class Emisora(models.Model):
     #idEmisora = models.AutoField(primary_key = True)
@@ -31,6 +32,7 @@ class Emisora(models.Model):
     ciudad = models.CharField(max_length=50)
     provincia = models.CharField(max_length=50)
     logotipo = models.ImageField(upload_to=emisora_file_location)
+    activo = models.CharField(max_length = 1, default='A')
 
     def __str__(self):
         return self.nombre
@@ -42,6 +44,7 @@ class Segmento(models.Model):
     descripcion = models.CharField(max_length=250)
     idEmisora = models.ForeignKey(Emisora, on_delete=models.DO_NOTHING)
     imagen = models.ImageField(upload_to=segmento_file_location)
+    activo = models.CharField(max_length = 1, default='A')
 
     def __str__(self):
         return self.nombre
@@ -52,11 +55,13 @@ class Encuesta(models.Model):
     descripcion = models.CharField(max_length = 250)
     imagen = models.CharField(max_length = 250)
     fecha_inicio = models.DateTimeField(auto_now_add=True)
+    activo = models.CharField(max_length = 1, default='A')
 
 class Horario(models.Model):
     #idHorario = models.AutoField(primary_key = True)
     fecha_inicio = models.DateTimeField()
     fehca_fin = models.DateTimeField()
+    activo = models.CharField(max_length = 1, default='A')
 
 class Publicidad(models.Model):
     titulo = models.CharField(max_length = 150)
@@ -76,6 +81,7 @@ class Sugerencia(models.Model):
     idUsuario = models.ForeignKey(Usuario, on_delete = models.DO_NOTHING)
     idEmisora = models.ForeignKey(Emisora, on_delete = models.DO_NOTHING)
     idTipo = models.ForeignKey(Tipo_sugerencia, on_delete = models.DO_NOTHING)
+    activo = models.CharField(max_length = 1, default='A')
 
 class Frecuencia(models.Model):
     duracion = models.DateTimeField()
@@ -84,6 +90,7 @@ class Frecuencia(models.Model):
     hora_inicio = models.TimeField(blank=True, null=True)
     hora_fin = models.TimeField(blank=True, null = True)
     nro_dias = models.IntegerField()
+    activo = models.CharField(max_length = 1, default='A')
 
 class Contacto(models.Model):
     idPublicidad = models.ForeignKey(Publicidad, on_delete = models.DO_NOTHING)
@@ -107,6 +114,7 @@ class Concursante(models.Model):
     telefono = models.CharField(max_length = 10)
     idUsuario = models.ForeignKey(Usuario, null=True, on_delete=models.SET_NULL)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
+    activo = models.CharField(max_length = 1, default='A')
 
 class Concurso(models.Model):
     idEncuesta = models.ForeignKey(Encuesta, on_delete=models.DO_NOTHING)
@@ -155,10 +163,16 @@ class Telefono_emisora(models.Model):
     idEmisora = models.ForeignKey(Emisora, on_delete=models.CASCADE)
     nro_telefono = models.CharField(max_length = 10)
 
+    def __str__(self):
+        return "{0} | {1}".format(self.idEmisora.nombre,self.nro_telefono)
+
 class RedSocial_emisora(models.Model):
     idEmisora = models.ForeignKey(Emisora, on_delete=models.CASCADE)
     nombre = models.CharField(max_length = 25)
     link = models.CharField(max_length = 50)
+
+    def __str__(self):
+        return "{0} | {1}".format(self.idEmisora.nombre,self.nombre)
 
 class frecuencia_publicidad(models.Model):
     idSegmento = models.ForeignKey(Segmento, on_delete = models.CASCADE)

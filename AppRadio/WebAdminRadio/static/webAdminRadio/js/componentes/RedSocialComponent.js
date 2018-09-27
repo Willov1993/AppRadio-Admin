@@ -28,7 +28,7 @@ const RedSocial=  {
         </div>
         <div class="form-group col-md-2">
             <select @change="verificarOtraRed($event,index)" v-bind:name="'red_social_nombre' + (index + 1)" class="custom-select form-control">
-                <option disabled selected value="">Red Social</option>
+                <!--option disabled selected value="">Red Social</option-->
                 <option value="Facebook">Facebook</option>
                 <option value="Twitter">Twitter</option>
                 <option value="Youtube">Youtube</option>
@@ -36,7 +36,7 @@ const RedSocial=  {
             </select>
         </div>
         <div v-if="red.esOtra == true" class="form-group col-md-2">
-            <input v-model="red.nombre" class="form-control" v-bind:name="'red_social_nombre' + (index + 1)" placeholder="Ingrese el nombre de la red social">
+            <input required v-model="red.nombre" class="form-control" v-bind:name="'red_social_nombre' + (index + 1)" placeholder="Ingrese el nombre de la red social">
         </div>
         <div v-if="index != 0" class="form-group col-md-2">
             <button type="button" class="btn btn-primary" @click="eliminarRegistro(index)" >Eliminar</button>
