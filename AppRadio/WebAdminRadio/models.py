@@ -1,33 +1,50 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+def emisora_file_location(instance, filename):
+    #Esta función guarda las imagenes de las emisoras en la ruta media_cdn/<id_emisora>/
+    return "%s/%s" %(instance.id, filename)
+
+def segmento_file_location(instance, filename):
+    #Esta función guarda las imágenes de los segmentos en la ruta media_cdn/<id_emisora>/<id_segmento>
+    return "%s/%s/%s" %(instance.idEmisora.id, instance.id, filename)
+
 def upload_location(instance, filename):
-    return "user_image/%s/%s" %(instance.id, filename)
+    #Esta función guarda las imágenes de los usuarios en media_cdn/<id_usuario>
+    return "usuarios/%s/%s" %(instance.id, filename)
 
 class Usuario(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     fecha_nac = models.DateField()
-    imagen = models.ImageField(upload_to = upload_location, blank=True)
-    rol = models.CharField(max_length = 1)
+    imagen = models.ImageField(upload_to=upload_location, blank=True)
+    rol = models.CharField(max_length=1)
 
 class Emisora(models.Model):
     #idEmisora = models.AutoField(primary_key = True)
-    nomnbre = models.CharField(max_length = 150)
-    frecuencia_dial = models.CharField(max_length = 8)
-    url_streaming = models.CharField(max_length = 150)
-    sitio_web = models.CharField(max_length = 150)
-    direccion = models.CharField(max_length = 250)
-    descripcion = models.CharField(max_length = 500)
-    ciudad = models.CharField(max_length = 50)
-    provincia = models.CharField(max_length = 50)
+    nombre = models.CharField(max_length=150)
+    frecuencia_dial = models.CharField(max_length=8)
+    url_streaming = models.CharField(max_length=150)
+    sitio_web = models.CharField(max_length=150)
+    direccion = models.CharField(max_length=250)
+    descripcion = models.CharField(max_length=500)
+    ciudad = models.CharField(max_length=50)
+    provincia = models.CharField(max_length=50)
+    logotipo = models.ImageField(upload_to=emisora_file_location)
+
+    def __str__(self):
+        return self.nombre
 
 class Segmento(models.Model):
     #idSegmento = models.AutoField(primary_key = True)
-    nombre = models.CharField(max_length = 150)
-    slogan = models.CharField(max_length = 150)
-    descripcion = models.CharField(max_length = 250)
-    idEmsiora = models.ForeignKey(Emisora, on_delete=models.DO_NOTHING)
-    imagen = models.CharField(max_length = 250)
+    nombre = models.CharField(max_length=150)
+    slogan = models.CharField(max_length=150)
+    descripcion = models.CharField(max_length=250)
+    idEmisora = models.ForeignKey(Emisora, on_delete=models.DO_NOTHING)
+    imagen = models.ImageField(upload_to=segmento_file_location)
+
+    def __str__(self):
+        return self.nombre
 
 class Encuesta(models.Model):
     #idEncuesta = models.AutoField(primary_key = True)

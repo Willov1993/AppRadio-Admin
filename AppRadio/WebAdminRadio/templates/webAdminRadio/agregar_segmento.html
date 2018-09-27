@@ -1,21 +1,22 @@
 {% extends 'webAdminRadio/base_site.html' %}
 {% load static from staticfiles %}
-{% block page_style %}<link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/segmento.css' %}">{% endblock %}
+{% block page_style %}<link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/agregar_segmento.css' %}">{% endblock %}
 {% block content %}
     <h4><b>Información del segmento</b></h4>
-    <form id="addSegmento" onsubmit="return validate()">
+    <form id="addSegmento" onsubmit="return validate()" action="{% url 'webadminradio:agregar_segmento' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
         <div class="form-group">
             <label for="emisoraSelect">Emisora</label>
-            <select id="emisoraSelect" class="custom-select form-control" name="dia" oninvalid="this.setCustomValidity('Ingrese un nombre para el segmento')" required>
+            <select id="emisoraSelect" class="custom-select form-control" name="emisora" oninvalid="this.setCustomValidity('Ingrese una emisora válida')" required oninput="this.setCustomValidity('')">
                 <option selected disabled>Seleccione la emisora</option>
-                <option value="1">Emisora 1</option>
-                <option value="2">Emisora 2</option>
-                <option value="3">Emisora 3</option>
+                {% for emisora in emisoras %}
+                    <option value="{{ emisora.id }}">{{ emisora.nombre }}</option>
+                {% endfor %}
             </select>
         </div>
         <div class="form-group">
             <label for="nombreInput">Nombre</label>
-            <input id="nombreInput" name="nombre" type="text" class="form-control" placeholder="Ingrese el nombre del segmento" oninvalid="this.setCustomValidity('Ingrese un nombre para el segmento')" oninput="this.setCustomValidity('')" required>
+            <input id="nombreInput" name="nombre" type="text" class="form-control" placeholder="Ingrese un nombre para el segmento" oninvalid="this.setCustomValidity('Ingrese un nombre para el segmento')" oninput="this.setCustomValidity('')" required>
         </div>
         <div class="form-group">
             <label for="resenaInput">Reseña Publicitaria</label>
@@ -44,6 +45,6 @@
     </form>
 {% endblock %}
 {% block page_script %}
-<script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>
-<script src="{% static 'webAdminRadio/js/componentes/Horarios.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/Horarios.js' %}"></script>
 {% endblock %}
