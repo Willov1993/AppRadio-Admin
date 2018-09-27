@@ -85,16 +85,13 @@ def agregar_emisora(request):
                     red= RedSocial_emisora(idEmisora=emisora,nombre=nombre,link=url)
                     red.save()
             
-            context= {'title': 'Agregar Emisora','success':'El registro ha sido creado con éxito'}
+            context= {'title': 'Agregar Emisora','success':'¡El registro de la emisora se ha sido creado con éxito!'}
             return render(request, 'webAdminRadio/agregar_emisora.html', context)            
 
         except Exception as e:
             context= {
                 'title': 'Agregar Emisora',
-                'error':"""<p>Ocurrió un error al registrar los datos, intente nuevamente</p>
-                    Error:<p>{0}</p>
-                    Motivo: <p>{1!r}</p>
-                """.format(type(e).__name__, e.args)
+                'error':{type(e).__name__:"<p>Ocurrió un error al registrar los datos, intente nuevamente</p>".format(e.args)}
             }
             return render(request, 'webAdminRadio/agregar_emisora.html', context)
 
@@ -105,8 +102,19 @@ def agregar_emisora(request):
 def home(request):
     return render(request, 'webAdminRadio/index.html', {'title': 'Principal'})
 
+
+@login_required
+def emisoras(request):
+    """
+        URL: webadmin/emisoras/
+    """
+    return render(request, 'webAdminRadio/emisora.html',{'title': 'Emisoras'})
+
 @login_required
 def segmentos(request):
+    """
+        URL: webadmin/segmentos/
+    """
     return render(request, 'webAdminRadio/segmento.html', {'title': 'Segmentos'})
 
 @login_required
