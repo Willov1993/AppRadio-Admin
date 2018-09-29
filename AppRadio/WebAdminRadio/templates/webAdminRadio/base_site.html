@@ -14,10 +14,10 @@
                 <a href="{% url 'webadminradio:home' %}"><i class="fas fa-home fa-fw"></i><span></span>Principal</a>
             </li>
             <li>
-                <a href="#"><i class="fas fa-broadcast-tower"></i>Emisoras</a>
+                <a href="{% url 'webadminradio:emisoras' %}"><i class="fas fa-broadcast-tower"></i>Emisoras</a>
             </li>
             <li>
-                <a href="#"><i class="fas fa-microphone"></i>Segmentos</a>
+                <a href="{% url 'webadminradio:segmentos' %}"><i class="fas fa-microphone"></i>Segmentos</a>
             </li>
             <li>
                 <a href="#"><i class="fas fa-headset"></i>Locutores</a>
@@ -65,7 +65,10 @@
             </div>
         </nav>
         <div class="navbar navbar-expand-lg navbar-light bg-light navbar-title">
-            <h2><b>{{title}}</b></h2>
+            <h2><b>{{ title }}</b></h2>
+            <!-- Bloque para el botón de agregar -->
+            {% block agregar_button %}
+            {% endblock %}
         </div>
         <div class="panel">
             <div class="panel-body">

@@ -2,6 +2,28 @@
 {% load static from staticfiles %}
 {% block page_style %}<link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/agregar_segmento.css' %}">{% endblock %}
 {% block content %}
+    {% if error %}
+        <div id="componente_modal_info">
+            <modal-info v-if="showModal" url_redirect="">
+                <h3 slot="header">Error</h3>
+                <div slot="body">
+                    <p>Existen algunos errores en los siguientes campos:</p>
+                    {% for campo,e in error.items %}
+                        <h5>{{campo}}</h5>
+                        {{e}}
+                    {% endfor %}
+                </div>
+            </modal-info>
+        </div>
+    {% endif %}
+    {% if success %}
+    <div id="componente_modal_info">
+            <modal-info v-if="showModal" url_redirect="{% url 'webadminradio:segmentos' %}">
+                <h3 slot="header">Información</h3>
+                <p slot="body">{{success}}</p>
+            </modal-info>
+    </div>
+    {% endif %}
     <h4><b>Información del segmento</b></h4>
     <form id="addSegmento" onsubmit="return validate()" action="{% url 'webadminradio:agregar_segmento' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -35,7 +57,7 @@
         <div class="form-group">
             <div class="custom-file">
                 <label for="imgSegmento" class="custom-file-label">Imagen del Segmento</label>
-                <input type="file" name="imagen" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg" oninvalid="this.setCustomValidity('Ingrese una imagen para el segmento')" required>
+                <input type="file" name="imagen" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg" oninvalid="this.setCustomValidity('Ingrese una imagen para el segmento')" oninput="this.setCustomValidity('')" required>
                 <div class="img-holder">
                     <img id="preview" src="{% static 'webAdminRadio/images/placeholder.png' %}">
                 </div>
@@ -47,4 +69,5 @@
 {% block page_script %}
     <script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>
     <script src="{% static 'webAdminRadio/js/componentes/Horarios.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
 {% endblock %}

@@ -29,7 +29,7 @@ const Horario = {
         <div v-for="(horario, index) in horarios" v-bind:key="index" class="form-row">
             <div class="form-group col-md-3">
                 <label>Dia</label>
-                <select v-model="horario.dia" v-bind:name="'dia' + (index + 1)" id="diaInput" class="custom-select form-control" required>
+                <select v-model="horario.dia" name="dia" id="diaInput" class="custom-select form-control" required>
                     <option value="Lunes">Lunes</option>
                     <option value="Martes">Martes</option>
                     <option value="Miércoles">Miércoles</option>
@@ -39,11 +39,11 @@ const Horario = {
             </div>
             <div class="form-group col-md-3">
                 <label>Hora de inicio</label>
-                <input v-model="horario.inicio" v-bind:name="'inicio' + (index + 1)" type="time" class="form-control" required>
+                <input v-model="horario.inicio" name="inicio" type="time" class="form-control" required>
             </div>
             <div class="form-group col-md-3">
                 <label>Hora fin</label>
-                <input v-model="horario.fin" v-bind:name = "'fin' + (index + 1)" type="time" class="form-control" required>
+                <input v-model="horario.fin" name = "fin" type="time" class="form-control" required>
             </div>
             <div class="form-group col-md-3" id="btn-eliminar-div">
                 <div id="btn-eliminar"">

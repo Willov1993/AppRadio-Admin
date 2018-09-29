@@ -7,16 +7,16 @@
 {% block content %}
     {% if error %}
         <div id="componente_modal_info">
-                <modal-info v-if="showModal" url_redirect="">
-                    <h3 slot="header">Error</h3>
-                    <div slot="body">
-                        <p>Existen algunos errores en los siguientes campos:</p>
-                        {% for campo,e in error.items %}
-                            <h5>{{campo}}</h5>
-                            {{e}}
-                        {% endfor %}
-                    </div>
-                </modal-info>
+            <modal-info v-if="showModal" url_redirect="">
+                <h3 slot="header">Error</h3>
+                <div slot="body">
+                    <p>Existen algunos errores en los siguientes campos:</p>
+                    {% for campo,e in error.items %}
+                        <h5>{{campo}}</h5>
+                        {{e}}
+                    {% endfor %}
+                </div>
+            </modal-info>
         </div>
     {% endif %}
     {% if success %}
@@ -149,5 +149,4 @@
 <script src="{% static 'webAdminRadio/js/componentes/TelefonoComponent.js' %}"></script>
 <script src="{% static 'webAdminRadio/js/componentes/RedSocialComponent.js' %}"></script>
 <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
-
 {% endblock %}
