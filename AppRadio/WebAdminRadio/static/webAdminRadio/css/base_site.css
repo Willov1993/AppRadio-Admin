@@ -119,7 +119,11 @@ a[data-toggle="collapse"] {
 }
 
 /* Espaciado entre ícono y texto */
-a i, .submit i {
+.action i {
+    margin-right: 1rem;
+}
+
+.submit i {
     margin-right: 1rem;
 }
 

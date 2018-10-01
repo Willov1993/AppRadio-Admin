@@ -17,3 +17,7 @@ media
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+AppRadio/db.sqlite3
+AppRadio/WebAdminRadio/__pycache__/urls.cpython-34.pyc
+AppRadio/WebAdminRadio/__pycache__/models.cpython-34.pyc
+AppRadio/WebAdminRadio/__pycache__/views.cpython-34.pyc
