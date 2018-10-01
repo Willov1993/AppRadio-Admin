@@ -11,13 +11,14 @@ def home(request):
 
 @login_required
 def segmentos(request):
-    context = {'title': 'Segmentos'}
-    return render(request, 'webAdminRadio/segmento.html', context)
+    list_segmentos = Segmento.objects.all()
+    context = {'title': 'Segmentos', 'segmentos': list_segmentos}
+    return render(request, 'webAdminRadio/segmentos.html', context)
 
 @login_required
 def emisoras(request):
     context = {'title': 'Emisoras'}
-    return render(request, 'webAdminRadio/emisora.html', context)
+    return render(request, 'webAdminRadio/emisoras.html', context)
 
 @login_required
 def agregar_segmento(request):
@@ -128,7 +129,7 @@ def agregar_emisora(request):
                     red= RedSocial_emisora(idEmisora=emisora,nombre=nombre,link=url)
                     red.save()
             
-            context= {'title': 'Agregar Emisora','success':'¡El registro de la emisora se ha sido creado con éxito!'}
+            context= {'title': 'Agregar Emisora', 'success':'¡El registro de la emisora se ha sido creado con éxito!'}
             return render(request, 'webAdminRadio/agregar_emisora.html', context)            
 
         except Exception as e:

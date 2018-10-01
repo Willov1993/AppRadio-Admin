@@ -1,6 +1,9 @@
 {% extends 'webAdminRadio/base_site.html' %}
 {% load static from staticfiles %}
-{% block page_style %}<link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/agregar_segmento.css' %}">{% endblock %}
+{% block page_style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/agregar_segmento.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/componentes/modal_info.css' %}">
+{% endblock %}
 {% block content %}
     {% if error %}
         <div id="componente_modal_info">

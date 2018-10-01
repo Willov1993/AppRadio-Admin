@@ -1,0 +1,37 @@
+{% extends 'webAdminRadio/base_site.html' %}
+{% load static from staticfiles %}
+{% block page_style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/emisoras.css' %}"
+{% endblock %}
+{% block agregar_button %}
+    <a href="{% url 'webadminradio:agregar_emisora' %}" class="btn btn-primary btn-md ml-auto action" role="button"><i class="fas fa-plus-circle"></i>Agregar Emisora</a>
+{% endblock %}
+{% block content %}
+    <div class="emisoras">
+        <div class="wrapper">
+            <div class="img-container">
+                <img class="image" src="{% static 'webAdminRadio/images/placeholder.png' %}">
+            </div>
+            <div class="info-container">
+                <h3>Canela TV</h3>
+                <p><i>105.4 FM</i></p>
+                <p><i class="fas fa-map-marker-alt icon"></i>Av. Sucre y Rumichaca Mz. 940</p>
+                <p><i class="fas fa-phone icon"></i>09128428148</p>
+                <p><i class="fas fa-globe icon"></i>www.canelatv.com</p>
+            </div>
+            <div class="btn-wrapper">
+                <div class="act-buttons">
+                    <a href="#" class="btn btn-primary btn-md action a-btn" role="button"><i class="fas fa-pen"></i>Editar información</a>
+                    <a href="#" class="btn btn-primary btn-md action a-btn" role="button"><i class="fas fa-times"></i>Elimiar Radio</a>
+                </div>
+                <div class="info">
+                    <p><b>Segmentos registrados:</b> 15</p>
+                    <p><b>Locutores registrados:</b> 30</p>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+{% endblock %}
+{% block page_script %}
+{% endblock %}
