@@ -5,11 +5,13 @@ from django.utils.text import slugify
 
 
 def emisora_file_location(instance, filename):
-    #Esta función guarda las imagenes de las emisoras en la ruta media_cdn/<id_emisora>/
+    #Esta función guarda las imagenes de las emisoras en la ruta:
+    # media_cdn/<emisora.slug>
     return "%s/%s" %(instance.slug, filename)
 
 def segmento_file_location(instance, filename):
-    #Esta función guarda las imágenes de los segmentos en la ruta media_cdn/<id_emisora>/<id_segmento>
+    # Esta función guarda las imágenes de los segmentos en la ruta:
+    # media_cdn/<emisora.slug>/<segmento.slug>
     return "%s/%s/%s" %(instance.idEmisora.slug, instance.slug, filename)
 
 def upload_location(instance, filename):
@@ -172,10 +174,10 @@ class segmento_publicidad(models.Model):
 
 class Telefono_emisora(models.Model):
     idEmisora = models.ForeignKey(Emisora, on_delete=models.CASCADE)
-    nro_telefono = models.CharField(max_length = 10)
+    nro_telefono = models.CharField(max_length=10)
 
     def __str__(self):
-        return "{0} | {1}".format(self.idEmisora.nombre,self.nro_telefono)
+        return "{0} | {1}".format(self.idEmisora.nombre, self.nro_telefono)
 
 class RedSocial_emisora(models.Model):
     idEmisora = models.ForeignKey(Emisora, on_delete=models.CASCADE)

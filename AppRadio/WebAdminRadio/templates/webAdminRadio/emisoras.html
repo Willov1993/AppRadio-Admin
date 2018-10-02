@@ -1,4 +1,5 @@
 {% extends 'webAdminRadio/base_site.html' %}
+{% load webadmin_tags %}
 {% load static from staticfiles %}
 {% block page_style %}
     <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/emisoras.css' %}"
@@ -8,16 +9,18 @@
 {% endblock %}
 {% block content %}
     <div class="emisoras">
+        {% for emisora in emisoras %}
         <div class="wrapper">
             <div class="img-container">
-                <img class="image" src="{% static 'webAdminRadio/images/placeholder.png' %}">
+                <img class="image" src="{{ emisora.logotipo.url }}">
             </div>
             <div class="info-container">
-                <h3>Canela TV</h3>
-                <p><i>105.4 FM</i></p>
-                <p><i class="fas fa-map-marker-alt icon"></i>Av. Sucre y Rumichaca Mz. 940</p>
-                <p><i class="fas fa-phone icon"></i>09128428148</p>
-                <p><i class="fas fa-globe icon"></i>www.canelatv.com</p>
+                <h3><b>{{ emisora.nombre }}</b></h3>
+                <p><i>{{ emisora.frecuencia_dial }}</i></p>
+                <p><i class="fas fa-map-marker-alt icon"></i>{{ emisora.direccion }}</p>
+                {% get_telf_emisora emisora as telefono %}
+                <p><i class="fas fa-phone icon"></i>{{ telefono.nro_telefono }}</p>
+                <p><i class="fas fa-globe icon"></i><a href="{{ emisora.sitio_web }}">{{ emisora.sitio_web }}</a></p>
             </div>
             <div class="btn-wrapper">
                 <div class="act-buttons">
@@ -25,12 +28,13 @@
                     <a href="#" class="btn btn-primary btn-md action a-btn" role="button"><i class="fas fa-times"></i>Elimiar Radio</a>
                 </div>
                 <div class="info">
-                    <p><b>Segmentos registrados:</b> 15</p>
+                    <p><b>Segmentos registrados:</b> {% get_cant_segmentos emisora %}</p>
                     <p><b>Locutores registrados:</b> 30</p>
                 </div>
             </div>
         </div>
         <hr>
+        {% endfor %}
     </div>
 {% endblock %}
 {% block page_script %}
