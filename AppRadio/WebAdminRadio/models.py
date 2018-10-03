@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.utils.text import slugify
 
 
@@ -37,7 +38,7 @@ class Emisora(models.Model):
     ciudad = models.CharField(max_length=50)
     provincia = models.CharField(max_length=50)
     logotipo = models.ImageField(upload_to=emisora_file_location)
-    activo = models.CharField(max_length = 1, default='A')
+    activo = models.CharField(max_length=1, default='A')
 
     def __str__(self):
         return self.nombre
@@ -199,6 +200,7 @@ class Auditoria(models.Model):
     fecha_creado = models.DateTimeField()
     fecha_modificado = models.DateTimeField(auto_now_add=True)
 
+# Creación de Slugs
 def create_slug(instance, sender, new_slug=None):
     slug = slugify(instance.nombre)
     if new_slug is not None:
@@ -210,9 +212,8 @@ def create_slug(instance, sender, new_slug=None):
         return create_slug(instance, sender, new_slug=new_slug)
     return slug
 
+@receiver(pre_save, sender=Emisora)
+@receiver(pre_save, sender=Segmento)
 def pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_slug(instance, sender)
-
-pre_save.connect(pre_save_receiver, sender=Segmento)
-pre_save.connect(pre_save_receiver, sender=Emisora)

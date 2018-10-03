@@ -68,7 +68,7 @@ def agregar_emisora(request):
             'descripcion':request.POST['descripcion'],
             'ciudad': request.POST['ciudad'],
             'provincia': request.POST['provincia'],
-            'logotipo': request.POST['logo'],
+            'logotipo': request.FILES['logo'],
         })
 
         if emisoraForm.is_valid() == False:
@@ -112,7 +112,7 @@ def agregar_emisora(request):
                 descripcion= request.POST['descripcion'],
                 ciudad= request.POST['ciudad'],
                 provincia= request.POST['provincia'],
-                logotipo= request.POST['logo'],
+                logotipo= request.FILES['logo'],
             )
             emisora.save()
 
