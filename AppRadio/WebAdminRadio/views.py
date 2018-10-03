@@ -53,8 +53,8 @@ def agregar_emisora(request):
     URL: webadmin/emisoras/agregar
 
     GET: muestra el formulario para agregar emisora
-    POST: inserta una nueva emisora en la base de datos incluyendo telefonos y 
-          redes sociales en caso de que se los hayan ingresado. 
+    POST: inserta una nueva emisora en la base de datos incluyendo telefonos y
+          redes sociales en caso de que se los hayan ingresado.
     """
     if request.POST:
         #VALIDACIONES DEL FORM
@@ -75,9 +75,9 @@ def agregar_emisora(request):
                 print('{0} -> {1}'.format(error,emisoraForm.errors[error]))
             context= {'title': 'Agregar Emisora','error':emisoraForm.errors}
             return render(request, 'webAdminRadio/agregar_emisora.html', context)
-        
+
         dic_telefonos = {key:value for key, value in request.POST.items() if key.startswith("telefono")}
-        
+
         for key, telefono in dic_telefonos.items():
             telForm= TelefonoForm({'telefono':telefono})
             if telForm.is_valid() == False:
@@ -87,7 +87,7 @@ def agregar_emisora(request):
                 return render(request, 'webAdminRadio/agregar_emisora.html', context)
 
         dic_redes = {key:value for key, value in request.POST.items() if key.startswith("red_social_url")}
-        
+
         for key, url in dic_redes.items():
             if(url != ''):
                 key= key.replace('url','nombre')
@@ -119,7 +119,7 @@ def agregar_emisora(request):
             for key,telefono in dic_telefonos:
                 tel= Telefono_emisora(idEmisora=emisora,nro_telefono=telefono)
                 tel.save()
-            
+
             dic_redes= sorted(dic_redes.items(),key= lambda t: t[0])
             for key, url in dic_redes:
                 if(url != ''):
@@ -128,9 +128,9 @@ def agregar_emisora(request):
                     nombre= nombre[1] if isinstance(nombre,list) else nombre
                     red= RedSocial_emisora(idEmisora=emisora,nombre=nombre,link=url)
                     red.save()
-            
+
             context= {'title': 'Agregar Emisora', 'success':'¡El registro de la emisora se ha sido creado con éxito!'}
-            return render(request, 'webAdminRadio/agregar_emisora.html', context)            
+            return render(request, 'webAdminRadio/agregar_emisora.html', context)
 
         except Exception as e:
             context = {
@@ -143,3 +143,8 @@ def agregar_emisora(request):
             return render(request, 'webAdminRadio/agregar_emisora.html', context)
 
     return render(request, 'webAdminRadio/agregar_emisora.html', {'title': 'Agregar Emisora'})
+
+@login_required
+def modificar_emisora(request):
+
+    return render(request, 'webAdminRadio/modificar_emisora.html')

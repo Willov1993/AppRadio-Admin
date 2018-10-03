@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.twitter',
     'rest_framework',
     'WebAdminRadio',
     'api',
@@ -51,6 +54,7 @@ INSTALLED_APPS = [
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 SITE_ID = 1
 
