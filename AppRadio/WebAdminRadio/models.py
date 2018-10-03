@@ -24,7 +24,7 @@ class Usuario(models.Model):
     fecha_nac = models.DateField()
     imagen = models.ImageField(upload_to=upload_location, blank=True)
     rol = models.CharField(max_length=1)
-    activo = models.CharField(max_length = 1, default='A')
+
 
 class Emisora(models.Model):
     #idEmisora = models.AutoField(primary_key = True)
