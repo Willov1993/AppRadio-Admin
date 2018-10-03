@@ -17,7 +17,8 @@ def segmentos(request):
 
 @login_required
 def emisoras(request):
-    context = {'title': 'Emisoras'}
+    list_emisoras = Emisora.objects.all()
+    context = {'title': 'Emisoras', 'emisoras': list_emisoras}
     return render(request, 'webAdminRadio/emisoras.html', context)
 
 @login_required
@@ -41,7 +42,7 @@ def agregar_segmento(request):
                     idSegmento=Segmento.objects.order_by('-id')[0],
                     idHorario=Horario.objects.order_by('-id')[0]
                 )
-            context['success'] = '¡El registro de la emisora se ha sido creado con éxito!'
+            context['success'] = '¡El registro del segmento se ha sido creado con éxito!'
         else:
             context['error'] = segmento_form.errors
         return render(request, 'webAdminRadio/agregar_segmento.html', context)
@@ -67,7 +68,7 @@ def agregar_emisora(request):
             'descripcion':request.POST['descripcion'],
             'ciudad': request.POST['ciudad'],
             'provincia': request.POST['provincia'],
-            'logotipo': request.POST['logo'],
+            'logotipo': request.FILES['logo'],
         })
 
         if emisoraForm.is_valid() == False:
@@ -111,7 +112,7 @@ def agregar_emisora(request):
                 descripcion= request.POST['descripcion'],
                 ciudad= request.POST['ciudad'],
                 provincia= request.POST['provincia'],
-                logotipo= request.POST['logo'],
+                logotipo= request.FILES['logo'],
             )
             emisora.save()
 

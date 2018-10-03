@@ -28,7 +28,7 @@
     </div>
     {% endif %}
     <h4><b>Información de la emisora</b></h4>
-    <form id="addSegmento" method="POST" action="{% url 'webadminradio:agregar_emisora' %}">
+    <form id="addSegmento" method="POST" action="{% url 'webadminradio:agregar_emisora' %}" enctype="multipart/form-data">
         {% csrf_token %}
 
         <!-- Div de Nombre -->
@@ -141,7 +141,7 @@
                 <redsocial></redsocial>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-plus-circle"></i>Agregar Emisora</button>
+        <button type="submit" class="btn btn-primary btn-lg submit"><i class="fas fa-plus-circle"></i>Agregar Emisora</button>
     </form>
 {% endblock %}
 {% block page_script %}

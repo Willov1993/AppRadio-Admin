@@ -1,10 +1,8 @@
 from django import forms
 from .models import Segmento
 
-# Diccionario para definir el valor de 'name' en los inputs de los forms
-FIELD_NAME_MAPPING = {
-    'idEmisora': 'emisora'
-}
+# field_name_mapping es el diccionario con los names que estarán en los forms,
+# que no deben ser iguales a los campos de los modelos
 
 class EmisoraForm(forms.Form):
     nombre = forms.CharField(max_length=150)
@@ -37,5 +35,8 @@ class SegmentoForm(forms.ModelForm):
 
     # Esta función define el atributo 'name' con el valor del diccionario
     def add_prefix(self, field_name):
-        field_name = FIELD_NAME_MAPPING.get(field_name, field_name)
+        field_name_mapping = {
+            'idEmisora': 'emisora'
+        }
+        field_name = field_name_mapping.get(field_name, field_name)
         return super(SegmentoForm, self).add_prefix(field_name)

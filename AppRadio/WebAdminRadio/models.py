@@ -1,15 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.utils.text import slugify
 
 
 def emisora_file_location(instance, filename):
-    #Esta función guarda las imagenes de las emisoras en la ruta media_cdn/<id_emisora>/
+    #Esta función guarda las imagenes de las emisoras en la ruta:
+    # media_cdn/<emisora.slug>
     return "%s/%s" %(instance.slug, filename)
 
 def segmento_file_location(instance, filename):
-    #Esta función guarda las imágenes de los segmentos en la ruta media_cdn/<id_emisora>/<id_segmento>
+    # Esta función guarda las imágenes de los segmentos en la ruta:
+    # media_cdn/<emisora.slug>/<segmento.slug>
     return "%s/%s/%s" %(instance.idEmisora.slug, instance.slug, filename)
 
 def upload_location(instance, filename):
@@ -35,7 +38,7 @@ class Emisora(models.Model):
     ciudad = models.CharField(max_length=50)
     provincia = models.CharField(max_length=50)
     logotipo = models.ImageField(upload_to=emisora_file_location)
-    activo = models.CharField(max_length = 1, default='A')
+    activo = models.CharField(max_length=1, default='A')
 
     def __str__(self):
         return self.nombre
@@ -172,10 +175,10 @@ class segmento_publicidad(models.Model):
 
 class Telefono_emisora(models.Model):
     idEmisora = models.ForeignKey(Emisora, on_delete=models.CASCADE)
-    nro_telefono = models.CharField(max_length = 10)
+    nro_telefono = models.CharField(max_length=10)
 
     def __str__(self):
-        return "{0} | {1}".format(self.idEmisora.nombre,self.nro_telefono)
+        return "{0} | {1}".format(self.idEmisora.nombre, self.nro_telefono)
 
 class RedSocial_emisora(models.Model):
     idEmisora = models.ForeignKey(Emisora, on_delete=models.CASCADE)
@@ -197,6 +200,7 @@ class Auditoria(models.Model):
     fecha_creado = models.DateTimeField()
     fecha_modificado = models.DateTimeField(auto_now_add=True)
 
+# Creación de Slugs
 def create_slug(instance, sender, new_slug=None):
     slug = slugify(instance.nombre)
     if new_slug is not None:
@@ -208,9 +212,8 @@ def create_slug(instance, sender, new_slug=None):
         return create_slug(instance, sender, new_slug=new_slug)
     return slug
 
+@receiver(pre_save, sender=Emisora)
+@receiver(pre_save, sender=Segmento)
 def pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_slug(instance, sender)
-
-pre_save.connect(pre_save_receiver, sender=Segmento)
-pre_save.connect(pre_save_receiver, sender=Emisora)
