@@ -1,0 +1,36 @@
+{% extends 'webAdminRadio/base_site.html' %}
+{% load static from staticfiles %}
+{% load webadmin_tags %}
+{% block page_style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/ver_segmentos.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="wrapper">
+        <div class="info-container">
+            <p><b>Nombre</b></p>
+            <p>{{ segmento.nombre }}</p>
+        </div>
+        <div class="info-emisora">
+            <p><b>Emisora</b></p>
+            <p>{{ segmento.idEmisora.nombre }}</p>
+        </div>
+        <div class="img-container">
+            <img class="image" src="{{ segmento.idEmisora.logotipo.url }}">
+        </div>
+    </div>
+    <div class="info">
+        <p><b>Reseña Publicitaria</b></p>
+        <p>{{ segmento.slogan }}</p>
+        <p><b>Descripción</b></p>
+        <p>{{ segmento.descripcion }}</p>
+        <p><b>Horarios</b></p>
+        {% get_horarios segmento as horarios %}
+        {% for horario in horarios %}
+            <p>{{ horario.idHorario }}</p>
+        {% endfor %}
+        <p><b>Imagen del segemnto</b></p>
+        <div class="img-container">
+            <img class="image" src="{{ segmento.imagen.url }}">
+        </div>
+    </div>
+{% endblock %}

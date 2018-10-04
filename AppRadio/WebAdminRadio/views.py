@@ -146,6 +146,27 @@ def agregar_emisora(request):
     return render(request, 'webAdminRadio/agregar_emisora.html', {'title': 'Agregar Emisora'})
 
 @login_required
-def modificar_emisora(request):
+def ver_segmento(request, id_segmento):
+    segmento = Segmento.objects.get(id=id_segmento)
+    context = {
+        'title': 'Información del segmento',
+        'segmento': segmento
+    }
+    return render(request, 'webAdminRadio/ver_segmento.html', context)
 
+@login_required
+def modificar_emisora(request):
     return render(request, 'webAdminRadio/modificar_emisora.html')
+
+@login_required
+def modificar_segmento(request, id_segmento):
+    segmento = Segmento.objects.get(id=id_segmento)
+    list_emisoras = Emisora.objects.all()
+    if request.POST:
+        print("Aquí va el form")
+    context = {
+        'title': 'Editar Segmento',
+        'segmento': segmento,
+        'emisoras': list_emisoras
+    }
+    return render(request, 'webAdminRadio/editar_segmento.html', context)

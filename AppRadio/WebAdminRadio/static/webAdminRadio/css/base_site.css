@@ -127,6 +127,10 @@ a[data-toggle="collapse"] {
     margin-right: 1rem;
 }
 
+.fa-cog, .fa-bell {
+    color: white !important
+}
+
 /* Reglas para el contenido de la página */
 .panel {
     padding: 30px;

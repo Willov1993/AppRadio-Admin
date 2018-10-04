@@ -1,0 +1,76 @@
+{% extends 'webAdminRadio/base_site.html' %}
+{% load static from staticfiles %}
+{% block page_style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/agregar_segmento.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/componentes/modal_info.css' %}">
+{% endblock %}
+{% block content %}
+{% if error %}
+    <div id="componente_modal_info">
+        <modal-info v-if="showModal" url_redirect="">
+            <h3 slot="header">Error</h3>
+            <div slot="body">
+                <p>Existen algunos errores en los siguientes campos:</p>
+                {% for campo,e in error.items %}
+                    <h5>{{campo}}</h5>
+                    {{e}}
+                {% endfor %}
+            </div>
+        </modal-info>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div id="componente_modal_info">
+        <modal-info v-if="showModal" url_redirect="{% url 'webadminradio:segmentos' %}">
+            <h3 slot="header">Información</h3>
+            <p slot="body">{{success}}</p>
+        </modal-info>
+    </div>
+    {% endif %}
+    <h4><b>Información del segmento</b></h4>
+    <form id="addSegmento" onsubmit="return validate()" action="{% url 'webadminradio:agregar_segmento' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="emisoraSelect">Emisora</label>
+        <select id="emisoraSelect" class="custom-select form-control" name="emisora" oninvalid="this.setCustomValidity('Ingrese una emisora válida')" required oninput="this.setCustomValidity('')">
+            <option selected disabled>Seleccione la emisora</option>
+            {% for emisora in emisoras %}
+                <option value="{{ emisora.id }}">{{ emisora.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="nombreInput">Nombre</label>
+        <input id="nombreInput" name="nombre" type="text" class="form-control" placeholder="Ingrese un nombre para el segmento" oninvalid="this.setCustomValidity('Ingrese un nombre para el segmento')" oninput="this.setCustomValidity('')" required>
+    </div>
+    <div class="form-group">
+        <label for="resenaInput">Reseña Publicitaria</label>
+        <input id="resenaInput" name="slogan" type="text" class="form-control" placeholder="Ejemplo: ¡El mejor show para la familia!" oninvalid="this.setCustomValidity('Ingrese una reseña Publicitaria')" oninput="this.setCustomValidity('')" required>
+    </div>
+    <div class="form-group">
+        <label for="descInput">Descripción</label>
+        <textarea class="form-control" id="descInput" name="descripcion" rows="3" placeholder="Ingrese una breve descripción del segmento" oninvalid="this.setCustomValidity('Ingrese una descripcion del segmento')" oninput="this.setCustomValidity('')" maxlength="250" required></textarea>
+    </div>
+    <label>Horarios</label>
+    <div class="form-group">
+        <div id="componente_horario">
+            <horario></horario>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="custom-file">
+            <label for="imgSegmento" class="custom-file-label">Imagen del Segmento</label>
+            <input type="file" name="imagen" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg" oninvalid="this.setCustomValidity('Ingrese una imagen para el segmento')" oninput="this.setCustomValidity('')" required>
+            <div class="img-holder">
+                <img id="preview" src="{{ segmento.imagen.url }}">
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg submit"><i class="fas fa-plus-circle"></i>Guardar Cambios</button>
+    </form>
+{% endblock %}
+{% block page_script %}
+    <script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/Horarios.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
+{% endblock %}
