@@ -170,3 +170,14 @@ def modificar_segmento(request, id_segmento):
         'emisoras': list_emisoras
     }
     return render(request, 'webAdminRadio/editar_segmento.html', context)
+
+@login_required
+def modificar_emisora(request, id_emisora):
+    emisora = Emisora.objects.get(id=id_emisora)
+    if request.POST:
+        print("Aquí va el form")
+    context = {
+        'title': 'Editar Emisora',
+        'emisora': emisora
+        }
+    return render(request, 'webAdminRadio/modificar_emisora.html', context)

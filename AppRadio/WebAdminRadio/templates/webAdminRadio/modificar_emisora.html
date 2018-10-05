@@ -1,7 +1,152 @@
 {% extends 'webAdminRadio/base_site.html' %}
 {% load static from staticfiles %}
-
+{% block page_style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/agregar_segmento.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/componentes/modal_info.css' %}">
+{% endblock %}
 {% block content %}
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
+    {% if error %}
+        <div id="componente_modal_info">
+            <modal-info v-if="showModal" url_redirect="">
+                <h3 slot="header">Error</h3>
+                <div slot="body">
+                    <p>Existen algunos errores en los siguientes campos:</p>
+                    {% for campo,e in error.items %}
+                        <h5>{{campo}}</h5>
+                        {{e}}
+                    {% endfor %}
+                </div>
+            </modal-info>
+        </div>
+    {% endif %}
+    {% if success %}
+    <div id="componente_modal_info">
+            <modal-info v-if="showModal" url_redirect="{% url 'webadminradio:emisoras' %}">
+                <h3 slot="header">Información</h3>
+                <p slot="body">{{success}}</p>
+            </modal-info>
+    </div>
+    {% endif %}
+    <h4><b>Información de la emisora</b></h4>
+    <form id="addEmisora" onsubmit="return validate()" method="POST" action="{% url 'webadminradio:agregar_emisora' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Div de Nombre -->
+        <div class="form-group">
+            <label for="nombreInput">Nombre</label>
+            <input required name="nombre" id="nombreInput" type="text" class="form-control" value = "{{emisora.nombre}}" maxlength=150>
+        </div>
+
+        <!-- Div de frecuencia -->
+        <div class="form-group">
+            <label for="frecuenciaInput">Frecuencia o Dial</label>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <input required name="frecuencia" id="frecuenciaInput" type="text" class="form-control" value = "{{emisora.frecuencia_dial}}" pattern="[0-9]{2,3}\.[0-9]">
+                </div>
+                <div class="form-group col-md-2">
+                <select name="tipoFrecuencia" id="frecTipoInput" class="custom-select form-control">
+                    <option value="FM">FM</option>
+                    <option value="AM">AM</option>
+                </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Div de descripcion -->
+        <div class="form-group">
+            <label for="descInput">Descripción</label>
+            <textarea required class="form-control" name="descripcion" id="descInput" rows="3" value = "{{emisora.descripcion}}" maxlength=300></textarea>
+        </div>
+
+        <!-- Div de Streaming -->
+        <div class="form-group">
+            <label required for="streamingInput">URL de streaming</label>
+            <input required name="streaming" id="streamingInput" type="url" class="form-control" value = "{{emisora.url_streaming}}">
+        </div>
+
+        <!-- Div de telefono -->
+        <div class="form-group">
+            <label for="">Teléfono</label>
+            <div id="componente_telefono">
+                <telf></telf>
+            </div>
+        </div>
+
+        <!-- Div de Sitio Web -->
+        <div class="form-group">
+                <label for="webInput">Sitio Web (Opcional)</label>
+                <input name="sitioweb" id="webInput" type="url" class="form-control" value = "{{emisora.sitio_web}}">
+        </div>
+
+        <!-- Div de imagen -->
+        <div class="form-group">
+            <div class="custom-file">
+                <label for="imgSegmento" class="custom-file-label"></label>
+                <input name="logo" type="file" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg">
+                <div class="img-holder">
+                    <img id="preview" src="{{ emisora.logotipo.url }}">
+                </div>
+            </div>
+        </div>
+
+        <!-- Div de direccion -->
+        <div class="form-group">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="direccionInput">Dirección</label>
+                    <input required name="direccion" id="direccionInput" type="text" class="form-control" value="{{emisora.direccion}}">
+                </div>
+                <div class="form-group col-md-2">
+                 <label>Provincia</label>
+                 <select required name="provincia" class="custom-select form-control">
+                     <option disabled selected value="">Provincia</option>
+                     <option value="Azuay" selected="selected">Azuay</option>
+                     <option value="Cañar">Cañar</option>
+                     <option value="Loja">Loja</option>
+                     <option value="Carchi">Carchi</option>
+                     <option value="Imbabura">Imbabura</option>
+                     <option value="Pichincha">Pichincha</option>
+                     <option value="Cotopaxi">Cotopaxi</option>
+                     <option value="Tungurahua">Tungurahua</option>
+                     <option value="Bolívar">Bolívar</option>
+                     <option value="Chimborazo">Chimborazo</option>
+                     <option value="Sto. Domingo de los Tsachilas">Sto. Domingo de los Tsachilas</option>
+                     <option value="Esmeraldas">Esmeraldas</option>
+                     <option value="Manabí">Manabí</option>
+                     <option value="Guayas">Guayas</option>
+                     <option value="Los Ríos">Los Ríos</option>
+                     <option value="El Oro">El Oro</option>
+                     <option value="Santa Elena">Santa Elena</option>
+                     <option value="Sucumbíos">Sucumbíos</option>
+                     <option value="Napo">Napo</option>
+                     <option value="Pastaza">Pastaza</option>
+                     <option value="Orellana">Orellana</option>
+                     <option value="Morona Santiago">Morona Santiago</option>
+                     <option value="Zamora Chinchipe">Zamora Chinchipe</option>
+                     <option value="Galápagos">Galápagos</option>
+                 </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label>Ciudad</label>
+                    <input required name="ciudad" type="text" class="form-control" placeholder="Ciudad" pattern="([A-Za-z]|\s)+">
+                </div>
+            </div>
+        </div>
+
+        <!-- Div de Redes Sociales-->
+        <div class="form-group">
+            <label for="">Redes Sociales (Opcional)</label>
+            <div id="componente_redsocial">
+                <redsocial></redsocial>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg submit"><i class="fas fa-plus-circle"></i>Guardar cambios</button>
+    </form>
+{% endblock %}
+{% block page_script %}
+<script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>
+<script src="{% static 'webAdminRadio/js/componentes/TelefonoComponent.js' %}"></script>
+<script src="{% static 'webAdminRadio/js/componentes/RedSocialComponent.js' %}"></script>
+<script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
 {% endblock %}
