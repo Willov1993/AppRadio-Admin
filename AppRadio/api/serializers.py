@@ -9,10 +9,8 @@ class SegmentoSerializer(serializers.ModelSerializer):
             'nombre',
             'slogan',
             'descripcion',
-            'idEmsiora',
-            'imagen',
-
-
+            'idEmisora',
+            'imagen'
         )
         model = models.Segmento
 
@@ -20,3 +18,9 @@ class EmisoraSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = models.Emisora
+
+class SegmentoSerializerFull(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Segmento
+        fields = ('id', 'nombre', 'imagen')

@@ -11,8 +11,8 @@ def home(request):
 
 @login_required
 def segmentos(request):
-    list_segmentos = Segmento.objects.all()
-    context = {'title': 'Segmentos', 'segmentos': list_segmentos}
+    list_emisoras = Emisora.objects.all()
+    context = {'title': 'Segmentos', 'emisoras': list_emisoras}
     return render(request, 'webAdminRadio/segmentos.html', context)
 
 @login_required
@@ -155,10 +155,6 @@ def ver_segmento(request, id_segmento):
     return render(request, 'webAdminRadio/ver_segmento.html', context)
 
 @login_required
-def modificar_emisora(request):
-    return render(request, 'webAdminRadio/modificar_emisora.html')
-
-@login_required
 def modificar_segmento(request, id_segmento):
     segmento = Segmento.objects.get(id=id_segmento)
     list_emisoras = Emisora.objects.all()
@@ -181,3 +177,17 @@ def modificar_emisora(request, id_emisora):
         'emisora': emisora
         }
     return render(request, 'webAdminRadio/modificar_emisora.html', context)
+
+@login_required
+def locutores(request):
+    context = {'title': 'Locutores'}
+    return render(request, 'webAdminRadio/locutores.html', context)
+
+@login_required
+def agregar_locutor(request):
+    list_segmentos = Segmento.objects.all()
+    context = {
+        'title': 'Agregar Locutores',
+        'segmentos': list_segmentos
+    }
+    return render(request, 'webAdminRadio/agregar_locutor.html', context)

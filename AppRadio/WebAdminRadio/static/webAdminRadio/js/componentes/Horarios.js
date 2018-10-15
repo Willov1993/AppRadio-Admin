@@ -35,6 +35,8 @@ const Horario = {
                     <option value="Miércoles">Miércoles</option>
                     <option value="Jueves">Jueves</option>
                     <option value="Viernes">Viernes</option>
+                    <option value="Sabado">Sábado</option>
+                    <option value="Domingo">Domingo</option>
                 </select>
             </div>
             <div class="form-group col-md-3">
