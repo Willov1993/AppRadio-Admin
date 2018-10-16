@@ -1,5 +1,5 @@
 from django import forms
-from .models import Segmento
+from .models import Segmento, Horario
 
 # field_name_mapping es el diccionario con los names que estarán en los forms,
 # que no deben ser iguales a los campos de los modelos
@@ -40,3 +40,20 @@ class SegmentoForm(forms.ModelForm):
         }
         field_name = field_name_mapping.get(field_name, field_name)
         return super(SegmentoForm, self).add_prefix(field_name)
+
+class HorarioForm(forms.ModelForm):
+    class Meta:
+        model = Horario
+        fields = [
+            'dia',
+            'fecha_inicio',
+            'fecha_fin'
+        ]
+    
+    def add_prefix(self, field_name):
+        field_name_mapping = {
+            'fecha_inicio': 'inicio',
+            'fecha_fin': 'fin'
+        }
+        field_name = field_name_mapping.get(field_name, field_name)
+        return super(HorarioForm, self).add_prefix(field_name)

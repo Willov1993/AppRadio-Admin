@@ -32,17 +32,19 @@ def agregar_segmento(request):
             # Iterar por todos los horarios
             for i in range(len(request.POST.getlist('dia'))):
                 # Creación del horario
-                Horario.objects.create(
-                    dia=request.POST.getlist('dia')[i],
-                    fecha_inicio=request.POST.getlist('inicio')[i],
-                    fecha_fin=request.POST.getlist('fin')[i]
-                )
-                # Enlazar segmento con horario
-                segmento_horario.objects.create(
-                    idSegmento=Segmento.objects.order_by('-id')[0],
-                    idHorario=Horario.objects.order_by('-id')[0]
-                )
-            context['success'] = '¡El registro del segmento se ha sido creado con éxito!'
+                horario_form = HorarioForm(request.POST)
+                if horario_form.is_valid():
+                    horario_form.save()
+                    # Enlazar segmento con horario
+                    segmento_horario.objects.create(
+                        idSegmento=Segmento.objects.order_by('-id')[0],
+                        idHorario=Horario.objects.order_by('-id')[0]
+                    )
+                else:
+                    context['error'] = horario_form.errors
+                    break
+            if 'error' not in context:
+                context['success'] = '¡El registro del segmento se ha sido creado con éxito!'
         else:
             context['error'] = segmento_form.errors
         return render(request, 'webAdminRadio/agregar_segmento.html', context)
@@ -185,9 +187,9 @@ def locutores(request):
 
 @login_required
 def agregar_locutor(request):
-    list_segmentos = Segmento.objects.all()
+    list_emisoras = Emisora.objects.all()
     context = {
         'title': 'Agregar Locutores',
-        'segmentos': list_segmentos
+        'emisoras': list_emisoras
     }
     return render(request, 'webAdminRadio/agregar_locutor.html', context)

@@ -30,6 +30,7 @@
     <h4><b>Información del segmento</b></h4>
     <form id="addSegmento" onsubmit="return validate()" action="{% url 'webadminradio:agregar_segmento' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+        <!-- Selección de Emisora -->
         <div class="form-group">
             <label for="emisoraSelect">Emisora</label>
             <select id="emisoraSelect" class="custom-select form-control" name="emisora" oninvalid="this.setCustomValidity('Ingrese una emisora válida')" required oninput="this.setCustomValidity('')">
@@ -39,24 +40,29 @@
                 {% endfor %}
             </select>
         </div>
+        <!-- Nombre del segmento -->
         <div class="form-group">
             <label for="nombreInput">Nombre</label>
             <input id="nombreInput" name="nombre" type="text" class="form-control" placeholder="Ingrese un nombre para el segmento" oninvalid="this.setCustomValidity('Ingrese un nombre para el segmento')" oninput="this.setCustomValidity('')" required>
         </div>
+        <!-- Slogan -->
         <div class="form-group">
             <label for="resenaInput">Reseña Publicitaria</label>
             <input id="resenaInput" name="slogan" type="text" class="form-control" placeholder="Ejemplo: ¡El mejor show para la familia!" oninvalid="this.setCustomValidity('Ingrese una reseña Publicitaria')" oninput="this.setCustomValidity('')" required>
         </div>
+        <!-- Descripción del segmento -->
         <div class="form-group">
             <label for="descInput">Descripción</label>
             <textarea class="form-control" id="descInput" name="descripcion" rows="3" placeholder="Ingrese una breve descripción del segmento" oninvalid="this.setCustomValidity('Ingrese una descripcion del segmento')" oninput="this.setCustomValidity('')" maxlength="250" required></textarea>
         </div>
+        <!-- Selección de Horarios -->
         <label>Horarios</label>
         <div class="form-group">
             <div id="componente_horario">
                 <horario></horario>
             </div>
         </div>
+        <!-- Imange del segmento -->
         <div class="form-group">
             <div class="custom-file">
                 <label for="imgSegmento" class="custom-file-label">Imagen del Segmento</label>
