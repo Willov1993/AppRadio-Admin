@@ -1,7 +1,7 @@
 $("#emisoraSelect").change(function () {
     var id_emisora = $("#emisoraSelect option:selected").val();
     getSegmentos(id_emisora);
-});e
+});
 
 function getSegmentos(emisora) {
     $('#data_table').DataTable({
@@ -32,7 +32,11 @@ function getSegmentos(emisora) {
             }},
             { width: 250, targets: 2},
             { width: 250, targets: 3, render: function(data) {
-                return "hola :3"
+                html = ``;
+                for (var key in data){
+                    html += data[key].dia + " : " + data[key].fecha_inicio + " - " + data[key].fecha_fin + "<br>";
+                }
+                return html;
             }},
             { width: 150, className: "text-center", targets: 4, render: function(data){
                 return `<a href="/webadmin/segmentos/` + data + `" class="btn btn-primary btn-sm" role="button"><i class="fas fa-eye"></i></a>
