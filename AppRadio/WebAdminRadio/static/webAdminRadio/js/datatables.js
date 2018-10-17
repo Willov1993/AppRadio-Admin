@@ -19,16 +19,27 @@ function getSegmentos(emisora) {
             },
         },
         "columns": [
-            {"data": "id"},
-            {"data": "imagen"},
-            {"data": "nombre"}
+            { data: "id"},
+            { data: "imagen"},
+            { data: "nombre"},
+            { data: "horarios"},
+            { data: "id"}
         ],
         columnDefs: [
             { width: 10, targets: 0},
             { width: 200, targets: 1, render: function(data) {
                 return '<img src="' + data + '" width="100%" >';
             }},
-            { width: 150, targets: 5},
+            { width: 250, targets: 2},
+            { width: 250, targets: 3, render: function(data) {
+                return "hola :3"
+            }},
+            { width: 150, className: "text-center", targets: 4, render: function(data){
+                return `<a href="/webadmin/segmentos/` + data + `" class="btn btn-primary btn-sm" role="button"><i class="fas fa-eye"></i></a>
+                        <a href="/webadmin/segmentos/` + data + `/editar" class="btn btn-success btn-sm" role="button"><i class="fas fa-pen"></i></a>
+                        <a href="#" class="btn btn-danger btn-sm" role="button"><i class="fas fa-times"></i></a>
+                        `
+            }},
         ],
     });
 }

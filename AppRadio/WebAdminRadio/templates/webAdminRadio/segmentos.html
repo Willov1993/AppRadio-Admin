@@ -26,39 +26,11 @@
                     <th>ID</th>
                     <th>Logo</th>
                     <th>Nombre</th>
-                    <th>Emisora</th>
                     <th>Horario</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <!--
-                {% for segmento in segmentos %}
-                    <tr>
-                        <th>{{ segmento.id }}</th>
-                        <th><img src="{{ segmento.imagen.url }}" width="100%"></th>
-                        <th>{{ segmento.nombre }}</th>
-                        <th>{{ segmento.idEmisora.nombre }}</th>
-                        <th>
-                            {% get_horarios segmento as horarios %}
-                            {% for horario in horarios %}
-                                <p>{{ horario.idHorario }}</p>
-                            {% endfor %}
-                        </th>
-                        <th>
-                            <a href="{% url 'webadminradio:ver_segmento' segmento.id %}" class="btn btn-primary btn-sm" role="button"><i class="fas fa-eye"></i></a>
-                            <a href="{% url 'webadminradio:editar_segmento' segmento.id %}" class="btn btn-success btn-sm" role="button"><i class="fas fa-pen"></i></a>
-                            <a href="#" class="btn btn-danger btn-sm" role="button"><i class="fas fa-times"></i></a>
-                        </th>
-                    </tr>
-                {% endfor %}-->
-                <tr>
-                <th>
-                    <a href="#" class="btn btn-primary btn-sm" role="button"><i class="fas fa-eye"></i></a>
-                    <a href="#" class="btn btn-success btn-sm" role="button"><i class="fas fa-pen"></i></a>
-                    <a href="#" class="btn btn-danger btn-sm" role="button"><i class="fas fa-times"></i></a>
-                </th>
-                </tr>
             </tbody>
         </table>
     </div>

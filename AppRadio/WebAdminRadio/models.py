@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils.text import slugify
+from django.core import serializers
 
 
 def emisora_file_location(instance, filename):
@@ -52,6 +53,10 @@ class Segmento(models.Model):
     idEmisora = models.ForeignKey(Emisora, on_delete=models.DO_NOTHING)
     imagen = models.ImageField(upload_to=segmento_file_location)
     activo = models.CharField(max_length=1, default='A')
+
+    # Esta función retorna todos los horarios del segmento
+    def get_horarios(self):
+        return Horario.objects.filter(pk__in=segmento_horario.objects.filter(idSegmento=self.pk)).values('dia', 'fecha_inicio', 'fecha_fin')
 
     def __str__(self):
         return self.nombre

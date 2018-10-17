@@ -188,6 +188,8 @@ def locutores(request):
 @login_required
 def agregar_locutor(request):
     list_emisoras = Emisora.objects.all()
+    horarios = Horario.objects.filter(pk__in=segmento_horario.objects.filter(idSegmento=2))
+    print(horarios)
     context = {
         'title': 'Agregar Locutores',
         'emisoras': list_emisoras

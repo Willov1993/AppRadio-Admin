@@ -20,7 +20,9 @@ class EmisoraSerializer(serializers.ModelSerializer):
         model = models.Emisora
 
 class SegmentoSerializerFull(serializers.ModelSerializer):
+    horarios = serializers.ReadOnlyField(source="get_horarios")
+    print(horarios)
 
     class Meta:
         model = models.Segmento
-        fields = ('id', 'nombre', 'imagen')
+        fields = ('id', 'nombre', 'imagen', 'horarios')
