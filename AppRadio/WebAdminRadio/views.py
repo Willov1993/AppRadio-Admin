@@ -28,12 +28,18 @@ def agregar_segmento(request):
     if request.POST:
         segmento_form = SegmentoForm(request.POST, request.FILES)
         if segmento_form.is_valid():
-            segmento_form.save()
             # Iterar por todos los horarios
             for i in range(len(request.POST.getlist('dia'))):
+                print(request.POST.getlist('inicio')[i])
+                print(request.POST.getlist('fin')[i])
                 # Creación del horario
-                horario_form = HorarioForm(request.POST)
+                horario_form = HorarioForm({
+                    'dia': request.POST.getlist('dia')[i],
+                    'inicio': request.POST.getlist('inicio')[i],
+                    'fin': request.POST.getlist('fin')[i]
+                })
                 if horario_form.is_valid():
+                    segmento_form.save()
                     horario_form.save()
                     # Enlazar segmento con horario
                     segmento_horario.objects.create(
