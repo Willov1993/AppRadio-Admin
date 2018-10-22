@@ -4,6 +4,7 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils.text import slugify
 from django.core import serializers
+from accounts.models import Usuario
 
 
 def emisora_file_location(instance, filename):
@@ -20,11 +21,11 @@ def upload_location(instance, filename):
     #Esta función guarda las imágenes de los usuarios en media_cdn/<id_usuario>
     return "usuarios/%s/%s" %(instance.id, filename)
 
-class Usuario(models.Model):
+"""class Usuario(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     fecha_nac = models.DateField()
     imagen = models.ImageField(upload_to=upload_location, blank=True)
-    rol = models.CharField(max_length=1)
+    rol = models.CharField(max_length=1)"""
 
 
 class Emisora(models.Model):

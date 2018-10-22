@@ -1,5 +1,5 @@
 from django import forms
-from .models import Segmento, Horario
+from .models import Segmento, Horario, Publicidad, Frecuencia
 
 # field_name_mapping es el diccionario con los names que estarán en los forms,
 # que no deben ser iguales a los campos de los modelos
@@ -22,6 +22,36 @@ class RedSocialForm(forms.Form):
     nombre = forms.CharField(max_length=25, required=False)
     link = forms.URLField(max_length=50, required=False)
 
+class PublicidadForm(forms.ModelForm):
+    class Meta:
+        model = Publicidad
+        fields = [
+            'titulo',
+            'cliente',
+            'descripcion',
+            'url',
+            'imagen'
+            ]
+
+class FrecuenciaForm(forms.ModelForm):
+    class Meta:
+        model = Frecuencia
+        fields = [
+            'tipo',
+            'dia_semana',
+            'hora_inicio',
+            'hora_fin'
+            ]
+
+    def add_prefix(self, field_name):
+        field_name_mapping = {
+            'fecha_inicio': 'inicio',
+            'fecha_fin': 'fin'
+        }
+        field_name = field_name_mapping.get(field_name, field_name)
+        return super(HorarioForm, self).add_prefix(field_name)
+
+
 class SegmentoForm(forms.ModelForm):
     class Meta:
         model = Segmento
@@ -32,6 +62,7 @@ class SegmentoForm(forms.ModelForm):
             'idEmisora',
             'imagen'
         ]
+
 
     # Esta función define el atributo 'name' con el valor del diccionario
     def add_prefix(self, field_name):
@@ -49,7 +80,7 @@ class HorarioForm(forms.ModelForm):
             'fecha_inicio',
             'fecha_fin'
         ]
-    
+
     def add_prefix(self, field_name):
         field_name_mapping = {
             'fecha_inicio': 'inicio',

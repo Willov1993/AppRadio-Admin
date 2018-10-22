@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["appradio.pythonanywhere.com", "127.0.0.1", "jsaverio.pythonanywhere.com"]
 
+AUTH_USER_MODEL = 'accounts.Usuario'
 
 # Application definition
 
@@ -38,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'rest_framework.authtoken',
     'rest_auth',
     'rest_auth.registration',
     'allauth',
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'WebAdminRadio',
     'api',
     'accounts',
+    'rest_framework.authtoken',
 ]
 
 

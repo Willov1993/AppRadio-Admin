@@ -1,0 +1,90 @@
+{% extends 'webAdminRadio/base_site.html' %}
+{% load static from staticfiles %}
+{% block page_style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/agregar_segmento.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/componentes/modal_info.css' %}">
+{% endblock %}
+{% block content %}
+    {% if error %}
+        <div id="componente_modal_info">
+            <modal-info v-if="showModal" url_redirect="">
+                <h3 slot="header">Error</h3>
+                <div slot="body">
+                    <p>Existen algunos errores en los siguientes campos:</p>
+                    {% for campo,e in error.items %}
+                        <h5>{{campo}}</h5>
+                        {{e}}
+                    {% endfor %}
+                </div>
+            </modal-info>
+        </div>
+    {% endif %}
+    {% if success %}
+    <div id="componente_modal_info">
+            <modal-info v-if="showModal" url_redirect="{% url 'webadminradio:emisoras' %}">
+                <h3 slot="header">Información</h3>
+                <p slot="body">{{success}}</p>
+            </modal-info>
+    </div>
+    {% endif %}
+    <h4><b>Información de Publicidad</b></h4>
+    <form id="addSegmento" method="POST" action="{% url 'webadminradio:agregar_publicidad' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Div de Título -->
+        <div class="form-group">
+            <label for="nombreInput">Título</label>
+            <input required name="titulo" id="nombreInput" type="text" class="form-control" placeholder="Ingrese el título de la publicidad" maxlength=150>
+        </div>
+
+        <!-- Div de url -->
+        <div class="form-group">
+            <label for="urlInput">URL de la publicidad</label>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <input required name="url" id="urlInput" type="text" class="form-control" placeholder="Ingrese el url de la publicidad">
+                </div>
+                <div class="form-group col-md-2">
+            </div>
+        </div>
+
+        <!-- Div de persona/empresa cliente -->
+        <div class="form-group">
+            <label for="descInput">Persona/Empresa Cliente</label>
+            <textarea required class="form-control" name="cliente" id="descInput" rows="3" placeholder="Ingrese el nombre de la persona o empresa cliente de la publicidad" maxlength=300></textarea>
+        </div>
+
+        <!-- Descripción -->
+        <div class="form-group">
+            <label for="descInput">Descripción</label>
+            <textarea class="form-control" id="descInput" name="descripcion" rows="3" placeholder="Ingrese una breve descripción de la publicidad" oninvalid="this.setCustomValidity('Ingrese una descripcion del segmento')" oninput="this.setCustomValidity('')" maxlength="250" required></textarea>
+        </div>
+
+        <!-- Selección de Horarios -->
+        <label>Horarios</label>
+        <div class="form-group">
+            <div id="componente_horario">
+                <horario></horario>
+            </div>
+        </div>
+
+        <!-- Div de imagen -->
+        <div class="form-group">
+            <div class="custom-file">
+                <label for="imgSegmento" class="custom-file-label">Logotipo</label>
+                <input name="logo" type="file" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg">
+                <div class="img-holder">
+                    <img id="preview" src="{% static 'webAdminRadio/images/placeholder.png' %}">
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg submit"><i class="fas fa-plus-circle"></i>Agregar Publicidad</button>
+    </form>
+{% endblock %}
+{% block page_script %}
+<script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>
+<script src="{% static 'webAdminRadio/js/componentes/TelefonoComponent.js' %}"></script>
+<script src="{% static 'webAdminRadio/js/componentes/RedSocialComponent.js' %}"></script>
+<script src="{% static 'webAdminRadio/js/componentes/Horarios.js' %}"></script>
+<script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
+{% endblock %}

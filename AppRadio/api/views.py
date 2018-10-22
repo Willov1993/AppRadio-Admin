@@ -10,6 +10,12 @@ from rest_auth.social_serializers import TwitterLoginSerializer
 
 from WebAdminRadio import models
 from . import serializers
+from rest_framework import mixins
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import AllowAny
 # Create your views here.
 
 
@@ -20,6 +26,16 @@ class ListSegmento(generics.ListCreateAPIView):
 class ListEmisora(generics.ListCreateAPIView):
     queryset = models.Emisora.objects.all()
     serializer_class = serializers.EmisoraSerializer
+
+class CreateUser(APIView,mixins.CreateModelMixin):
+    permission_classes = (AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = serializers.UsuarioSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter

@@ -22,6 +22,12 @@ def emisoras(request):
     return render(request, 'webAdminRadio/emisoras.html', context)
 
 @login_required
+def publicidad(request):
+    list_emisoras = Emisora.objects.all()
+    context = {'title': 'Publicidad', 'emisoras': list_emisoras}
+    return render(request, 'webAdminRadio/publicidad.html', context)
+
+@login_required
 def agregar_segmento(request):
     list_emisoras = Emisora.objects.all()
     context = {'title': 'Agregar Segmento', 'emisoras': list_emisoras}
@@ -148,6 +154,36 @@ def agregar_emisora(request):
     return render(request, 'webAdminRadio/agregar_emisora.html', {'title': 'Agregar Emisora'})
 
 @login_required
+def agregar_publicidad(request):
+    list_emisoras = Emisora.objects.all()
+    context = {'title': 'Agregar Publicidad', 'emisoras': list_emisoras}
+    if request.POST:
+        segmento_form = SegmentoForm(request.POST, request.FILES)
+        if segmento_form.is_valid():
+            segmento_form.save()
+            # Iterar por todos los horarios
+            for i in range(len(request.POST.getlist('dia'))):
+                # Creación del horario
+                horario_form = HorarioForm(request.POST)
+                if horario_form.is_valid():
+                    horario_form.save()
+                    # Enlazar segmento con horario
+                    segmento_horario.objects.create(
+                        idSegmento=Segmento.objects.order_by('-id')[0],
+                        idHorario=Horario.objects.order_by('-id')[0]
+                    )
+                else:
+                    context['error'] = horario_form.errors
+                    break
+            if 'error' not in context:
+                context['success'] = '¡El registro del segmento se ha sido creado con éxito!'
+        else:
+            context['error'] = segmento_form.errors
+        return render(request, 'webAdminRadio/agregar_segmento.html', context)
+    return render(request, 'webAdminRadio/agregar_segmento.html', context)
+
+
+@login_required
 def ver_segmento(request, id_segmento):
     segmento = Segmento.objects.get(id=id_segmento)
     context = {
@@ -195,3 +231,4 @@ def agregar_locutor(request):
         'emisoras': list_emisoras
     }
     return render(request, 'webAdminRadio/agregar_locutor.html', context)
+
