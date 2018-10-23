@@ -1,6 +1,7 @@
 # api/serializers.py
 from rest_framework import serializers
 from WebAdminRadio import models
+from accounts.models import Usuario
 
 
 class SegmentoSerializer(serializers.ModelSerializer):
@@ -29,8 +30,28 @@ class SegmentoSerializerFull(serializers.ModelSerializer):
     class Meta:
         model = models.Segmento
         fields = ('id', 'nombre', 'imagen', 'horarios')
-"""
-class UsuarioSerializerNoVale(serializers.ModelSerializer):
+
+
+
+class UsuarioSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+
+    def create(self, validated_data):
+
+        usuario = Usuario.objects.create(
+            username=validated_data['username'],
+            email = validated_data['email'],
+            first_name = validated_data['first_name'],
+            last_name = validated_data['last_name'],
+            fecha_nac = validated_data['fecha_nac'],
+            rol = validated_data['rol'],
+        )
+        usuario.set_password(validated_data['password'])
+        usuario.save()
+
+        return usuario
+
     class Meta:
         fields = (
             'username',
@@ -41,27 +62,4 @@ class UsuarioSerializerNoVale(serializers.ModelSerializer):
             'fecha_nac',
             'rol',
         )
-        model = models.Usuario
-
-
-class UserSerializer(serializers.Serializer):
-
-    class Meta:
-        fields = (
-            'username',
-            'email',
-            'first_name',
-            'last_name',
-            'password',
-        )
-        model = models.User
-
-class UsuarioSerializer(UserSerializer):
-
-    class Meta(UserSerializer.Meta):
-        fields = (
-            'fecha_nac',
-            'rol',
-        )
-        model = models.Usuario
-"""
+        model = Usuario

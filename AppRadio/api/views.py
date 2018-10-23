@@ -9,6 +9,7 @@ from rest_auth.social_serializers import TwitterLoginSerializer
 
 
 from WebAdminRadio import models
+from accounts.models import Usuario
 from . import serializers
 from rest_framework import mixins
 from django.http import Http404
@@ -27,7 +28,11 @@ class ListEmisora(generics.ListCreateAPIView):
     queryset = models.Emisora.objects.all()
     serializer_class = serializers.EmisoraSerializer
 
-class CreateUser(APIView,mixins.CreateModelMixin):
+class CreateUser(generics.CreateAPIView):
+    queryset = Usuario.objects.all()
+    serializer_class = serializers.UsuarioSerializer
+
+class CreateUserA(APIView,mixins.CreateModelMixin):
     permission_classes = (AllowAny,)
 
     def post(self, request, format=None):
