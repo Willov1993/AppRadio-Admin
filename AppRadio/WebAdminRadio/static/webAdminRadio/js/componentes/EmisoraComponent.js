@@ -2,7 +2,7 @@ const Segmento = {
     data() {
         return{
             emisoras: [],
-            segmentos:[],
+            segmentos: [],
         }
     },
     methods: {
@@ -13,7 +13,19 @@ const Segmento = {
             this.segmentos.splice(indice, 1)
         },
         fillSegmentos(e,indice){
-            this.segmentos[indice].nombre = e.target.value
+            var app = this;
+            //this.segmentos[indice].nombre = e.target.value
+            fetch('/api/' + e.target.value + '/segmentos')
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(myJson){
+                console.log("Json: " + myJson);
+                for (var index in myJson){
+                    app.segmentos.push({'value': myJson[index].id, 'name': myJson[index].nombre});
+                }
+                console.log("segmentos:" + app.segmentos);
+            })
         }
     },
     mounted(){
@@ -32,6 +44,7 @@ const Segmento = {
                 <div class="form-group col-md-2">
                     <select id="segmentoSelect" v-bind:name="segmento" class="custom-select form-control">
                         <option disable selected value="">--</option>
+                        <option v-for="seg in $parent.segmentos" :value="seg.id">{{seg.nombre}}</option>
                     </select>
                 </div>
                 <div v-if="index != 0" class="form-group col-md-2">
@@ -61,12 +74,9 @@ var contenedorSegmentos = new Vue({
             return response.json();
         })
         .then(function(myJson){
-            console.log(myJson);
-            console.log("This prop:"+app.emisoras.length);
             for (var index in myJson){
                app.emisoras.push(myJson[index]);
             }
-            console.log(app.emisoras);
         })
     }
 })
