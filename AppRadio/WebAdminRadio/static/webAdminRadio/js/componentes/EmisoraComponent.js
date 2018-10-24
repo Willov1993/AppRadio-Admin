@@ -1,30 +1,54 @@
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
 const Segmento = {
     data() {
         return{
-            emisoras: [],
-            segmentos: [],
+            segmentosLocutor: [],
         }
     },
     methods: {
         agregarSegmento(){
-            this.segmentos.push({'value': null, 'name':null})
+            this.segmentosLocutor.push({'value': null, 'name':null})
         },
         eliminarSegmento(indice){
-            this.segmentos.splice(indice, 1)
+            this.segmentosLocutor.splice(indice, 1)
         },
         fillSegmentos(e,indice){
             var app = this;
+            app.$parent.segmentos= []
             //this.segmentos[indice].nombre = e.target.value
-            fetch('/api/' + e.target.value + '/segmentos')
+            fetch('/api/' + e.target.value + '/segmentos',{
+                method: "get",
+                credentials: "same-origin",
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken"),
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"  
+                }
+            })
             .then(function(response){
                 return response.json();
             })
             .then(function(myJson){
                 console.log("Json: " + myJson);
                 for (var index in myJson){
-                    app.segmentos.push({'value': myJson[index].id, 'name': myJson[index].nombre});
+                    app.$parent.segmentos.push(myJson[index]);
                 }
-                console.log("segmentos:" + app.segmentos);
+                console.log("segmentos:" + JSON.stringify(app.$parent.segmentos));
             })
         }
     },
@@ -33,7 +57,7 @@ const Segmento = {
     },
     template:/*html*/`
     <div>
-        <div v-for="(segmento, index) in segmentos" v-bind:key="index">
+        <div v-for="(segmento, index) in segmentosLocutor" v-bind:key="index">
             <label for="emisoraSelect">Seleccione la Emisora</label>
             <select id="emisoraSelect" class="custom-select form-control" name="emisora" oninvalid="this.setCustomValidity('Ingrese una emisora válida')" required oninput="this.setCustomValidity('')" @change="fillSegmentos($event,index)">
                 <option selected disabled>Seleccione la emisora</option>
@@ -43,7 +67,7 @@ const Segmento = {
             <div class="form-row">
                 <div class="form-group col-md-2">
                     <select id="segmentoSelect" v-bind:name="segmento" class="custom-select form-control">
-                        <option disable selected value="">--</option>
+                        <option selected disabled>Seleccione el segmento</option>
                         <option v-for="seg in $parent.segmentos" :value="seg.id">{{seg.nombre}}</option>
                     </select>
                 </div>
@@ -51,7 +75,7 @@ const Segmento = {
                     <button type="button" class="btn btn-primary" @click="eliminarSegmento(index)">Eliminar</button>
                 </div>
                 <div class="form-group col-md-2">
-                    <button id="btn_agregar" v-if="index == segmentos.length - 1" type="button" class="btn btn-primary" @click="agregarSegmento">Agregar otro segmento</button>
+                    <button id="btn_agregar" v-if="index == segmentosLocutor.length - 1" type="button" class="btn btn-primary" @click="agregarSegmento">Agregar otro segmento</button>
                 </div>
             </div>
         </div>
@@ -65,11 +89,20 @@ var contenedorSegmentos = new Vue({
         'segmento': Segmento
     },
     data: {
-        emisoras: []
+        emisoras: [],
+        segmentos: []
     },
     mounted: function () {
         var app= this;
-        fetch('/api/emisoras')
+        fetch('/api/emisoras',{
+            method: "get",
+            credentials: "same-origin",
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+                "Accept": "application/json",
+                "Content-Type": "application/json"  
+            }
+        })
         .then(function(response){
             return response.json();
         })
