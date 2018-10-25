@@ -30,10 +30,21 @@ class ListSegmento(generics.ListCreateAPIView):
 class ListSegmentosDiaActual(generics.ListAPIView):
     day= datetime.datetime.today().weekday()
     dia_actual=DIAS[day]
-    horariosDelDia= models.Horario.objects.filter(dia=dia_actual) 
+    horariosDelDia= models.Horario.objects.filter(dia=dia_actual)
     ids_segmentos= models.segmento_horario.objects.filter(idHorario__in=horariosDelDia).distinct()
-    queryset=  models.Segmento.objects.filter(pk__in=ids_segmentos.values('idSegmento')) 
+    queryset=  models.Segmento.objects.filter(pk__in=ids_segmentos.values('idSegmento'))
     serializer_class= serializers.SegmentoSerializerToday
+
+class ListSegmentosEmisoraDiaActual(generics.ListAPIView):
+    serializer_class= serializers.SegmentoSerializerToday
+
+    def get_queryset(self):
+        emisora = self.kwargs['id_emisora']
+        day= datetime.datetime.today().weekday()
+        dia_actual=DIAS[day]
+        horariosDelDia= models.Horario.objects.filter(dia=dia_actual)
+        ids_segmentos= models.segmento_horario.objects.filter(idHorario__in=horariosDelDia).distinct()
+        return models.Segmento.objects.filter(pk__in=ids_segmentos.values('idSegmento'),idEmisora=emisora)
 
 
 class ListEmisora(generics.ListCreateAPIView):
