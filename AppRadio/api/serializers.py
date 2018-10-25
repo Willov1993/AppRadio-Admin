@@ -31,7 +31,12 @@ class SegmentoSerializerFull(serializers.ModelSerializer):
         model = models.Segmento
         fields = ('id', 'nombre', 'imagen', 'horarios')
 
-
+class SegmentoSerializerToday(serializers.ModelSerializer):
+    horarios = serializers.ReadOnlyField(source="get_horario_dia_actual")
+    print(horarios)
+    class Meta:
+        model = models.Segmento
+        fields = ('id', 'nombre', 'imagen', 'horarios')
 
 class UsuarioSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
