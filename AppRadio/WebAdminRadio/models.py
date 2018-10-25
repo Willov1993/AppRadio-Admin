@@ -65,7 +65,7 @@ class Segmento(models.Model):
         day= datetime.now().weekday()
         dia_actual= DIAS[day]
         horarios= Horario.objects.filter(pk__in=segmento_horario.objects.filter(idSegmento=self.pk))
-        return horarios.filter(dia=dia_actual).values('dia', 'fecha_inicio', 'fecha_fin')
+        return horarios.filter(dia=dia_actual).values('dia', 'fecha_inicio', 'fecha_fin').order_by('fecha_inicio')
 
     def __str__(self):
         return self.nombre
