@@ -13,6 +13,9 @@ class Usuario(AbstractUser):
     imagen = models.ImageField(upload_to=upload_location, blank=True,null=True)
     rol = models.CharField(max_length=1,blank=True,null=True)
 
+    def __str__(self):
+        return self.first_name + " " + self.last_name
+
 class Prueba(models.Model):
     #idHorario = models.AutoField(primary_key = True)
     dia = models.CharField(max_length=9)

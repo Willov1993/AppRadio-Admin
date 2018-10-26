@@ -21,10 +21,10 @@
     {% endif %}
     {% if success %}
     <div id="componente_modal_info">
-            <modal-info v-if="showModal" url_redirect="{% url 'webadminradio:segmentos' %}">
-                <h3 slot="header">Información</h3>
-                <p slot="body">{{success}}</p>
-            </modal-info>
+        <modal-info v-if="showModal" url_redirect="{% url 'webadminradio:segmentos' %}">
+            <h3 slot="header">Información</h3>
+            <p slot="body">{{success}}</p>
+        </modal-info>
     </div>
     {% endif %}
     <h4><b>Información del segmento</b></h4>

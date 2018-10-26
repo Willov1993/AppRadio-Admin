@@ -1,5 +1,5 @@
-$("#emisoraSelect").change(function () {
-    var id_emisora = $("#emisoraSelect option:selected").val();
+$("#segmentoSelect").change(function () {
+    var id_emisora = $("#segmentoSelect option:selected").val();
     getSegmentos(id_emisora);
 });
 
@@ -8,7 +8,7 @@ function getSegmentos(emisora) {
         "destroy": true,
         "ajax": {
             "method": "GET",
-            "url": "/api/"+ emisora +"/segmentos",
+            "url": "/api/emisora/"+ emisora +"/segmentos",
             "dataSrc": "",
             "error": function(xhr, status, error) {
                 console.log("readyState: " + xhr.readyState);

@@ -55,3 +55,6 @@ class ListEmisoraSegmento(generics.ListAPIView):
     def get_queryset(self):
         emisora = self.kwargs['id_emisora']
         return models.Segmento.objects.filter(idEmisora=emisora)
+
+class ListLocutores(generics.ListAPIView):
+    serializer_class = serializers.UsuarioSerializer

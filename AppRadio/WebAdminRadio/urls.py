@@ -16,6 +16,5 @@ urlpatterns = [
     path('segmentos/<int:id_segmento>/editar', views.modificar_segmento, name="editar_segmento"), # Muestra la pantalla para modificar un segmento
     path('locutores', views.locutores, name='locutores'), # Página principal donde se muestran los locutores.
     path('locutores/agregar', views.agregar_locutor, name="agregar_locutor"), # Página para agregar locutores.
-
-
+    path('locutores/<int:id_locutor>', views.ver_locutor, name="ver_locutor")
 ]

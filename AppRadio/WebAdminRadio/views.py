@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
+from accounts.models import Usuario
 
 # Create your views here.
 
@@ -224,17 +225,52 @@ def modificar_emisora(request, id_emisora):
 
 @login_required
 def locutores(request):
-    context = {'title': 'Locutores'}
+    list_segmentos = Segmento.objects.all()
+    context = {
+        'title': 'Locutores',
+        'segmentos': list_segmentos
+    }
     return render(request, 'webAdminRadio/locutores.html', context)
 
 @login_required
 def agregar_locutor(request):
     list_emisoras = Emisora.objects.all()
-    horarios = Horario.objects.filter(pk__in=segmento_horario.objects.filter(idSegmento=2))
-    print(horarios)
-    context = {
-        'title': 'Agregar Locutores',
-        'emisoras': list_emisoras
-    }
+    context = {'title': 'Agregar Locutores', 'emisoras': list_emisoras}
+    if request.POST:
+        usuario_form = UsuarioForm(request.POST, request.FILES, {'rol':'1'})
+        telf = request.POST['telefono']
+        telefono_form = TelefonoForm({'telefono': telf})
+        if (usuario_form.is_valid() and telefono_form.is_valid()):
+            usuario_form.save()
+            new_locutor = Usuario.objects.order_by('-id')[0]
+            Telefono_Usuario.objects.create(
+                idUsuario=new_locutor,
+                nro_telefono=telf
+            )
+            print(request.POST)
+            for s in request.POST.getlist('segmento'):
+                segmento_usuario.objects.create(
+                    idUsuario=new_locutor,
+                    idSegmento=Segmento.objects.get(id=s)
+                )
+        else:
+            if telefono_form.has_error:
+                context['error'] = telefono_form.errors
+            if usuario_form.has_error:
+                context['error'] = usuario_form.errors
+            return render(request, 'webAdminRadio/agregar_locutor.html', context)
+        context['success'] = '¡El registro del locutor se ha sido creado con éxito!'
     return render(request, 'webAdminRadio/agregar_locutor.html', context)
 
+@login_required
+def ver_locutor(request, id_locutor):
+    segmentos = segmento_usuario.objects.filter(idUsuario=id_locutor)
+    locutor = Usuario.objects.get(id=id_locutor)
+    telefono = Telefono_Usuario.objects.get(idUsuario=locutor)
+    context = {
+        'title': "Informacion del locutor",
+        'locutor': locutor,
+        'telefono': telefono,
+        'segmentos': segmentos
+    }
+    return render(request, 'webAdminRadio/ver_locutor.html', context)
