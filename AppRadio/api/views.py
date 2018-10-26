@@ -17,12 +17,35 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
+
+import datetime
 # Create your views here.
 
+DIAS=["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"]
 
 class ListSegmento(generics.ListCreateAPIView):
     queryset = models.Segmento.objects.all()
     serializer_class = serializers.SegmentoSerializer
+
+class ListSegmentosDiaActual(generics.ListAPIView):
+    day= datetime.datetime.today().weekday()
+    dia_actual=DIAS[day]
+    horariosDelDia= models.Horario.objects.filter(dia=dia_actual)
+    ids_segmentos= models.segmento_horario.objects.filter(idHorario__in=horariosDelDia).distinct()
+    queryset=  models.Segmento.objects.filter(pk__in=ids_segmentos.values('idSegmento'))
+    serializer_class= serializers.SegmentoSerializerToday
+
+class ListSegmentosEmisoraDiaActual(generics.ListAPIView):
+    serializer_class= serializers.SegmentoSerializerToday
+
+    def get_queryset(self):
+        emisora = self.kwargs['id_emisora']
+        day= datetime.datetime.today().weekday()
+        dia_actual=DIAS[day]
+        horariosDelDia= models.Horario.objects.filter(dia=dia_actual)
+        ids_segmentos= models.segmento_horario.objects.filter(idHorario__in=horariosDelDia).distinct()
+        return models.Segmento.objects.filter(pk__in=ids_segmentos.values('idSegmento'),idEmisora=emisora)
+
 
 class ListEmisora(generics.ListCreateAPIView):
     queryset = models.Emisora.objects.all()

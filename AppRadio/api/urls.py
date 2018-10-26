@@ -8,6 +8,8 @@ urlpatterns = [
     path('segmentos/', views.ListSegmento.as_view()),
     path('emisora/<int:id_emisora>/segmentos', views.ListEmisoraSegmento.as_view(), name="list_emisora_segmento"),
     path('segmento/<int:id_segmento/locutores', views.ListLocutores.as_view(), name="list_segmento_locutor"),
+    path('segmentos/today',views.ListSegmentosDiaActual.as_view()),
+    path('emisoras/<int:id_emisora>/segmentos/today',views.ListSegmentosEmisoraDiaActual.as_view()),
     path('rest-auth/', include('rest_auth.urls')),
     #path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('rest-auth/facebook/', FacebookLogin.as_view(), name='fb_login'),

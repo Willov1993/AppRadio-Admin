@@ -5,7 +5,9 @@ from django.dispatch import receiver
 from django.utils.text import slugify
 from django.core import serializers
 from accounts.models import Usuario
+from datetime import datetime
 
+DIAS=["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"]
 
 def emisora_file_location(instance, filename):
     #Esta función guarda las imagenes de las emisoras en la ruta:
@@ -58,6 +60,12 @@ class Segmento(models.Model):
     # Esta función retorna todos los horarios del segmento
     def get_horarios(self):
         return Horario.objects.filter(pk__in=segmento_horario.objects.filter(idSegmento=self.pk)).values('dia', 'fecha_inicio', 'fecha_fin')
+
+    def get_horario_dia_actual(self):
+        day= datetime.now().weekday()
+        dia_actual= DIAS[day]
+        horarios= Horario.objects.filter(pk__in=segmento_horario.objects.filter(idSegmento=self.pk))
+        return horarios.filter(dia=dia_actual).values('dia', 'fecha_inicio', 'fecha_fin').order_by('fecha_inicio')
 
     def __str__(self):
         return self.nombre
