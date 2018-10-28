@@ -12,10 +12,10 @@
     <a href="{% url 'webadminradio:agregar_locutor' %}" class="btn btn-primary btn-md ml-auto action" role="button"><i class="fas fa-plus-circle"></i>Agregar Locutor</i></a>
 {% endblock %}
 {% block content %}
-    <label for="emisoraSelect">Seleccione un segmento</label>
+    <label for="segmentoSelect">Seleccione un segmento</label>
     <select name="dia" id="segmentoSelect" class="custom-select">
         <option selected disabled>--</option>
-        {% for segmento in segementos %}
+        {% for segmento in segmentos %}
             <option value="{{ segmento.id }}">{{ segmento.nombre }}</option>
         {% endfor %}
     </select>

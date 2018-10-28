@@ -1,14 +1,14 @@
 $("#segmentoSelect").change(function () {
-    var id_emisora = $("#segmentoSelect option:selected").val();
-    getSegmentos(id_emisora);
+    var id_segmento = $("#segmentoSelect option:selected").val();
+    getSegmentos(id_segmento);
 });
 
-function getSegmentos(emisora) {
+function getSegmentos(segmento) {
     $('#data_table').DataTable({
         "destroy": true,
         "ajax": {
             "method": "GET",
-            "url": "/api/emisora/"+ emisora +"/segmentos",
+            "url": "/api/segmento/"+ segmento +"/locutores",
             "dataSrc": "",
             "error": function(xhr, status, error) {
                 console.log("readyState: " + xhr.readyState);
@@ -21,8 +21,10 @@ function getSegmentos(emisora) {
         "columns": [
             { data: "id"},
             { data: "imagen"},
-            { data: "nombre"},
-            { data: "horarios"},
+            { data: function(data){
+                return data.first_name + " " + data.last_name;
+            }},
+            { data: "emisora"},
             { data: "id"}
         ],
         columnDefs: [
@@ -31,16 +33,10 @@ function getSegmentos(emisora) {
                 return '<img src="' + data + '" width="100%" >';
             }},
             { width: 250, targets: 2},
-            { width: 250, targets: 3, render: function(data) {
-                html = ``;
-                for (var key in data){
-                    html += data[key].dia + " : " + data[key].fecha_inicio + " - " + data[key].fecha_fin + "<br>";
-                }
-                return html;
-            }},
+            { width: 250, targets: 3},
             { width: 150, className: "text-center", targets: 4, render: function(data){
-                return `<a href="/webadmin/segmentos/` + data + `" class="btn btn-primary btn-sm" role="button"><i class="fas fa-eye"></i></a>
-                        <a href="/webadmin/segmentos/` + data + `/editar" class="btn btn-success btn-sm" role="button"><i class="fas fa-pen"></i></a>
+                return `<a href="/webadmin/locutores/` + data + `" class="btn btn-primary btn-sm" role="button"><i class="fas fa-eye"></i></a>
+                        <a href="/webadmin/locutores/` + data + `/editar" class="btn btn-success btn-sm" role="button"><i class="fas fa-pen"></i></a>
                         <a href="#" class="btn btn-danger btn-sm" role="button"><i class="fas fa-times"></i></a>
                         `
             }},

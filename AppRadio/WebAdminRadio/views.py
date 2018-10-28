@@ -264,13 +264,29 @@ def agregar_locutor(request):
 
 @login_required
 def ver_locutor(request, id_locutor):
-    segmentos = segmento_usuario.objects.filter(idUsuario=id_locutor)
+    list_segmentos = segmento_usuario.objects.filter(idUsuario=id_locutor)
     locutor = Usuario.objects.get(id=id_locutor)
     telefono = Telefono_Usuario.objects.get(idUsuario=locutor)
     context = {
         'title': "Informacion del locutor",
         'locutor': locutor,
         'telefono': telefono,
-        'segmentos': segmentos
+        'segmentos': list_segmentos
     }
     return render(request, 'webAdminRadio/ver_locutor.html', context)
+
+@login_required
+def modificar_locutor(request, id_locutor):
+    list_emisoras = Emisora.objects.all()
+    locutor = Usuario.objects.get(id=id_locutor)
+    locutor_telef = Telefono_Usuario.objects.get(idUsuario=id_locutor)
+    print(locutor.fecha_nac)
+    if request.POST:
+        print("Aquí va el form")
+    context = {
+        'title': 'Editar Locutor',
+        'locutor': locutor,
+        'telefono': locutor_telef,
+        'emisoras': list_emisoras
+    }
+    return render(request, 'webAdminRadio/editar_locutor.html', context)

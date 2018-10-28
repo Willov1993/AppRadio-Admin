@@ -55,7 +55,7 @@ class CreateUser(generics.CreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = serializers.UsuarioSerializer
 
-class CreateUserA(APIView,mixins.CreateModelMixin):
+class CreateUserA(APIView, mixins.CreateModelMixin):
     permission_classes = (AllowAny,)
 
     def post(self, request, format=None):
@@ -80,4 +80,11 @@ class ListEmisoraSegmento(generics.ListAPIView):
         return models.Segmento.objects.filter(idEmisora=emisora)
 
 class ListLocutores(generics.ListAPIView):
-    serializer_class = serializers.UsuarioSerializer
+    serializer_class = serializers.LocutoresSerializer
+
+    def get_serializer_context(self):
+        return {'segmento': self.kwargs['id_segmento']}
+
+    def get_queryset(self):
+        segmento = self.kwargs['id_segmento']
+        return Usuario.objects.filter(id__in=models.segmento_usuario.objects.filter(idSegmento=segmento).values('idUsuario'))

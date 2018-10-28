@@ -25,7 +25,6 @@ class EmisoraSerializer(serializers.ModelSerializer):
 
 class SegmentoSerializerFull(serializers.ModelSerializer):
     horarios = serializers.ReadOnlyField(source="get_horarios")
-    print(horarios)
 
     class Meta:
         model = models.Segmento
@@ -33,14 +32,30 @@ class SegmentoSerializerFull(serializers.ModelSerializer):
 
 class SegmentoSerializerToday(serializers.ModelSerializer):
     horarios = serializers.ReadOnlyField(source="get_horario_dia_actual")
-    print(horarios)
     class Meta:
         model = models.Segmento
         fields = ('id', 'nombre', 'imagen', 'horarios')
 
+class LocutoresSerializer(serializers.ModelSerializer):
+    emisora = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Usuario
+        fields = (
+            'id',
+            'imagen',
+            'first_name',
+            'last_name',
+            'emisora',
+        )
+    
+    def get_emisora(self, obj):
+        segmento_id = self.context.get('segmento')
+        segmento_obj = models.segmento_usuario.objects.get(idSegmento=segmento_id, idUsuario=obj.id)
+        return segmento_obj.idSegmento.idEmisora.nombre
+
 class UsuarioSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
-
 
     def create(self, validated_data):
 
