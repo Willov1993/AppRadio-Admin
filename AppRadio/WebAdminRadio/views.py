@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 from accounts.models import Usuario
+from django.core.serializers.json import DjangoJSONEncoder
+import json
 
 # Create your views here.
 
@@ -35,10 +37,9 @@ def agregar_segmento(request):
     if request.POST:
         segmento_form = SegmentoForm(request.POST, request.FILES)
         if segmento_form.is_valid():
+            segmento_form.save()
             # Iterar por todos los horarios
             for i in range(len(request.POST.getlist('dia'))):
-                print(request.POST.getlist('inicio')[i])
-                print(request.POST.getlist('fin')[i])
                 # Creación del horario
                 horario_form = HorarioForm({
                     'dia': request.POST.getlist('dia')[i],
@@ -46,7 +47,6 @@ def agregar_segmento(request):
                     'fin': request.POST.getlist('fin')[i]
                 })
                 if horario_form.is_valid():
-                    segmento_form.save()
                     horario_form.save()
                     # Enlazar segmento con horario
                     segmento_horario.objects.create(
@@ -202,13 +202,13 @@ def ver_segmento(request, id_segmento):
 @login_required
 def modificar_segmento(request, id_segmento):
     segmento = Segmento.objects.get(id=id_segmento)
+    horarios = Horario.objects.filter(pk__in=segmento_horario.objects.filter(idSegmento=segmento)).values('dia', 'fecha_inicio', 'fecha_fin')
     list_emisoras = Emisora.objects.all()
-    if request.POST:
-        print("Aquí va el form")
     context = {
         'title': 'Editar Segmento',
         'segmento': segmento,
-        'emisoras': list_emisoras
+        'emisoras': list_emisoras,
+        'horarios': json.dumps(list(horarios), cls=DjangoJSONEncoder)
     }
     return render(request, 'webAdminRadio/editar_segmento.html', context)
 
@@ -237,7 +237,7 @@ def agregar_locutor(request):
     list_emisoras = Emisora.objects.all()
     context = {'title': 'Agregar Locutores', 'emisoras': list_emisoras}
     if request.POST:
-        usuario_form = UsuarioForm(request.POST, request.FILES, {'rol':'1'})
+        usuario_form = UsuarioForm(request.POST, request.FILES)
         telf = request.POST['telefono']
         telefono_form = TelefonoForm({'telefono': telf})
         if (usuario_form.is_valid() and telefono_form.is_valid()):
@@ -264,15 +264,39 @@ def agregar_locutor(request):
 
 @login_required
 def ver_locutor(request, id_locutor):
-    list_segmentos = segmento_usuario.objects.filter(idUsuario=id_locutor)
+    edit_segmento = segmento_usuario.objects.filter(idUsuario=id_locutor)
     locutor = Usuario.objects.get(id=id_locutor)
     telefono = Telefono_Usuario.objects.get(idUsuario=locutor)
     context = {
         'title': "Informacion del locutor",
         'locutor': locutor,
         'telefono': telefono,
-        'segmentos': list_segmentos
+        'segmentos': edit_segmento
     }
+    if request.POST:
+        segmento_form = SegmentoForm(request.POST, request.FILES, instance=edit_segmento)
+        if segmento_form.is_valid():
+            segmento_form.save()
+            # Iterar por todos los horarios
+            for i in range(len(request.POST.getlist('dia'))):
+                dia = request.POST.getlist('dia')[i]
+                horario_form = HorarioForm({
+                    'dia': request.POST.getlist('dia')[i],
+                    'inicio': request.POST.getlist('inicio')[i],
+                    'fin': request.POST.getlist('fin')[i]
+                })
+                if horario_form.is_valid():
+                    # Falta implementar
+                    horario, created = Horario.objects.get(dia=dia)
+                    if created:
+                        segmento_horario.objects.create(
+                            idSegment=Segmento.objects.order_by('-id')[0],
+                            idHorario=Horario.objects.order_by('-id')[0]
+                        )
+                    else:
+                        horario.fecha_inicio = request.POST.getlist('inicio')[i]
+                        horario.fecha_fin = request.POST.getlist('fin')[i]
+
     return render(request, 'webAdminRadio/ver_locutor.html', context)
 
 @login_required

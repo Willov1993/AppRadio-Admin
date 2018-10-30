@@ -73,4 +73,10 @@
     <script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>
     <script src="{% static 'webAdminRadio/js/componentes/Horarios.js' %}"></script>
     <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
+    <script type="text/javascript">
+        var horarios = {{ horarios|safe }};
+        for (var i=0; i < horarios.length; i++){
+            contenedorHorario.$children[0].$data.horarios.push(horarios[i]);
+        }
+    </script>
 {% endblock %}

@@ -13,8 +13,8 @@ const Horario = {
         agregarDia(){
             this.horarios.push({
                 'dia': null,
-                'inicio': null,
-                'fin': null
+                'fecha_inicio': null,
+                'fecha_fin': null
             })
         },
         eliminarDia(indice){
@@ -41,11 +41,11 @@ const Horario = {
             </div>
             <div class="form-group col-md-3">
                 <label>Hora de inicio</label>
-                <input v-model="horario.inicio" name="inicio" type="time" class="form-control" required>
+                <input v-model="horario.fecha_inicio" name="inicio" type="time" class="form-control" required>
             </div>
             <div class="form-group col-md-3">
                 <label>Hora fin</label>
-                <input v-model="horario.fin" name = "fin" type="time" class="form-control" required>
+                <input v-model="horario.fecha_fin" name="fin" type="time" class="form-control" required>
             </div>
             <div class="form-group col-md-3" id="btn-eliminar-div">
                 <div id="btn-eliminar"">
@@ -65,3 +65,4 @@ var contenedorHorario = new Vue({
         'horario': Horario
     }
 })
+//contenedorHorario.$children[0].$data.horarios.push(objeto);
