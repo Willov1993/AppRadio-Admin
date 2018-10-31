@@ -46,11 +46,12 @@ class FrecuenciaForm(forms.ModelForm):
 
     def add_prefix(self, field_name):
         field_name_mapping = {
-            'fecha_inicio': 'inicio',
-            'fecha_fin': 'fin'
+            'hora_inicio': 'inicio',
+            'hora_fin': 'fin',
+            'dia_semana': 'dia',
         }
         field_name = field_name_mapping.get(field_name, field_name)
-        return super(HorarioForm, self).add_prefix(field_name)
+        return super(FrecuenciaForm, self).add_prefix(field_name)
 
 
 class SegmentoForm(forms.ModelForm):

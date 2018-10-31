@@ -21,7 +21,7 @@
     {% endif %}
     {% if success %}
     <div id="componente_modal_info">
-            <modal-info v-if="showModal" url_redirect="{% url 'webadminradio:emisoras' %}">
+            <modal-info v-if="showModal" url_redirect="{% url 'webadminradio:publicidad' %}">
                 <h3 slot="header">Información</h3>
                 <p slot="body">{{success}}</p>
             </modal-info>
@@ -44,24 +44,32 @@
                 <div class="form-group col-md-4">
                     <input required name="url" id="urlInput" type="text" class="form-control" placeholder="Ingrese el url de la publicidad">
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-2"></div>
             </div>
         </div>
-
         <!-- Div de persona/empresa cliente -->
         <div class="form-group">
-            <label for="descInput">Persona/Empresa Cliente</label>
-            <textarea required class="form-control" name="cliente" id="descInput" rows="3" placeholder="Ingrese el nombre de la persona o empresa cliente de la publicidad" maxlength=300></textarea>
+            <label for="clienteInput">Persona/Empresa Cliente</label>
+            <input required name="cliente" id="clienteInput" type="text" class="form-control" placeholder="Ingrese el nombre de la persona o empresa cliente de la publicidad" maxlength=300></input>
         </div>
-
         <!-- Descripción -->
         <div class="form-group">
             <label for="descInput">Descripción</label>
             <textarea class="form-control" id="descInput" name="descripcion" rows="3" placeholder="Ingrese una breve descripción de la publicidad" oninvalid="this.setCustomValidity('Ingrese una descripcion del segmento')" oninput="this.setCustomValidity('')" maxlength="250" required></textarea>
         </div>
 
-        <!-- Selección de Horarios -->
-        <label>Horarios</label>
+        <!-- Selección de Emisora -->
+        <h5><b>Seleccion de programas</b></h5>
+        <hr>
+        <!-- Selección de Segmentos -->
+        <div class="form-group">
+            <div id="componente_segmento">
+                <segmento></segmento>
+            </div>
+        </div>
+        <hr>
+        <!-- Selección de Frecuencia -->
+        <label>Frecuencia de la publicidad</label>
         <div class="form-group">
             <div id="componente_horario">
                 <horario></horario>
@@ -71,8 +79,8 @@
         <!-- Div de imagen -->
         <div class="form-group">
             <div class="custom-file">
-                <label for="imgSegmento" class="custom-file-label">Logotipo</label>
-                <input name="logo" type="file" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg">
+                <label for="imgSegmento" class="custom-file-label">Foto</label>
+                <input type="file" name="imagen" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg" oninvalid="this.setCustomValidity('Ingrese una imagen para el segmento')" oninput="this.setCustomValidity('')" required>
                 <div class="img-holder">
                     <img id="preview" src="{% static 'webAdminRadio/images/placeholder.png' %}">
                 </div>
@@ -82,9 +90,8 @@
     </form>
 {% endblock %}
 {% block page_script %}
-<script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>
-<script src="{% static 'webAdminRadio/js/componentes/TelefonoComponent.js' %}"></script>
-<script src="{% static 'webAdminRadio/js/componentes/RedSocialComponent.js' %}"></script>
-<script src="{% static 'webAdminRadio/js/componentes/Horarios.js' %}"></script>
 <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
+<script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>
+<script src="{% static 'webAdminRadio/js/componentes/Frecuencia.js' %}"></script>
+<script src="{% static 'webAdminRadio/js/componentes/EmisoraComponent.js' %}"></script>
 {% endblock %}

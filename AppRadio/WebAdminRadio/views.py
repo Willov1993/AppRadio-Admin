@@ -165,29 +165,42 @@ def agregar_publicidad(request):
     list_emisoras = Emisora.objects.all()
     context = {'title': 'Agregar Publicidad', 'emisoras': list_emisoras}
     if request.POST:
-        segmento_form = SegmentoForm(request.POST, request.FILES)
-        if segmento_form.is_valid():
-            segmento_form.save()
+        print(request.POST)
+        publicidad_form = PublicidadForm(request.POST, request.FILES)
+        if publicidad_form.is_valid():
+            publicidad_form.save()
             # Iterar por todos los horarios
-            for i in range(len(request.POST.getlist('dia'))):
-                # Creación del horario
-                horario_form = HorarioForm(request.POST)
-                if horario_form.is_valid():
-                    horario_form.save()
-                    # Enlazar segmento con horario
-                    segmento_horario.objects.create(
-                        idSegmento=Segmento.objects.order_by('-id')[0],
-                        idHorario=Horario.objects.order_by('-id')[0]
+            for i in range(len(request.POST.getlist('tipo'))):
+                print(request.POST.getlist('inicio')[i]),
+                print(request.POST.getlist('fin')[i]),
+                print(request.POST.getlist('tipo')[i],
+)
+                frecuencia_form = FrecuenciaForm({
+                    'tipo': request.POST.getlist('tipo')[i],
+                    'dia': request.POST.getlist('dia')[i],
+                    'inicio': request.POST.getlist('inicio')[i],
+                    'fin': request.POST.getlist('fin')[i]
+                })
+                if frecuencia_form.is_valid():
+                    frecuencia_form.save()
+                    frecuencia_publicidad.objects.create(
+                        idPublicidad=Publicidad.objects.order_by('-id')[0],
+                        idFrecuencia = Frecuencia.objects.order_by('-id')[0]
                     )
                 else:
-                    context['error'] = horario_form.errors
+                    context['error'] = frecuencia_form.errors
                     break
+            for s in request.POST.getlist('segmento'):
+                segmento_publicidad.objects.create(
+                    idPublicidad=Publicidad.objects.order_by('-id')[0],
+                    idSegmento=Segmento.objects.get(id=s)
+                )
             if 'error' not in context:
-                context['success'] = '¡El registro del segmento se ha sido creado con éxito!'
+                context['success'] = '¡El registro de la publicidad se ha sido creado con éxito!'
         else:
-            context['error'] = segmento_form.errors
-        return render(request, 'webAdminRadio/agregar_segmento.html', context)
-    return render(request, 'webAdminRadio/agregar_segmento.html', context)
+            context['error'] = publicidad_form.errors
+        return render(request, 'webAdminRadio/agregar_publicidad.html', context)
+    return render(request, 'webAdminRadio/agregar_publicidad.html', context)
 
 
 @login_required

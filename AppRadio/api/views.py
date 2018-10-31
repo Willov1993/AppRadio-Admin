@@ -88,3 +88,13 @@ class ListLocutores(generics.ListAPIView):
     def get_queryset(self):
         segmento = self.kwargs['id_segmento']
         return Usuario.objects.filter(id__in=models.segmento_usuario.objects.filter(idSegmento=segmento).values('idUsuario'))
+
+class ListPublicidad(generics.ListAPIView):
+    serializer_class = serializers.PublicidadSerializer
+    #
+    def get_serializer_context(self):
+        return {'segmento': self.kwargs['id_segmento']}    
+
+    def get_queryset(self):
+        segmento = self.kwargs['id_segmento']
+        return models.Publicidad.objects.filter(id__in=models.segmento_publicidad.objects.filter(idSegmento=segmento).values('idPublicidad'))        

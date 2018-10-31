@@ -112,12 +112,10 @@ class Sugerencia(models.Model):
     activo = models.CharField(max_length = 1, default='A')
 
 class Frecuencia(models.Model):
-    duracion = models.DateTimeField()
-    tipo = models.CharField(max_length = 1)
+    tipo = models.CharField(max_length = 8)
     dia_semana = models.CharField(max_length = 9, blank=True, null=True)
     hora_inicio = models.TimeField(blank=True, null=True)
     hora_fin = models.TimeField(blank=True, null = True)
-    nro_dias = models.IntegerField()
     activo = models.CharField(max_length = 1, default='A')
 
 class Contacto(models.Model):
@@ -206,7 +204,7 @@ class RedSocial_emisora(models.Model):
         return "{0} | {1}".format(self.idEmisora.nombre,self.nombre)
 
 class frecuencia_publicidad(models.Model):
-    idSegmento = models.ForeignKey(Segmento, on_delete = models.CASCADE)
+    idPublicidad = models.ForeignKey(Publicidad, on_delete = models.CASCADE)
     idFrecuencia = models.ForeignKey(Frecuencia, on_delete = models.CASCADE)
 
 class Auditoria(models.Model):
