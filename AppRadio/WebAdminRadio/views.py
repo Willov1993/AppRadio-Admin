@@ -201,15 +201,39 @@ def ver_segmento(request, id_segmento):
 
 @login_required
 def modificar_segmento(request, id_segmento):
-    segmento = Segmento.objects.get(id=id_segmento)
-    horarios = Horario.objects.filter(pk__in=segmento_horario.objects.filter(idSegmento=segmento)).values('dia', 'fecha_inicio', 'fecha_fin')
+    edit_segmento = Segmento.objects.get(id=id_segmento)
+    horarios = Horario.objects.filter(pk__in=segmento_horario.objects.filter(idSegmento=edit_segmento))
     list_emisoras = Emisora.objects.all()
     context = {
         'title': 'Editar Segmento',
-        'segmento': segmento,
+        'segmento': edit_segmento,
         'emisoras': list_emisoras,
-        'horarios': json.dumps(list(horarios), cls=DjangoJSONEncoder)
+        'horarios': json.dumps(list(horarios.values('dia', 'fecha_inicio', 'fecha_fin')), cls=DjangoJSONEncoder)
     }
+    if request.POST:
+        segmento_form = SegmentoForm(request.POST, request.FILES, instance=edit_segmento)
+        if segmento_form.is_valid():
+            segmento_form.save()
+            horarios.delete()
+            for i in range(len(request.POST.getlist('dia'))):
+                horario_form = HorarioForm({
+                    'dia': request.POST.getlist('dia')[i],
+                    'inicio': request.POST.getlist('inicio')[i],
+                    'fin': request.POST.getlist('fin')[i]
+                })
+                if horario_form.is_valid():
+                    horario_form.save()
+                    segmento_horario.objects.create(
+                        idSegmento=edit_segmento,
+                        idHorario=Horario.objects.order_by('-id')[0]
+                    )
+                else:
+                    context['error'] = horario_form.errors
+                    break
+                context['success'] = '¡El registro ha sido modificado con éxito!'
+        else:
+            context['error'] = segmento_form.errors
+        return render(request, 'webAdminRadio/editar_segmento.html', context)
     return render(request, 'webAdminRadio/editar_segmento.html', context)
 
 @login_required

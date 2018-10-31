@@ -28,14 +28,17 @@
     </div>
     {% endif %}
     <h4><b>Información del segmento</b></h4>
-    <form id="addSegmento" onsubmit="return validate()" action="{% url 'webadminradio:agregar_segmento' %}" method="POST" enctype="multipart/form-data">
+    <form id="addSegmento" onsubmit="return validate()" action="{% url 'webadminradio:editar_segmento' segmento.id %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group">
         <label for="emisoraSelect">Emisora</label>
         <select id="emisoraSelect" class="custom-select form-control" name="emisora" oninvalid="this.setCustomValidity('Ingrese una emisora válida')" required oninput="this.setCustomValidity('')">
-            <option selected disabled>Seleccione la emisora</option>
             {% for emisora in emisoras %}
-                <option value="{{ emisora.id }}">{{ emisora.nombre }}</option>
+                {% if segmento.idEmisora.id == emisora.id %}
+                    <option selected value="{{ emisora.id }}">{{ emisora.nombre }}</option>
+                {% else %}
+                    <option value="{{ emisora.id }}">{{ emisora.nombre }}</option>
+                {% endif %}
             {% endfor %}
         </select>
     </div>
@@ -60,7 +63,7 @@
     <div class="form-group">
         <div class="custom-file">
             <label for="imgSegmento" class="custom-file-label">Imagen del Segmento</label>
-            <input type="file" name="imagen" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg" oninvalid="this.setCustomValidity('Ingrese una imagen para el segmento')" oninput="this.setCustomValidity('')" required>
+            <input type="file" name="imagen" class="custom-file-input" id="imgSegmento" src="{{ segmento.imagen.url }}" accept=".png, .jpg, .jpeg" oninvalid="this.setCustomValidity('Ingrese una imagen para el segmento')" oninput="this.setCustomValidity('')">
             <div class="img-holder">
                 <img id="preview" src="{{ segmento.imagen.url }}">
             </div>
@@ -75,6 +78,7 @@
     <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
     <script type="text/javascript">
         var horarios = {{ horarios|safe }};
+        contenedorHorario.$children[0].$data.horarios.pop();
         for (var i=0; i < horarios.length; i++){
             contenedorHorario.$children[0].$data.horarios.push(horarios[i]);
         }
