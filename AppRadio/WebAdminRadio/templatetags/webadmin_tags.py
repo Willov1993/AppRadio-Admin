@@ -11,7 +11,7 @@ def get_horarios(segmento):
 # Devuelve la cantidad de segmentos de una emisora
 @register.simple_tag
 def get_cant_segmentos(emisora):
-    return Segmento.objects.filter(idEmisora=emisora).count()
+    return Segmento.objects.filter(idEmisora=emisora, activo='A').count()
 
 # Devuelve el teléfono de una emisora
 @register.simple_tag

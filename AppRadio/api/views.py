@@ -21,7 +21,7 @@ from rest_framework.permissions import AllowAny
 import datetime
 # Create your views here.
 
-DIAS=["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"]
+DIAS = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
 
 class ListSegmento(generics.ListCreateAPIView):
     queryset = models.Segmento.objects.all()
@@ -72,12 +72,13 @@ class TwitterLogin(SocialLoginView):
     serializer_class = TwitterLoginSerializer
     adapter_class = TwitterOAuthAdapter
 
+# Lista las emisoras de un segmento
 class ListEmisoraSegmento(generics.ListAPIView):
     serializer_class = serializers.SegmentoSerializerFull
 
     def get_queryset(self):
         emisora = self.kwargs['id_emisora']
-        return models.Segmento.objects.filter(idEmisora=emisora)
+        return models.Segmento.objects.filter(idEmisora=emisora, activo='A')
 
 class ListLocutores(generics.ListAPIView):
     serializer_class = serializers.LocutoresSerializer

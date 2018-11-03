@@ -14,8 +14,9 @@ urlpatterns = [
     path('emisoras/<int:id_emisora>/modificar', views.modificar_emisora, name='modificar_emisora'), # Muestra la pantalla para modificar emisora
     path('segmentos/<int:id_segmento>', views.ver_segmento, name="ver_segmento"), # Muestra la información un segmento
     path('segmentos/<int:id_segmento>/editar', views.modificar_segmento, name="editar_segmento"), # Muestra la pantalla para modificar un segmento
+    path('segmentos/<int:id_segmento>/eliminar', views.borrar_segmento, name="borrar_segmento"), # URL para borrar un segmento
     path('locutores', views.locutores, name='locutores'), # Página principal donde se muestran los locutores.
     path('locutores/agregar', views.agregar_locutor, name="agregar_locutor"), # Página para agregar locutores.
-    path('locutores/<int:id_locutor>', views.ver_locutor, name="ver_locutor"),
-    path('locutores/<int:id_locutor>/editar', views.modificar_locutor, name='editar_locutor')
+    path('locutores/<int:id_locutor>', views.ver_locutor, name="ver_locutor"), # Página para mostrar la información de un locutor
+    path('locutores/<int:id_locutor>/editar', views.modificar_locutor, name='editar_locutor') # Página para modificar los locutores
 ]

@@ -1,10 +1,11 @@
-from django.shortcuts import render
+import json
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.core.serializers.json import DjangoJSONEncoder
+from accounts.models import Usuario
 from .models import *
 from .forms import *
-from accounts.models import Usuario
-from django.core.serializers.json import DjangoJSONEncoder
-import json
 
 # Create your views here.
 
@@ -20,7 +21,7 @@ def segmentos(request):
 
 @login_required
 def emisoras(request):
-    list_emisoras = Emisora.objects.all()
+    list_emisoras = Emisora.objects.filter(activo='A')
     context = {'title': 'Emisoras', 'emisoras': list_emisoras}
     return render(request, 'webAdminRadio/emisoras.html', context)
 
@@ -171,10 +172,7 @@ def agregar_publicidad(request):
             publicidad_form.save()
             # Iterar por todos los horarios
             for i in range(len(request.POST.getlist('tipo'))):
-                print(request.POST.getlist('inicio')[i]),
-                print(request.POST.getlist('fin')[i]),
-                print(request.POST.getlist('tipo')[i],
-)
+                # Guardando cada frecuencia
                 frecuencia_form = FrecuenciaForm({
                     'tipo': request.POST.getlist('tipo')[i],
                     'dia': request.POST.getlist('dia')[i],
@@ -250,6 +248,14 @@ def modificar_segmento(request, id_segmento):
     return render(request, 'webAdminRadio/editar_segmento.html', context)
 
 @login_required
+def borrar_segmento(request, id_segmento):
+    delete_segmento = Segmento.objects.get(id=id_segmento)
+    delete_segmento.activo = 'I'
+    delete_segmento.save()
+    messages.success(request, 'El segmento ha sido eliminado')
+    return redirect('webadminradio:segmentos')
+
+@login_required
 def modificar_emisora(request, id_emisora):
     emisora = Emisora.objects.get(id=id_emisora)
     if request.POST:
@@ -262,7 +268,7 @@ def modificar_emisora(request, id_emisora):
 
 @login_required
 def locutores(request):
-    list_segmentos = Segmento.objects.all()
+    list_segmentos = Segmento.objects.filter(activo='A')
     context = {
         'title': 'Locutores',
         'segmentos': list_segmentos
