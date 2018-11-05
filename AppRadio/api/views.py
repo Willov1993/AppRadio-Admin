@@ -72,13 +72,23 @@ class TwitterLogin(SocialLoginView):
     serializer_class = TwitterLoginSerializer
     adapter_class = TwitterOAuthAdapter
 
-# Lista las emisoras de un segmento
-class ListEmisoraSegmento(generics.ListAPIView):
+# Lista los segmentos de una emisora
+class ListEmisoraSegmentos(generics.ListAPIView):
     serializer_class = serializers.SegmentoSerializerFull
 
     def get_queryset(self):
         emisora = self.kwargs['id_emisora']
         return models.Segmento.objects.filter(idEmisora=emisora, activo='A')
+
+# Lista un segmento de una emisora
+class ListEmisoraSegmento(generics.RetrieveAPIView):
+    serializer_class = serializers.SegmentoSerializerFull
+
+    def get_object(self):
+        emisora = self.kwargs['id_emisora']
+        segmento = self.kwargs['id_segmento']
+        return models.Segmento.objects.get(id=segmento, idEmisora=emisora, activo='A')
+
 
 class ListLocutores(generics.ListAPIView):
     serializer_class = serializers.LocutoresSerializer
@@ -88,7 +98,7 @@ class ListLocutores(generics.ListAPIView):
 
     def get_queryset(self):
         segmento = self.kwargs['id_segmento']
-        return Usuario.objects.filter(id__in=models.segmento_usuario.objects.filter(idSegmento=segmento).values('idUsuario'))
+        return Usuario.objects.filter(id__in=models.segmento_usuario.objects.filter(idSegmento=segmento).values('idUsuario'), is_active=True)
 
 class ListPublicidad(generics.ListAPIView):
     serializer_class = serializers.PublicidadSerializer

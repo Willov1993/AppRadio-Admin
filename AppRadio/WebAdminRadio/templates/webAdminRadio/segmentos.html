@@ -26,7 +26,7 @@
         </div>
     {% endif %}
     <div id="componente_borrar">
-        <modal-borrar v-if="showModal" url_redirect="{% url 'webadminradio:borrar_segmento' 1 %}">
+        <modal-borrar v-if="showModal">
             <h3 slot="header" class="action"><i class="fas fa-exclamation-triangle "></i>¡Aviso!</h3>
             <div slot="body">
                 <p>¿Está seguro de que desea eliminar este segmento?</p>
@@ -64,6 +64,8 @@
     <script src="{% static 'webAdminRadio/js/componentes/BorrarComponent.js' %}"></script>
     <script>
         function showWarning(id){
+            contenedorBorrar.$data.objects_to_delete = "segmentos";
+            contenedorBorrar.$data.id = id;
             contenedorBorrar.$data.showModal = true;
         }
     </script>

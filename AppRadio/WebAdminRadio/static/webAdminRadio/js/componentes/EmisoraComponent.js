@@ -23,7 +23,7 @@ const Segmento = {
     },
     methods: {
         agregarSegmento(){
-            this.segmentosLocutor.push({'value': null, 'name':null})
+            this.segmentosLocutor.push({'id': null, 'nombre':null})
         },
         eliminarSegmento(indice){
             this.segmentosLocutor.splice(indice, 1)

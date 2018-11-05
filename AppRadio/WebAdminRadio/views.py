@@ -212,7 +212,7 @@ def ver_segmento(request, id_segmento):
 
 @login_required
 def modificar_segmento(request, id_segmento):
-    edit_segmento = Segmento.objects.get(id=id_segmento)
+    edit_segmento = Segmento.objects.get(id=id_segmento, activo='A')
     horarios = Horario.objects.filter(pk__in=segmento_horario.objects.filter(idSegmento=edit_segmento))
     list_emisoras = Emisora.objects.all()
     context = {
@@ -276,6 +276,16 @@ def locutores(request):
     return render(request, 'webAdminRadio/locutores.html', context)
 
 @login_required
+def asignar_locutor(request):
+    list_emisoras = Emisora.objects.all()
+    context = {
+        'title': 'Asignar Locutor',
+        'emisoras': list_emisoras
+    }
+    return render(request, 'webAdminRadio/asignar_locutor.html', context)
+
+'''
+@login_required
 def agregar_locutor(request):
     list_emisoras = Emisora.objects.all()
     context = {'title': 'Agregar Locutores', 'emisoras': list_emisoras}
@@ -304,6 +314,7 @@ def agregar_locutor(request):
             return render(request, 'webAdminRadio/agregar_locutor.html', context)
         context['success'] = '¡El registro del locutor se ha sido creado con éxito!'
     return render(request, 'webAdminRadio/agregar_locutor.html', context)
+'''
 
 @login_required
 def ver_locutor(request, id_locutor):
@@ -345,15 +356,44 @@ def ver_locutor(request, id_locutor):
 @login_required
 def modificar_locutor(request, id_locutor):
     list_emisoras = Emisora.objects.all()
-    locutor = Usuario.objects.get(id=id_locutor)
-    locutor_telef = Telefono_Usuario.objects.get(idUsuario=id_locutor)
-    print(locutor.fecha_nac)
-    if request.POST:
-        print("Aquí va el form")
+    edit_locutor = Usuario.objects.get(id=id_locutor)
+    list_segmentos = Segmento.objects.filter(pk__in=segmento_usuario.objects.filter(idUsuario=edit_locutor), activo='A')
+    edit_telef = Telefono_Usuario.objects.get(idUsuario=id_locutor)
+    segmentos_loc = segmento_usuario.objects.filter(idUsuario=id_locutor)
     context = {
         'title': 'Editar Locutor',
-        'locutor': locutor,
-        'telefono': locutor_telef,
-        'emisoras': list_emisoras
+        'locutor': edit_locutor,
+        'telefono': edit_telef,
+        'emisoras': list_emisoras,
+        'segmentos': json.dumps(list(list_segmentos.values('id', 'nombre')), cls=DjangoJSONEncoder)
     }
+    if request.POST:
+        print(request.POST)
+        usuario_form = UsuarioForm(request.POST, request.FILES, instance=edit_locutor)
+        telf = request.POST['telefono']
+        telefono_form = TelefonoForm({'telefono': telf}, instance=edit_telef)
+        if (usuario_form.is_valid() and telefono_form.is_valid()):
+            usuario_form.save()
+            telefono_form.save()
+            segmentos_loc.delete()
+            for s in request.POST.getlist('segmento'):
+                segmento_usuario.objects.create(
+                    idUsuario=edit_locutor,
+                    idSegmento=Segmento.objects.get(id=s)
+                )
+        else:
+            if telefono_form.has_error:
+                context['error'] = telefono_form.errors
+            if usuario_form.has_error:
+                context['error'] = usuario_form.errors
+            return render(request, 'webAdminRadio/editar_locutor.html', context)
+        context['success'] = '¡El registro del locutor se ha sido creado con éxito!'
     return render(request, 'webAdminRadio/editar_locutor.html', context)
+
+@login_required
+def borrar_locutor(request, id_locutor):
+    delete_locutor = Usuario.objects.get(id=id_locutor)
+    delete_locutor.is_active = False
+    delete_locutor.save()
+    messages.success(request, 'El locutor ha sido eliminado')
+    return redirect('webadminradio:locutores')

@@ -28,7 +28,7 @@
     </div>
     {% endif %}
     <h4><b>Información del Locutor</b></h4>
-    <form id="addLocutor" onsubmit="return validate()" action="{% url 'webadminradio:agregar_locutor' %}" method="POST" enctype="multipart/form-data">
+    <form id="addLocutor" onsubmit="return validate()" action="{% url 'webadminradio:editar_locutor' locutor.id }" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <!-- Nombre del locutor -->
         <div class="form-group row">
@@ -93,4 +93,11 @@
     <script src="{% static 'webAdminRadio/js/componentes/EmisoraComponent.js' %}"></script>
     <script src="{% static 'webAdminRadio/js/componentes/RedSocialComponent.js' %}"></script>
     <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
+    <script>
+        var segmentos = {{ segmentos|safe }};
+        contenedorSegmentos.$children[0].$data.segmentosLocutor.pop();
+        for (var i=0; i < segmentos.length; i++){
+            contenedorSegmentos.$children[0].$data.segmentosLocutor.push(segmentos[i]);
+        }
+    </script>
 {% endblock %}

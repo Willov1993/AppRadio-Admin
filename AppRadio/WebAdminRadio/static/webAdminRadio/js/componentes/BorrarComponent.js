@@ -1,12 +1,11 @@
 const modalBorrar = {
-    props: ['url_redirect'],
     data(){
         return {
         }
     },
     methods: {
         redirectToPage(){
-            location.href = this.url_redirect;
+            location.href = this.$parent.getURL;
         },
         cancelar(){
             this.$parent.showModal = false;
@@ -30,10 +29,10 @@ const modalBorrar = {
 
                         <div class="modal-footer">
                             <button class="modal-dafault-button btn btn-primary btn-sm" @click="redirectToPage">
-                                Sí, estoy seguro.
+                                Sí, estoy seguro
                             </button>
                             <button class="modal-dafault-button btn btn-primary btn-sm" @click="cancelar">
-                                Cancelar.
+                                Cancelar
                             </button>
                         </div>
                     </div>
@@ -47,9 +46,16 @@ const modalBorrar = {
 var contenedorBorrar = new Vue({
     el: '#componente_borrar',
     data: {
-        showModal: false
+        showModal: false,
+        id: null,
+        objects_to_delete: null, 
     },
     components: {
         'modal-borrar': modalBorrar
+    },
+    computed:{
+        getURL(){
+            return '/webadmin/' + this.$data.objects_to_delete + '/' + this.$data.id + '/eliminar'
+        }
     }
 })

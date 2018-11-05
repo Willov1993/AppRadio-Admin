@@ -37,7 +37,7 @@ function getSegmentos(segmento) {
             { width: 150, className: "text-center", targets: 4, render: function(data){
                 return `<a href="/webadmin/locutores/` + data + `" class="btn btn-primary btn-sm" role="button"><i class="fas fa-eye"></i></a>
                         <a href="/webadmin/locutores/` + data + `/editar" class="btn btn-success btn-sm" role="button"><i class="fas fa-pen"></i></a>
-                        <a href="#" class="btn btn-danger btn-sm" role="button"><i class="fas fa-times"></i></a>
+                        <a href="#" onclick="showWarning(` + data + `)" class="btn btn-danger btn-sm" role="button"><i class="fas fa-times"></i></a>
                         `
             }},
         ],
