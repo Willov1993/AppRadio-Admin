@@ -28,9 +28,9 @@ function getSegmentos(segmento) {
             { data: "id"}
         ],
         columnDefs: [
-            { width: 10, targets: 0},
+            { width: 10, className: "text-center", targets: 0},
             { width: 200, targets: 1, render: function(data) {
-                return '<img src="' + data + '" width="100%" >';
+                return '<img src="' + data + '" width="100%">';
             }},
             { width: 250, targets: 2},
             { width: 250, targets: 3},

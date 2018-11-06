@@ -6,6 +6,7 @@ from . import views
 urlpatterns = [
     path('emisoras/', views.ListEmisora.as_view()),
     path('segmentos/', views.ListSegmento.as_view()),
+    path('usuarios', views.ListUsuarios.as_view(), name="list_usuarios"),
     path('segmento/<int:id_segmento>/publicidad',views.ListPublicidad.as_view(), name="list_segmento_publicidad"),
     path('emisora/<int:id_emisora>/segmentos', views.ListEmisoraSegmentos.as_view(), name="list_emisora_segmentos"),
     path('emisora/<int:id_emisora>/segmento/<int:id_segmento>', views.ListEmisoraSegmento.as_view(), name="list_emisora_segmento"),

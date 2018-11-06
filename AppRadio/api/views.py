@@ -23,6 +23,10 @@ import datetime
 
 DIAS = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
 
+class ListUsuarios(generics.ListAPIView):
+    serializer_class = serializers.UsuarioSerializer
+    queryset = Usuario.objects.all()
+
 class ListSegmento(generics.ListCreateAPIView):
     queryset = models.Segmento.objects.all()
     serializer_class = serializers.SegmentoSerializer

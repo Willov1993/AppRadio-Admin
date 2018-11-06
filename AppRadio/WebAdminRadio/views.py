@@ -284,38 +284,6 @@ def asignar_locutor(request):
     }
     return render(request, 'webAdminRadio/asignar_locutor.html', context)
 
-'''
-@login_required
-def agregar_locutor(request):
-    list_emisoras = Emisora.objects.all()
-    context = {'title': 'Agregar Locutores', 'emisoras': list_emisoras}
-    if request.POST:
-        usuario_form = UsuarioForm(request.POST, request.FILES)
-        telf = request.POST['telefono']
-        telefono_form = TelefonoForm({'telefono': telf})
-        if (usuario_form.is_valid() and telefono_form.is_valid()):
-            usuario_form.save()
-            new_locutor = Usuario.objects.order_by('-id')[0]
-            Telefono_Usuario.objects.create(
-                idUsuario=new_locutor,
-                nro_telefono=telf
-            )
-            print(request.POST)
-            for s in request.POST.getlist('segmento'):
-                segmento_usuario.objects.create(
-                    idUsuario=new_locutor,
-                    idSegmento=Segmento.objects.get(id=s)
-                )
-        else:
-            if telefono_form.has_error:
-                context['error'] = telefono_form.errors
-            if usuario_form.has_error:
-                context['error'] = usuario_form.errors
-            return render(request, 'webAdminRadio/agregar_locutor.html', context)
-        context['success'] = '¡El registro del locutor se ha sido creado con éxito!'
-    return render(request, 'webAdminRadio/agregar_locutor.html', context)
-'''
-
 @login_required
 def ver_locutor(request, id_locutor):
     edit_segmento = segmento_usuario.objects.filter(idUsuario=id_locutor)
@@ -397,3 +365,16 @@ def borrar_locutor(request, id_locutor):
     delete_locutor.save()
     messages.success(request, 'El locutor ha sido eliminado')
     return redirect('webadminradio:locutores')
+
+@login_required
+def asignar_locutor_segmento(request, id_locutor, id_segmento):
+    new_locutor = Usuario.objects.get(id=id_locutor)
+    segmento = Segmento.objects.get(id=id_segmento)
+    new_locutor.rol = 'L'
+    new_locutor.save()
+    segmento_usuario.objects.create(
+        idSegmento=segmento,
+        idUsuario=new_locutor
+    )
+    messages.success(request, 'El usuario ha sido asignado como locutor')
+    return redirect('webadminradio:asignar_locutor')

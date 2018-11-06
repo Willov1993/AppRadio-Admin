@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 
 def upload_location(instance, filename):
     #Esta función guarda las imágenes de los usuarios en media_cdn/<id_usuario>
-    return "usuarios/%s/%s" %(instance.id, filename)
+    return "usuarios/%s/%s" %(instance.username, filename)
 
 # Create your models here.
 class Usuario(AbstractUser):

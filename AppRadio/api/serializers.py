@@ -75,6 +75,8 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
     class Meta:
         fields = (
+            'id',
+            'imagen',
             'username',
             'email',
             'first_name',
