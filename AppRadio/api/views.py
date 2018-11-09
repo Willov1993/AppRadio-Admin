@@ -52,11 +52,13 @@ class ListEmisora(generics.ListCreateAPIView):
     serializer_class = serializers.EmisoraSerializer
 
 class CreateUser(generics.CreateAPIView):
+    permission_classes = (AllowAny,)
     queryset = Usuario.objects.all()
     serializer_class = serializers.UsuarioSerializer
 
 class CreateUserA(APIView,mixins.CreateModelMixin):
     permission_classes = (AllowAny,)
+
 
     def post(self, request, format=None):
         serializer = serializers.UsuarioSerializer(data=request.data)
