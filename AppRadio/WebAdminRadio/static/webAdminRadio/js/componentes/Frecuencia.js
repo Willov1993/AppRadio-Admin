@@ -13,9 +13,9 @@ const Horario = {
         agregarDia(){
             this.horarios.push({
                 'tipo': null, 
-                'dia': null,
-                'inicio': null,
-                'fin': null
+                'dia_semana': null,
+                'hora_inicio': null,
+                'hora_fin': null
             })
         },
         eliminarDia(indice){
@@ -40,7 +40,7 @@ const Horario = {
 
             <div class="form-group col-md-3">
                 <label>Dia</label>
-                <select v-model="horario.dia" name="dia" id="diaInput" class="custom-select form-control" required>
+                <select v-model="horario.dia_semana" name="dia_semana" id="diaInput" class="custom-select form-control" required>
                     <option value="Lunes">Lunes</option>
                     <option value="Martes">Martes</option>
                     <option value="Miércoles">Miércoles</option>
@@ -52,11 +52,11 @@ const Horario = {
             </div>
             <div class="form-group col-md-3">
                 <label>Hora de inicio</label>
-                <input v-model="horario.inicio" name="inicio" type="time" class="form-control" required>
+                <input v-model="horario.hora_inicio" name="hora_inicio" type="time" class="form-control" required>
             </div>
             <div class="form-group col-md-3">
                 <label>Hora fin</label>
-                <input v-model="horario.fin" name = "fin" type="time" class="form-control" required>
+                <input v-model="horario.hora_fin" name = "hora_fin" type="time" class="form-control" required>
             </div>
             <div class="form-group col-md-3" id="btn-eliminar-div">
                 <div id="btn-eliminar"">

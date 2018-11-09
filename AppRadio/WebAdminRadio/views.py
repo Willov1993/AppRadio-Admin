@@ -26,10 +26,46 @@ def emisoras(request):
     return render(request, 'webAdminRadio/emisoras.html', context)
 
 @login_required
-def publicidad(request):
-    list_emisoras = Emisora.objects.all()
-    context = {'title': 'Publicidad', 'emisoras': list_emisoras}
+def publicidad(request):   
+    publicidad = Publicidad.objects.filter(estado='A')   
+
+    list_segmentos = Segmento.objects.filter(activo='A')
+    context = {
+        'title': 'Publicidad',
+        'segmentos': list_segmentos,
+        'publicidad':publicidad
+    }
     return render(request, 'webAdminRadio/publicidad.html', context)
+
+
+
+@login_required
+def agregar_emisora(request):
+    context = {'title': 'Agregar Emisora'}
+    if request.POST:
+        emisora_form = EmisoraForm(request.POST, request.FILES)
+        telefono = request.POST['telefono']
+        redsocial= request.POST['red_social_url']
+        telefono_form = TelefonoForm({'telefono': telefono})
+        red_form = RedSocialForm({'red_social_url':redsocial})
+        if (emisora_form.is_valid() and telefono_form.is_valid() and red_form.isvalid()):
+            emisora_form.save()
+            Telefono_emisora.objects.create(
+                idEmisora=Emisora.objects.order_by('-id')[0],
+                nro_telefono = telefono
+                )
+            RedSocial_emisora.objects.create(
+                idEmisora = Emisora.objects.order_by('-id')[0],
+                nombre= Emisora.objects.getlist('red_social_nombre'),
+                link=redsocial
+                )
+        else:   
+            context['error'] = emisora_form.errors
+        if 'error' not in context:
+            context['success'] = '¡El registro de la emisora ha sido creado con éxito!'
+        return render(request, 'webAdminRadio/agregar_emisora.html', context)
+    return render(request, 'webAdminRadio/agregar_emisora.html', context)    
+
 
 @login_required
 def agregar_segmento(request):
@@ -64,7 +100,7 @@ def agregar_segmento(request):
         return render(request, 'webAdminRadio/agregar_segmento.html', context)
     return render(request, 'webAdminRadio/agregar_segmento.html', context)
 
-@login_required
+'''@login_required
 def agregar_emisora(request):
     """
     URL: webadmin/emisoras/agregar
@@ -159,7 +195,8 @@ def agregar_emisora(request):
             }
             return render(request, 'webAdminRadio/agregar_emisora.html', context)
 
-    return render(request, 'webAdminRadio/agregar_emisora.html', {'title': 'Agregar Emisora'})
+    return render(request, 'webAdminRadio/agregar_emisora.html', {'title': 'Agregar Emisora'})'''
+
 
 @login_required
 def agregar_publicidad(request):
@@ -172,12 +209,11 @@ def agregar_publicidad(request):
             publicidad_form.save()
             # Iterar por todos los horarios
             for i in range(len(request.POST.getlist('tipo'))):
-                # Guardando cada frecuencia
                 frecuencia_form = FrecuenciaForm({
                     'tipo': request.POST.getlist('tipo')[i],
-                    'dia': request.POST.getlist('dia')[i],
-                    'inicio': request.POST.getlist('inicio')[i],
-                    'fin': request.POST.getlist('fin')[i]
+                    'dia': request.POST.getlist('dia_semana')[i],
+                    'inicio': request.POST.getlist('hora_inicio')[i],
+                    'fin': request.POST.getlist('hora_fin')[i]
                 })
                 if frecuencia_form.is_valid():
                     frecuencia_form.save()
@@ -199,6 +235,7 @@ def agregar_publicidad(request):
             context['error'] = publicidad_form.errors
         return render(request, 'webAdminRadio/agregar_publicidad.html', context)
     return render(request, 'webAdminRadio/agregar_publicidad.html', context)
+
 
 
 @login_required
@@ -248,24 +285,22 @@ def modificar_segmento(request, id_segmento):
     return render(request, 'webAdminRadio/editar_segmento.html', context)
 
 @login_required
-def borrar_segmento(request, id_segmento):
-    delete_segmento = Segmento.objects.get(id=id_segmento)
-    delete_segmento.activo = 'I'
-    delete_segmento.save()
-    messages.success(request, 'El segmento ha sido eliminado')
-    return redirect('webadminradio:segmentos')
-
-@login_required
 def modificar_emisora(request, id_emisora):
-    emisora = Emisora.objects.get(id=id_emisora)
-    if request.POST:
-        print("Aquí va el form")
+    edit_emisora = Emisora.objects.get(id=id_emisora)
     context = {
         'title': 'Editar Emisora',
-        'emisora': emisora
-        }
+        'emisora': edit_emisora,
+    }
+    if request.POST:
+        emisora_form = EmisoraForm(request.POST, request.FILES, edit_emisora)
+        if emisora_form.is_valid():
+            emisora_form.save()
+            if 'error' not in context:
+                context['success'] = '¡El registro del segmento se ha sido creado con éxito!'            
+        else:
+            context['error'] = emisora_form.errors
+        return render(request, 'webAdminRadio/modificar_emisora.html', context)
     return render(request, 'webAdminRadio/modificar_emisora.html', context)
-
 @login_required
 def locutores(request):
     list_segmentos = Segmento.objects.filter(activo='A')
@@ -321,6 +356,20 @@ def ver_locutor(request, id_locutor):
 
     return render(request, 'webAdminRadio/ver_locutor.html', context)
 
+
+@login_required
+def ver_publicidad(request, id_publicidad):
+    publicidad = Publicidad.objects.get(id=id_publicidad)
+    segmento = segmento_publicidad.objects.filter(idPublicidad=id_publicidad)
+    frecuencia = frecuencia_publicidad.objects.filter(idPublicidad=id_publicidad)
+    context = {
+        'title': "Informacion de la publicidad",
+        'publicidad':publicidad,
+        'segmentos': segmento,
+        'horarios': frecuencia
+    }
+    return render(request, 'webAdminRadio/ver_publicidad.html', context)
+
 @login_required
 def modificar_locutor(request, id_locutor):
     list_emisoras = Emisora.objects.all()
@@ -359,14 +408,6 @@ def modificar_locutor(request, id_locutor):
     return render(request, 'webAdminRadio/editar_locutor.html', context)
 
 @login_required
-def borrar_locutor(request, id_locutor):
-    delete_locutor = Usuario.objects.get(id=id_locutor)
-    delete_locutor.is_active = False
-    delete_locutor.save()
-    messages.success(request, 'El locutor ha sido eliminado')
-    return redirect('webadminradio:locutores')
-
-@login_required
 def asignar_locutor_segmento(request, id_locutor, id_segmento):
     new_locutor = Usuario.objects.get(id=id_locutor)
     segmento = Segmento.objects.get(id=id_segmento)
@@ -378,3 +419,75 @@ def asignar_locutor_segmento(request, id_locutor, id_segmento):
     )
     messages.success(request, 'El usuario ha sido asignado como locutor')
     return redirect('webadminradio:asignar_locutor')
+    
+@login_required
+def modificar_publicidad(request, id_publicidad):
+    edit_publicidad = Publicidad.objects.get(id=id_publicidad)
+    horarios = Frecuencia.objects.filter(pk__in=frecuencia_publicidad.objects.filter(idPublicidad=edit_publicidad))
+    list_emisoras = Emisora.objects.all()
+    list_segmentos = Segmento.objects.filter(pk__in=segmento_publicidad.objects.filter(idPublicidad=edit_publicidad).values('idSegmento'))
+    print(segmento_publicidad.objects.filter(idPublicidad=edit_publicidad))
+    context = {
+        'title': 'Editar Publicidad',
+        'publicidad': edit_publicidad,
+        'emisoras': list_emisoras,
+        'horarios': json.dumps(list(horarios.values('tipo','dia_semana', 'hora_inicio', 'hora_fin')), cls=DjangoJSONEncoder),
+        'segmentos': json.dumps(list(list_segmentos.values('id', 'nombre')), cls=DjangoJSONEncoder)
+    }
+    if request.POST:
+        publicidad_form = PublicidadForm(request.POST, request.FILES, instance=edit_publicidad)
+        if publicidad_form.is_valid():
+            publicidad_form.save()
+            horarios.delete()
+            list_segmentos.delete()
+            for i in range(len(request.POST.getlist('dia'))):
+                frecuencia_form = FrecuenciaForm({
+                    'tipo': request.POST.getlist('tipo')[i],
+                    'dia': request.POST.getlist('dia')[i],
+                    'inicio': request.POST.getlist('inicio')[i],
+                    'fin': request.POST.getlist('fin')[i]
+                })
+                if frecuencia_form.is_valid():
+                    frecuencia_form.save()
+                    frecuencia_publicidad.objects.create(
+                        idPublicidad=edit_publicidad,
+                        idFrecuencia=Frecuencia.objects.order_by('-id')[0]
+                    )
+                else:
+                    context['error'] = frecuencia_form.errors
+                    break
+            for s in request.POST.getlist('segmento'):
+                segmento_publicidad.objects.create(
+                    idPublicidad=edit_publicidad,
+                    idSegmento=Segmento.objects.get(id=s)
+                )                    
+                context['success'] = '¡El registro ha sido modificado con éxito!'
+        else:
+            context['error'] = publicidad_form.errors
+        return render(request, 'webAdminRadio/editar_publicidad.html', context)
+    return render(request, 'webAdminRadio/editar_publicidad.html', context)
+
+@login_required
+def borrar_emisora(request, id_emisora):
+    delete_segmento = Emisora.objects.get(id=id_emisora)
+    delete_segmento.activo = 'I'
+    delete_segmento.save()
+    messages.success(request, 'La emisora ha sido eliminada')
+    return redirect('webadminradio:emisoras')
+
+@login_required
+def borrar_publicidad(request, id_publicidad):
+    delete_publicidad = Publicidad.objects.get(id=id_publicidad)
+    delete_publicidad.estado = 'I'
+    delete_publicidad.save()
+    messages.success(request, 'La publicidad ha sido eliminada con exito')
+    return redirect('webadminradio:publicidad')
+
+@login_required
+def borrar_locutor(request, id_locutor):
+    delete_locutor = Usuario.objects.get(id=id_locutor)
+    delete_locutor.is_active = False
+    delete_locutor.save()
+    messages.success(request, 'El locutor ha sido eliminado')
+    return redirect('webadminradio:locutores')
+

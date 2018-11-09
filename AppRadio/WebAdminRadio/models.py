@@ -99,6 +99,9 @@ class Publicidad(models.Model):
     estado = models.CharField(max_length = 1)
     imagen = models.ImageField(upload_to = upload_location, blank=None)
 
+    def __str__(self):
+        return self.titulo    
+
 class Tipo_sugerencia(models.Model):
     nombre = models.CharField(max_length = 15)
     descripcion = models.CharField(max_length = 500)
@@ -117,6 +120,9 @@ class Frecuencia(models.Model):
     hora_inicio = models.TimeField(blank=True, null=True)
     hora_fin = models.TimeField(blank=True, null = True)
     activo = models.CharField(max_length = 1, default='A')
+
+    def __str__(self):
+        return self.tipo +" "+ self.dia_semana + " [" + str(self.hora_inicio) + " - " + str(self.hora_fin) + "]"    
 
 class Contacto(models.Model):
     idPublicidad = models.ForeignKey(Publicidad, on_delete = models.DO_NOTHING)
@@ -188,6 +194,10 @@ class segmento_publicidad(models.Model):
     idSegmento = models.ForeignKey(Segmento, on_delete=models.CASCADE)
     idPublicidad = models.ForeignKey(Publicidad, on_delete = models.CASCADE)
 
+    def __str__(self):
+        return str(self.idSegmento) + " : " + str(self.idPublicidad)
+
+
 class Telefono_emisora(models.Model):
     idEmisora = models.ForeignKey(Emisora, on_delete=models.CASCADE)
     nro_telefono = models.CharField(max_length=10)
@@ -206,6 +216,10 @@ class RedSocial_emisora(models.Model):
 class frecuencia_publicidad(models.Model):
     idPublicidad = models.ForeignKey(Publicidad, on_delete = models.CASCADE)
     idFrecuencia = models.ForeignKey(Frecuencia, on_delete = models.CASCADE)
+
+    def __str__(self):
+        return str(self.idPublicidad) + " : " + str(self.idFrecuencia)     
+
 
 class Auditoria(models.Model):
     accion = models.CharField(max_length = 50)

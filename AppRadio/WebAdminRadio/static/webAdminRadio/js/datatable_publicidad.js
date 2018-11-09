@@ -23,28 +23,27 @@ function getPublicidad(segmento) {
             { data: "id"},
             { data: "imagen"},
             { data: "titulo"},
-            { data: "cliente"},
-            { data: "frecuencia"},            
+            { data: "cliente"},            
             { data: "emisora"},
-            { data: "id"},
+            { data: "frecuencia"},            
+            { data: "id"}
         ],
         columnDefs: [
             { width: 10, targets: 0},
-            { width: 200, targets: 1, render: function(data) {
+            { width: 150, targets: 1, render: function(data) {
                 return '<img src="' + data + '" width="100%" >';
             }},
             { width: 250, targets: 2},
-            { width: 250, targets: 3, render: function(data) {
-                html = ``;
-                for (var key in data){
-                    html += data[key].dia + " : " + data[key].fecha_inicio + " - " + data[key].fecha_fin + "<br>";
-                }
-                return html;
-            }},
-            { width: 150, className: "text-center", targets: 4, render: function(data){
-                return `<a href="/webadmin/segmentos/` + data + `" class="btn btn-primary btn-sm" role="button"><i class="fas fa-eye"></i></a>
-                        <a href="/webadmin/segmentos/` + data + `/editar" class="btn btn-success btn-sm" role="button"><i class="fas fa-pen"></i></a>
-                        <a href="#" class="btn btn-danger btn-sm" role="button"><i class="fas fa-times"></i></a>
+            { width: 100, targets: 3},
+            { width: 200, targets: 4},            
+            { width: 80, className: "text-center", targets:5 , render: function(data){
+                return `<a href="api/publicidad" + publicidad + "/frecuencias/"` + data + `" class="btn btn-primary btn-md ml-auto action" role="button">Ver frecuencias</i></a>
+                        `
+            }},                    
+            { width: 150, className: "text-center", targets: 6, render: function(data){
+                return `<a href="/webadmin/publicidad/` + data + `" class="btn btn-primary btn-sm" role="button"><i class="fas fa-eye"></i></a>
+                        <a href="/webadmin/publicidad/` + data + `/editar" class="btn btn-success btn-sm" role="button"><i class="fas fa-pen"></i></a>
+                        <a href="#" onclick="showWarning(` + data + `)" class="btn btn-danger btn-sm" role="button"><i class="fas fa-times"></i></a>
                         `
             }},
         ],

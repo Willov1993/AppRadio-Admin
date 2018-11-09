@@ -1,0 +1,99 @@
+{% extends 'webAdminRadio/base_site.html' %}
+{% load static from staticfiles %}
+{% block page_style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/agregar_segmento.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/componentes/modal_info.css' %}">
+{% endblock %}
+{% block content %}
+    {% if error %}
+        <div id="componente_modal_info">
+            <modal-info v-if="showModal" url_redirect="">
+                <h3 slot="header">Error</h3>
+                <div slot="body">
+                    <p>Existen algunos errores en los siguientes campos:</p>
+                    {% for campo,e in error.items %}
+                        <h5>{{campo}}</h5>
+                        {{e}}
+                    {% endfor %}
+                </div>
+            </modal-info>
+        </div>
+    {% endif %}
+    {% if success %}
+    <div id="componente_modal_info">
+        <modal-info v-if="showModal" url_redirect="{% url 'webadminradio:publicidad' %}">
+            <h3 slot="header">Información</h3>
+            <p slot="body">{{success}}</p>
+        </modal-info>
+    </div>
+    {% endif %}
+    <h4><b>Información de Publicidad</b></h4>
+    <form id="addSegmento" onsubmit="return validate()" action="{% url 'webadminradio:editar_publicidad' publicidad.id %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="nombreInput">Título</label>
+        <input id="nombreInput" name="titulo" type="text" class="form-control" value="{{publicidad.titulo}}" placeholder="Ingrese el título de la publicidad" oninvalid="this.setCustomValidity('Ingrese el título de la publicidad')" oninput="this.setCustomValidity('')" required>
+    </div>
+    <div class="form-group">
+        <label for="urlInput">URL de la publicidad</label>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <input id="urlInput" name="url" type="text" class="form-control" value="{{publicidad.url}}" placeholder="Ingrese el url de la publicidad" oninvalid="this.setCustomValidity('Ingrese el url de la publicidad')" oninput="this.setCustomValidity('')" required>
+            </div>
+        <div class="form-group col-md-2"></div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="clienteInput">Persona/Empresa Cliente</label>
+        <input id="clienteInput" name="cliente" type="text" class="form-control" value="{{publicidad.cliente}}" placeholder="Ingrese el nombre de la persona o empresa cliente de la publicidad" oninvalid="this.setCustomValidity('Ingrese el nombre de la persona o empresa cliente de la publicidad')" oninput="this.setCustomValidity('')" required>
+    </div>
+    <div class="form-group">
+        <label for="descInput">Descripción</label>
+        <textarea class="form-control" id="descInput" name="descripcion" rows="3" placeholder="Ingrese una breve descripción de la publicidad" oninvalid="this.setCustomValidity('Ingrese una breve descripción de la publicidad')" oninput="this.setCustomValidity('')" maxlength="250" required>{{publicidad.descripcion}}</textarea>
+    </div>
+    <h5><b>Seleccion de programas</b></h5>
+    <hr>
+    <div class="form-group">
+        <div id="componente_segmento">
+            <segmento></segmento>
+        </div>
+    </div>
+    <hr>
+    <label>Frecuencia de la publicidad</label>
+    <div class="form-group">
+        <div id="componente_horario">
+            <horario></horario>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="custom-file">
+            <label for="imgSegmento" class="custom-file-label">Foto</label>
+            <input type="file" name="imagen" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg" oninvalid="this.setCustomValidity('Ingrese una imagen para la publicidad')" oninput="this.setCustomValidity('')" required>
+            <div class="img-holder">
+                <img id="preview" class="image" src="{{ publicidad.imagen.url }}">
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg submit"><i class="fas fa-plus-circle"></i>Guardar cambios</button>
+    </form>
+{% endblock %}
+{% block page_script %}
+    <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/Frecuencia.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/EmisoraComponent.js' %}"></script>
+    <script>
+        var segmentos = {{ segmentos|safe }};
+        contenedorSegmentos.$children[0].$data.segmentosLocutor.pop();
+        for (var i=0; i < segmentos.length; i++){
+            contenedorSegmentos.$children[0].$data.segmentosLocutor.push(segmentos[i]);
+        }
+    </script>    
+    <script type="text/javascript">
+        var horarios = {{ horarios|safe }};
+        contenedorHorario.$children[0].$data.horarios.pop();
+        for (var i=0; i < horarios.length; i++){
+            contenedorHorario.$children[0].$data.horarios.push(horarios[i]);
+        }
+    </script>
+{% endblock %}

@@ -1,11 +1,26 @@
 from django import forms
-from .models import Segmento, Horario, Publicidad, Frecuencia
+from .models import Segmento, Horario, Publicidad, Frecuencia, Emisora
 from accounts.models import Usuario
 
 # field_name_mapping es el diccionario con los names que estarán en los forms,
 # que no deben ser iguales a los campos de los modelos
+class EmisoraForm(forms.ModelForm):
+    class Meta:
+        model= Emisora
+        fields = [
+            'nombre',
+            'frecuencia_dial',
+            'url_streaming',
+            'sitio_web',
+            'direccion',
+            'descripcion',
+            'ciudad',
+            'provincia',
+            'logotipo'
+        ]
 
-class EmisoraForm(forms.Form):
+
+'''class EmisoraForm(forms.Form):
     nombre = forms.CharField(max_length=150)
     frecuencia_dial = forms.RegexField(regex=r"[0-9]{2,3}\.[0-9] (AM|FM)", max_length=8)
     url_streaming = forms.URLField(max_length=150)
@@ -15,7 +30,7 @@ class EmisoraForm(forms.Form):
     ciudad = forms.RegexField(regex="[A-Za-z]+", max_length=50, strip=True)
     provincia = forms.RegexField(regex="[A-Za-z]+", max_length=50, strip=True)
     logotipo = forms.ImageField(required=False)
-
+'''
 class TelefonoForm(forms.Form):
     telefono = forms.RegexField(regex=r"(\+)?[0-9]+", max_length=10)
 

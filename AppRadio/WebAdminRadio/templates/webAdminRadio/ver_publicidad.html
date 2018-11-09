@@ -7,27 +7,28 @@
 {% block content %}
     <h2><b>{{ publicidad.titulo }}</b></h2>
     <div class="row info">
-        <label class="col-sm-3"><b>Segmentos que patrocina:</b></label>
-        <ul class="list-group col-sm-8">
-        {% for seg in segmentos %}
-        <li class="list-group-item"><b>Emisora:</b> {{seg.idSegmento.idEmisora.nombre}} <b>Segmento:</b> {{ seg.idSegmento.nombre }}</li>
-        {% endfor %}
-    </ul>
         <label class="col-sm-3"><b>Persona/Empresa Cliente:</b></label>
         <label class="col-sm-9">{{ publicidad.cliente }}</label>
     </div>
     <div class="row info">
-        <label class="col-sm-3"><b>Descripción:</b></label>
+        <label class="col-sm-3"><b>Descripción publicitaria:</b></label>
         <label class="col-sm-9">{{ publicidad.descripcion }}</label>
     </div>
     <div class="row info">
         <label class="col-sm-3"><b>URL:</b></label>
         <label class="col-sm-9">{{ publicidad.url }}</label>
     </div>
-    <div class="row info">
-        <label class="col-sm-3"><b>Frecuencias:</b></label>
-        <label class="col-sm-9">{{ publicidad.url }}</label>
-    </div>
+    <p><b>Frecuencias</b></p>
+    {% get_frecuencias publicidad as horarios %}
+    {% for horario in horarios %}
+        <p>{{ horario.idFrecuencia}}</p>
+    {% endfor %}      
+    <h4><b>Programas</b></h4>
+    <ul class="list-group col-sm-8">
+        {% for seg in segmentos %}
+        <li class="list-group-item"><b>Emisora:</b> {{seg.idSegmento.idEmisora.nombre}} <b>Segmento:</b> {{ seg.idSegmento.nombre }}</li>
+        {% endfor %}
+    </ul>  
     <div class="img-container">
         <img class="image info" src="{{ publicidad.imagen.url }}">
     </div>

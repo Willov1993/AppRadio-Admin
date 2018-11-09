@@ -3,23 +3,27 @@ from . import views
 
 app_name = 'webadminradio'
 
+
 urlpatterns = [
     path('', views.home, name='home'), # Muestra la pantalla principal /webadmin/
     path('segmentos', views.segmentos, name='segmentos'), # Página principal donde se muestran los segmentos
-    path('emisoras', views.emisoras, name='emisoras'), #Pagina donde se muestran las emisoras
-    path('publicidad', views.publicidad, name='publicidad'), #Pagina principal donde se muestra la publicidad.
     path('segmentos/agregar', views.agregar_segmento, name="agregar_segmento"), # Muestra la pantalla para agregar segmento
-    path('emisoras/agregar', views.agregar_emisora, name="agregar_emisora"), # Muestra la pantalla para agregar emisora
-    path('publicidad/agregar', views.agregar_publicidad, name='agregar_publicidad'), #Muestra la pantalla para agregar publicidad.
-    path('emisoras/<int:id_emisora>/modificar', views.modificar_emisora, name='modificar_emisora'), # Muestra la pantalla para modificar emisora
     path('segmentos/<int:id_segmento>', views.ver_segmento, name="ver_segmento"), # Muestra la información un segmento
-    path('segmentos/<int:id_segmento>/editar', views.modificar_segmento, name="editar_segmento"), # Muestra la pantalla para modificar un segmento
-    path('segmentos/<int:id_segmento>/eliminar', views.borrar_segmento, name="borrar_segmento"), # URL para borrar un segmento
+    path('segmentos/<int:id_segmento>/editar', views.modificar_segmento, name="editar_segmento"), # Muestra la pantalla para modificar un segmento    
+    path('emisoras', views.emisoras, name='emisoras'), #Pagina donde se muestran las emisoras
+    path('emisoras/agregar', views.agregar_emisora, name="agregar_emisora"), # Muestra la pantalla para agregar emisora
+    path('emisoras/<int:id_emisora>/editar', views.modificar_emisora, name='editar_emisora'), # Muestra la pantalla para modificar emisora
+    path('emisoras/<int:id_emisora>/eliminar', views.borrar_emisora, name="borrar_emisora"), # URL para borrar un segmento
+    path('publicidad/agregar', views.agregar_publicidad, name = 'agregar_publicidad'), #Muestra la pantalla para agregar publicidad.
+    path('publicidad', views.publicidad, name='publicidad'), #Pagina principal donde se muestra la publicidad.
+    path('publicidad/<int:id_publicidad>', views.ver_publicidad, name = 'ver_publicidad'),
+    path('publicidad/<int:id_publicidad>/editar', views.modificar_publicidad, name = 'editar_publicidad'),
+    path('publicidad/<int:id_publicidad>/eliminar', views.borrar_publicidad, name="borrar_publicidad"), # URL para borrar un segmento
     path('locutores', views.locutores, name='locutores'), # Página principal donde se muestran los locutores.
-    #path('locutores/agregar', views.agregar_locutor, name="agregar_locutor"), # Página para agregar locutores.
     path('locutores/asignar', views.asignar_locutor, name='asignar_locutor'), # Página para asignar un usuario como locutor de una radio.
     path('locutores/<int:id_locutor>', views.ver_locutor, name="ver_locutor"), # Página para mostrar la información de un locutor
     path('locutores/<int:id_locutor>/editar', views.modificar_locutor, name='editar_locutor'), # Página para modificar los locutores
     path('locutores/<int:id_locutor>/eliminar', views.borrar_locutor, name='borrar_locutor'), # URL para borrar un locutor
     path('locutores/asignar/<int:id_locutor>/segmento/<int:id_segmento>', views.asignar_locutor_segmento, name="asignar_locutor_segmento") # Este URL permite asignar un usuario como locuor a un segmento
+
 ]

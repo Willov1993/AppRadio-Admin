@@ -12,11 +12,31 @@
     <a href="{% url 'webadminradio:agregar_publicidad' %}" class="btn btn-primary btn-md ml-auto action" role="button"><i class="fas fa-plus-circle"></i>Agregar Publicidad</i></a>
 {% endblock %}
 {% block content %}
-    <label for="emisoraSelect">Seleccione una emisora</label>
-    <select name="dia" id="emisoraSelect" class="custom-select">
+    {% if messages %}
+        <div id="componente_modal_info">
+            <modal-info v-if="showModal" url_redirect="">
+                <h3 slot="header" class="action"><i class="fas fa-info-circle"></i>Información</h3>
+                <div slot="body">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            </modal-info>
+        </div>
+    {% endif %}
+    <div id="componente_borrar">
+        <modal-borrar v-if="showModal">
+            <h3 slot="header" class="action"><i class="fas fa-exclamation-triangle "></i>¡Aviso!</h3>
+            <div slot="body">
+                <p>¿Está seguro de que desea eliminar esta publicidad?</p>
+            </div>
+        </modal-borrar>
+    </div>
+    <label for="segmentoSelect">Seleccione un segmento</label>
+    <select name="dia" id="segmentoSelect" class="custom-select">
         <option selected disabled>--</option>
-        {% for emisora in emisoras %}
-            <option value="{{ emisora.id }}">{{ emisora.nombre }}</option>
+        {% for segmento in segmentos %}
+            <option value="{{ segmento.id }}">{{ segmento.nombre }}</option>
         {% endfor %}
     </select>
     <div class="table-container">
@@ -24,9 +44,11 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Logo</th>
-                    <th>Nombre</th>
-                    <th>Horario</th>
+                    <th>Imagen</th>
+                    <th>Titulo</th>
+                    <th>Cliente</th>
+                    <th>Emisora</th>
+                    <th>Frecuencias</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -38,5 +60,11 @@
 {% block page_script %}
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-    <script src="{% static 'webAdminRadio/js/datatables.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/datatable_publicidad.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/BorrarComponent.js' %}"></script>
+    <script>
+        function showWarning(id){
+            contenedorBorrar.$data.showModal = true;
+        }
+    </script>    
 {% endblock %}
