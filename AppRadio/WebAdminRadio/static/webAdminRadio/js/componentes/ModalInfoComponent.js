@@ -11,7 +11,7 @@ const modalInfo=  {
     },
     methods:{
         redirectToPage(){
-            if(this.url_redirect!= ""){
+            if(this.url_redirect != ""){
                 location.href= this.url_redirect;
             }
             else{

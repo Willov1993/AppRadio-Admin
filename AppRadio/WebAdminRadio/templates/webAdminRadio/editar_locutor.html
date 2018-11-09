@@ -1,8 +1,8 @@
 {% extends 'webAdminRadio/base_site.html' %}
 {% load static from staticfiles %}
 {% block page_style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/agregar_segmento.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/componentes/modal_info.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/agregar_locutor.css' %}">
 {% endblock %}
 {% block content %}
     {% if error %}
@@ -28,35 +28,35 @@
     </div>
     {% endif %}
     <h4><b>Información del Locutor</b></h4>
-    <form id="addLocutor" onsubmit="return validate()" action="{% url 'webadminradio:agregar_locutor' %}" method="POST" enctype="multipart/form-data">
+    <form id="addLocutor" onsubmit="return validate()" action="{% url 'webadminradio:editar_locutor' locutor.id }" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <!-- Nombre del locutor -->
         <div class="form-group row">
             <label for="nombre" class="col-sm-1 col-form-label">Nombre</label>
             <div class="col-sm-11">
-                <input id="nombre" name="nombre" type="text" class="form-control" oninvalid="this.setCustomValidity('Ingrese un nombre válido')" oninput="this.setCustomValidity('')" required>
+                <input id="nombre" name="nombre" type="text" class="form-control" value="{{ locutor.first_name }}" oninvalid="this.setCustomValidity('Ingrese un nombre válido')" oninput="this.setCustomValidity('')" required>
             </div>
         </div>
         <div class="form-group row">
             <label for="apellido" class="col-sm-1 col-form-label">Apellido</label>
             <div class="col-sm-11">
-                <input id="apellido" name="apellido" type="text" class="form-control" oninvalid="this.setCustomValidity('Ingrese un apellido válido')" oninput="this.setCustomValidity('')" required>
+                <input id="apellido" name="apellido" type="text" class="form-control" value="{{ locutor.last_name }}" oninvalid="this.setCustomValidity('Ingrese un apellido válido')" oninput="this.setCustomValidity('')" required>
             </div>
         </div>
         <!-- Fecha de Nacimiento -->
         <div class="form-group">
             <label for="fechaNac">Fecha de Nacimiento</label>
-            <input id="fechaNac" name="fechaNac" type="date" class="form-control" oninvalid="this.setCustomValidity('Ingrese una fecha')" oninput="this.setCustomValidity('')" required>
+            <input id="fechaNac" name="fechaNac" type="date" class="form-control" value="{{ locutor.fecha_nac|date:'Y-m-d' }}"oninvalid="this.setCustomValidity('Ingrese una fecha')" oninput="this.setCustomValidity('')" required>
         </div>
         <!-- E-mail -->
         <div class="form-group">
             <label for="email">Direccion de correo electrónico</label>
-            <input id="email" name="email" type="email" class="form-control" oninvalid="this.setCustomValidity('Ingrese una direccion válida')" oninput="this.setCustomValidity('')" required> 
+            <input id="email" name="email" type="email" class="form-control" value="{{ locutor.email }}" oninvalid="this.setCustomValidity('Ingrese una direccion válida')" oninput="this.setCustomValidity('')" required> 
         </div>
         <!-- Teléfono --> 
         <div class="form-group">
             <label for="telefono">Teléfono</label>
-            <input id="telefono" name="telefono" type="text" class="form-control" oninvalid="this.setCustomValidity('Ingrese una fecha')" oninput="this.setCustomValidity('')" required>
+            <input id="telefono" name="telefono" type="text" class="form-control" value="{{ telefono.nro_telefono }}" oninvalid="this.setCustomValidity('Ingrese una fecha')" oninput="this.setCustomValidity('')" required>
         </div>
         <h5><b>Seleccion de programas</b></h5>
         <hr>
@@ -80,7 +80,7 @@
                 <label for="imgSegmento" class="custom-file-label">Foto</label>
                 <input type="file" name="imagen" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg" oninvalid="this.setCustomValidity('Ingrese una imagen para el segmento')" oninput="this.setCustomValidity('')" required>
                 <div class="img-holder">
-                    <img id="preview" class="image" src="{% static 'webAdminRadio/images/placeholder.png' %}">
+                    <img id="preview" class="image" src="{{ locutor.imagen.url }}">
                 </div>
             </div>
         </div>
@@ -93,4 +93,11 @@
     <script src="{% static 'webAdminRadio/js/componentes/EmisoraComponent.js' %}"></script>
     <script src="{% static 'webAdminRadio/js/componentes/RedSocialComponent.js' %}"></script>
     <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
+    <script>
+        var segmentos = {{ segmentos|safe }};
+        contenedorSegmentos.$children[0].$data.segmentosLocutor.pop();
+        for (var i=0; i < segmentos.length; i++){
+            contenedorSegmentos.$children[0].$data.segmentosLocutor.push(segmentos[i]);
+        }
+    </script>
 {% endblock %}

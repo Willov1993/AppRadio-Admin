@@ -67,6 +67,9 @@ class Segmento(models.Model):
         horarios= Horario.objects.filter(pk__in=segmento_horario.objects.filter(idSegmento=self.pk))
         return horarios.filter(dia=dia_actual).values('dia', 'fecha_inicio', 'fecha_fin').order_by('fecha_inicio')
 
+    def get_emisora(self):
+        return self.idEmisora
+
     def __str__(self):
         return self.nombre
 
@@ -109,12 +112,10 @@ class Sugerencia(models.Model):
     activo = models.CharField(max_length = 1, default='A')
 
 class Frecuencia(models.Model):
-    duracion = models.DateTimeField()
-    tipo = models.CharField(max_length = 1)
+    tipo = models.CharField(max_length = 8)
     dia_semana = models.CharField(max_length = 9, blank=True, null=True)
     hora_inicio = models.TimeField(blank=True, null=True)
     hora_fin = models.TimeField(blank=True, null = True)
-    nro_dias = models.IntegerField()
     activo = models.CharField(max_length = 1, default='A')
 
 class Contacto(models.Model):
@@ -180,8 +181,8 @@ class segmento_horario(models.Model):
         return str(self.idSegmento) + " : " + str(self.idHorario)
 
 class segmento_usuario(models.Model):
-    idSegmento = models.ForeignKey(Segmento, on_delete = models.CASCADE)
-    idUsuario = models.ForeignKey(Usuario, on_delete = models.CASCADE)
+    idSegmento = models.ForeignKey(Segmento, on_delete=models.CASCADE)
+    idUsuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
 
 class segmento_publicidad(models.Model):
     idSegmento = models.ForeignKey(Segmento, on_delete=models.CASCADE)
@@ -203,7 +204,7 @@ class RedSocial_emisora(models.Model):
         return "{0} | {1}".format(self.idEmisora.nombre,self.nombre)
 
 class frecuencia_publicidad(models.Model):
-    idSegmento = models.ForeignKey(Segmento, on_delete = models.CASCADE)
+    idPublicidad = models.ForeignKey(Publicidad, on_delete = models.CASCADE)
     idFrecuencia = models.ForeignKey(Frecuencia, on_delete = models.CASCADE)
 
 class Auditoria(models.Model):

@@ -11,3 +11,8 @@ th {
 .custom-select {
     width: 25%;
 }
+
+.table_lbl {
+    display: block;
+    text-align: center;
+}

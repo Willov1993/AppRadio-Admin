@@ -1,14 +1,15 @@
-$("#emisoraSelect").change(function () {
-    var id_emisora = $("#emisoraSelect option:selected").val();
-    getSegmentos(id_emisora);
+//id del comboboxxxx
+$("#segmentoSelect").change(function () {
+    var id_segmento = $("#segmentoSelect option:selected").val();
+    getPublicidad(id_segmento);
 });
 
-function getSegmentos(emisora) {
+function getPublicidad(segmento) {
     $('#data_table').DataTable({
         "destroy": true,
         "ajax": {
             "method": "GET",
-            "url": "/api/"+ emisora +"/segmentos",
+            "url": "/api/segmento/"+ segmento +"/publicidad",
             "dataSrc": "",
             "error": function(xhr, status, error) {
                 console.log("readyState: " + xhr.readyState);
@@ -21,9 +22,11 @@ function getSegmentos(emisora) {
         "columns": [
             { data: "id"},
             { data: "imagen"},
-            { data: "nombre"},
-            { data: "horarios"},
-            { data: "id"}
+            { data: "titulo"},
+            { data: "cliente"},
+            { data: "frecuencia"},            
+            { data: "emisora"},
+            { data: "id"},
         ],
         columnDefs: [
             { width: 10, targets: 0},

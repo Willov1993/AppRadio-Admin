@@ -8,7 +8,7 @@ function getSegmentos(emisora) {
         "destroy": true,
         "ajax": {
             "method": "GET",
-            "url": "/api/"+ emisora +"/segmentos",
+            "url": "/api/emisora/"+ emisora +"/segmentos",
             "dataSrc": "",
             "error": function(xhr, status, error) {
                 console.log("readyState: " + xhr.readyState);
@@ -41,7 +41,7 @@ function getSegmentos(emisora) {
             { width: 150, className: "text-center", targets: 4, render: function(data){
                 return `<a href="/webadmin/segmentos/` + data + `" class="btn btn-primary btn-sm" role="button"><i class="fas fa-eye"></i></a>
                         <a href="/webadmin/segmentos/` + data + `/editar" class="btn btn-success btn-sm" role="button"><i class="fas fa-pen"></i></a>
-                        <a href="#" class="btn btn-danger btn-sm" role="button"><i class="fas fa-times"></i></a>
+                        <a href="#" onclick="showWarning(` + data + `)" class="btn btn-danger btn-sm" role="button"><i class="fas fa-times"></i></a>
                         `
             }},
         ],

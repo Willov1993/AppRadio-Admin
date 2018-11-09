@@ -12,9 +12,10 @@ const Horario = {
     methods: {
         agregarDia(){
             this.horarios.push({
+                'tipo': null, 
                 'dia': null,
-                'fecha_inicio': null,
-                'fecha_fin': null
+                'inicio': null,
+                'fin': null
             })
         },
         eliminarDia(indice){
@@ -27,6 +28,16 @@ const Horario = {
     template:/*html*/`
     <div>
         <div v-for="(horario, index) in horarios" v-bind:key="index" class="form-row">
+            <div class="form-group col-md-3">
+                <label>Frecuencia</label>
+                <select v-model="horario.tipo" name="tipo" id="tipoInput" class="custom-select form-control" required>
+                    <option value="Diaria">Diaria</option>
+                    <option value="Semanal">Semanal</option>
+                    <option value="Mensual">Mensual</option>
+                    <option value="Anual">Anual</option>
+                </select>
+            </div>
+
             <div class="form-group col-md-3">
                 <label>Dia</label>
                 <select v-model="horario.dia" name="dia" id="diaInput" class="custom-select form-control" required>
@@ -41,11 +52,11 @@ const Horario = {
             </div>
             <div class="form-group col-md-3">
                 <label>Hora de inicio</label>
-                <input v-model="horario.fecha_inicio" name="inicio" type="time" class="form-control" required>
+                <input v-model="horario.inicio" name="inicio" type="time" class="form-control" required>
             </div>
             <div class="form-group col-md-3">
                 <label>Hora fin</label>
-                <input v-model="horario.fecha_fin" name="fin" type="time" class="form-control" required>
+                <input v-model="horario.fin" name = "fin" type="time" class="form-control" required>
             </div>
             <div class="form-group col-md-3" id="btn-eliminar-div">
                 <div id="btn-eliminar"">
@@ -53,7 +64,7 @@ const Horario = {
                 </div>
             </div>
         </div>
-        <button type="button" class="btn btn-primary" id="addHorario" @click="agregarDia">Agregar otro horario</button>
+        <button type="button" class="btn btn-primary" id="addHorario" @click="agregarDia">Agregar otra frecuencia</button>
     </div>
     `
 }
@@ -65,4 +76,4 @@ var contenedorHorario = new Vue({
         'horario': Horario
     }
 })
-//contenedorHorario.$children[0].$data.horarios.push(objeto);
+

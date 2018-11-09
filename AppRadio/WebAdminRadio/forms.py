@@ -1,5 +1,6 @@
 from django import forms
 from .models import Segmento, Horario, Publicidad, Frecuencia
+from accounts.models import Usuario
 
 # field_name_mapping es el diccionario con los names que estarán en los forms,
 # que no deben ser iguales a los campos de los modelos
@@ -45,11 +46,12 @@ class FrecuenciaForm(forms.ModelForm):
 
     def add_prefix(self, field_name):
         field_name_mapping = {
-            'fecha_inicio': 'inicio',
-            'fecha_fin': 'fin'
+            'hora_inicio': 'inicio',
+            'hora_fin': 'fin',
+            'dia_semana': 'dia',
         }
         field_name = field_name_mapping.get(field_name, field_name)
-        return super(HorarioForm, self).add_prefix(field_name)
+        return super(FrecuenciaForm, self).add_prefix(field_name)
 
 
 class SegmentoForm(forms.ModelForm):
@@ -88,3 +90,24 @@ class HorarioForm(forms.ModelForm):
         }
         field_name = field_name_mapping.get(field_name, field_name)
         return super(HorarioForm, self).add_prefix(field_name)
+
+class UsuarioForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = [ 
+            'first_name', 
+            'last_name', 
+            'email', 
+            'fecha_nac', 
+            'imagen', 
+            'rol'
+        ]
+
+    def add_prefix(self, field_name):
+        field_name_mapping = {
+            'first_name': 'nombre',
+            'last_name': 'apellido',
+            'fecha_nac': 'fechaNac',
+        }
+        field_name = field_name_mapping.get(field_name, field_name)
+        return super(UsuarioForm, self).add_prefix(field_name)

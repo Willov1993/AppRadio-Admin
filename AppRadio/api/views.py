@@ -21,7 +21,11 @@ from rest_framework.permissions import AllowAny
 import datetime
 # Create your views here.
 
-DIAS=["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"]
+DIAS = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
+
+class ListUsuarios(generics.ListAPIView):
+    serializer_class = serializers.UsuarioSerializer
+    queryset = Usuario.objects.all()
 
 class ListSegmento(generics.ListCreateAPIView):
     queryset = models.Segmento.objects.all()
@@ -56,7 +60,7 @@ class CreateUser(generics.CreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = serializers.UsuarioSerializer
 
-class CreateUserA(APIView,mixins.CreateModelMixin):
+class CreateUserA(APIView, mixins.CreateModelMixin):
     permission_classes = (AllowAny,)
 
 
@@ -74,9 +78,40 @@ class TwitterLogin(SocialLoginView):
     serializer_class = TwitterLoginSerializer
     adapter_class = TwitterOAuthAdapter
 
-class ListEmisoraSegmento(generics.ListAPIView):
+# Lista los segmentos de una emisora
+class ListEmisoraSegmentos(generics.ListAPIView):
     serializer_class = serializers.SegmentoSerializerFull
 
     def get_queryset(self):
         emisora = self.kwargs['id_emisora']
-        return models.Segmento.objects.filter(idEmisora=emisora)
+        return models.Segmento.objects.filter(idEmisora=emisora, activo='A')
+
+# Lista un segmento de una emisora
+class ListEmisoraSegmento(generics.RetrieveAPIView):
+    serializer_class = serializers.SegmentoSerializerFull
+
+    def get_object(self):
+        emisora = self.kwargs['id_emisora']
+        segmento = self.kwargs['id_segmento']
+        return models.Segmento.objects.get(id=segmento, idEmisora=emisora, activo='A')
+
+
+class ListLocutores(generics.ListAPIView):
+    serializer_class = serializers.LocutoresSerializer
+
+    def get_serializer_context(self):
+        return {'segmento': self.kwargs['id_segmento']}
+
+    def get_queryset(self):
+        segmento = self.kwargs['id_segmento']
+        return Usuario.objects.filter(id__in=models.segmento_usuario.objects.filter(idSegmento=segmento).values('idUsuario'), is_active=True)
+
+class ListPublicidad(generics.ListAPIView):
+    serializer_class = serializers.PublicidadSerializer
+    #
+    def get_serializer_context(self):
+        return {'segmento': self.kwargs['id_segmento']}    
+
+    def get_queryset(self):
+        segmento = self.kwargs['id_segmento']
+        return models.Publicidad.objects.filter(id__in=models.segmento_publicidad.objects.filter(idSegmento=segmento).values('idPublicidad'))        
