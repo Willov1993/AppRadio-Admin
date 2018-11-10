@@ -2,12 +2,33 @@
 {% load webadmin_tags %}
 {% load static from staticfiles %}
 {% block page_style %}
-    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/emisoras.css' %}"
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/emisoras.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/componentes/modal_info.css' %}">
 {% endblock %}
 {% block agregar_button %}
     <a href="{% url 'webadminradio:agregar_emisora' %}" class="btn btn-primary btn-md ml-auto action" role="button"><i class="fas fa-plus-circle"></i>Agregar Emisora</a>
 {% endblock %}
 {% block content %}
+    {% if messages %}
+        <div id="componente_modal_info">
+            <modal-info v-if="showModal" url_redirect="">
+                <h3 slot="header" class="action"><i class="fas fa-info-circle"></i>Información</h3>
+                <div slot="body">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            </modal-info>
+        </div>
+    {% endif %}
+    <div id="componente_borrar">
+        <modal-borrar v-if="showModal" url_redirect="{% url 'webadminradio:borrar_emisora' 1 %}">
+            <h3 slot="header" class="action"><i class="fas fa-exclamation-triangle "></i>¡Aviso!</h3>
+            <div slot="body">
+                <p>¿Está seguro de eliminar esta emisora?</p>
+            </div>
+        </modal-borrar>
+    </div>
     <div class="emisoras">
         {% for emisora in emisoras %}
         <div class="wrapper">
@@ -24,8 +45,8 @@
             </div>
             <div class="btn-wrapper">
                 <div class="act-buttons">
-                    <a href="{% url 'webadminradio:modificar_emisora' emisora.id %}" class="btn btn-primary btn-md action a-btn" role="button"><i class="fas fa-pen"></i>Editar información</a>
-                    <a href="#" class="btn btn-primary btn-md action a-btn" role="button"><i class="fas fa-times"></i>Elimiar Radio</a>
+                    <a href="{% url 'webadminradio:editar_emisora' emisora.id %}" class="btn btn-primary btn-md action a-btn" role="button"><i class="fas fa-pen"></i>Editar información</a>
+                    <a href="#"  onclick="showWarning(` + data + `)" class="btn btn-primary btn-md action a-btn" role="button"><i class="fas fa-times"></i>Eliminar Radio</a>
                 </div>
                 <div class="info">
                     <p><b>Segmentos registrados:</b> {% get_cant_segmentos emisora %}</p>
@@ -38,4 +59,11 @@
     </div>
 {% endblock %}
 {% block page_script %}
+    <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/BorrarComponent.js' %}"></script>
+    <script>
+        function showWarning(id){
+            contenedorBorrar.$data.showModal = true;
+        }
+    </script>
 {% endblock %}

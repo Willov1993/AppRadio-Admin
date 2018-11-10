@@ -37,6 +37,7 @@ $("#segmentoSelect").change(function () {
     var seg_json;
     $.getJSON('/api/emisora/' + id_emisora + '/segmento/' + id_segmento, function (data){
         seg_json = data;
+        console.log(seg_json);
         $(".image").attr('src', seg_json.imagen);
         $("#segName").html('<b>' + seg_json.nombre + '</b>');
         $("#segSlogan").html('<i class="fas fa-comment-alt icon"></i>' + seg_json.slogan);

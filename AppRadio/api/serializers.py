@@ -29,7 +29,8 @@ class SegmentoSerializerFull(serializers.ModelSerializer):
 
     class Meta:
         model = models.Segmento
-        fields = ('id', 'nombre', 'imagen', 'horarios')
+        fields = ('id', 'nombre', 'imagen', 'slogan', 'horarios')
+
 #SEGMENTOS DEL DIA ACTUAL
 class SegmentoSerializerToday(serializers.ModelSerializer):
     horarios = serializers.ReadOnlyField(source="get_horario_dia_actual")
@@ -75,7 +76,9 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
     class Meta:
         fields = (
+            'id',
             'username',
+            'imagen',
             'email',
             'first_name',
             'last_name',

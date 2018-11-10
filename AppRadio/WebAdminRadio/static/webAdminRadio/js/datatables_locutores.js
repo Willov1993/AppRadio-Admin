@@ -30,7 +30,13 @@ function getSegmentos(segmento) {
         columnDefs: [
             { width: 10, className: "text-center", targets: 0},
             { width: 200, targets: 1, render: function(data) {
-                return '<img src="' + data + '" width="100%">';
+                var image = '';
+                if (data == null){
+                    image = `<img src="/static/webAdminRadio/images/generic_avatar.png" width="100%">`;
+                } else {
+                    image = '<img src="' + data + '" width="100%">';
+                }
+                return image;
             }},
             { width: 250, targets: 2},
             { width: 250, targets: 3},

@@ -80,7 +80,11 @@
                 <label for="imgSegmento" class="custom-file-label">Foto</label>
                 <input type="file" name="imagen" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg" oninvalid="this.setCustomValidity('Ingrese una imagen para el segmento')" oninput="this.setCustomValidity('')" required>
                 <div class="img-holder">
-                    <img id="preview" class="image" src="{{ locutor.imagen.url }}">
+                    {% if locutor.imagen %}
+                        <img id="preview" class="image" src="{{ locutor.imagen.url }}">    
+                    {% else %}
+                        <img id="preview" class="image" src="{% static 'webAdminRadio/images/generic_avatar.png' %}">
+                    {% endif %}
                 </div>
             </div>
         </div>

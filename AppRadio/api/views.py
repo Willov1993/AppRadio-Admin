@@ -25,7 +25,7 @@ DIAS = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"
 
 class ListUsuarios(generics.ListAPIView):
     serializer_class = serializers.UsuarioSerializer
-    queryset = Usuario.objects.all()
+    queryset = Usuario.objects.filter(is_active=True)
 
 class ListSegmento(generics.ListCreateAPIView):
     queryset = models.Segmento.objects.all()

@@ -301,6 +301,7 @@ def modificar_emisora(request, id_emisora):
             context['error'] = emisora_form.errors
         return render(request, 'webAdminRadio/modificar_emisora.html', context)
     return render(request, 'webAdminRadio/modificar_emisora.html', context)
+
 @login_required
 def locutores(request):
     list_segmentos = Segmento.objects.filter(activo='A')
@@ -385,7 +386,6 @@ def modificar_locutor(request, id_locutor):
         'segmentos': json.dumps(list(list_segmentos.values('id', 'nombre')), cls=DjangoJSONEncoder)
     }
     if request.POST:
-        print(request.POST)
         usuario_form = UsuarioForm(request.POST, request.FILES, instance=edit_locutor)
         telf = request.POST['telefono']
         telefono_form = TelefonoForm({'telefono': telf}, instance=edit_telef)

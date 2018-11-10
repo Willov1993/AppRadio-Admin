@@ -174,6 +174,9 @@ class Telefono_Usuario(models.Model):
     idUsuario = models.ForeignKey(Usuario, on_delete = models.CASCADE)
     nro_telefono = models.CharField(max_length=10)
 
+    def __str__(self):
+        return self.idUsuario.first_name + ' ' + self.idUsuario.last_name + ' : ' + self.nro_telefono
+
 class RedSocial_usuario(models.Model):
     idUsuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
     nombre = models.CharField(max_length = 20)

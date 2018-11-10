@@ -7,7 +7,11 @@
 {% block content %}
     <h2><b>{{ locutor.first_name }}  {{ locutor.last_name }}</b></h2>
     <div class="img-container">
-        <img class="image info" src="{{ locutor.imagen.url }}">
+        {% if locutor.imagen %}
+            <img class="image info" src="{{ locutor.imagen.url }}">
+        {% else %}
+            <img class="image info" src="{% static 'webAdminRadio/images/generic_avatar.png' %}">
+        {% endif %}
     </div>
     <div class="row info">
         <label class="col-sm-3"><b>Fecha de nacimiento:</b></label>
