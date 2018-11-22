@@ -114,5 +114,5 @@ class ListPublicidad(generics.ListAPIView):
 
     def get_queryset(self):
         segmento = self.kwargs['id_segmento']
-        return models.Publicidad.objects.filter(id__in=models.segmento_publicidad.objects.filter(idSegmento=segmento).values('idPublicidad'))    
+        return models.Publicidad.objects.filter(id__in=models.segmento_publicidad.objects.filter(idSegmento=segmento).values('idPublicidad'), estado = 'A')    
         

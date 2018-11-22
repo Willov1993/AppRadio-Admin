@@ -64,7 +64,9 @@
     <script src="{% static 'webAdminRadio/js/componentes/BorrarComponent.js' %}"></script>
     <script>
         function showWarning(id){
-            contenedorBorrar.$data.showModal = true;
-        }
+            contenedorBorrar.$data.objects_to_delete = "publicidad";
+            contenedorBorrar.$data.id = id;
+            contenedorBorrar.$data.showModal = true;        
+            }
     </script>    
 {% endblock %}

@@ -46,7 +46,7 @@
             <div class="btn-wrapper">
                 <div class="act-buttons">
                     <a href="{% url 'webadminradio:editar_emisora' emisora.id %}" class="btn btn-primary btn-md action a-btn" role="button"><i class="fas fa-pen"></i>Editar información</a>
-                    <a href="#"  onclick="showWarning(` + data + `)" class="btn btn-primary btn-md action a-btn" role="button"><i class="fas fa-times"></i>Eliminar Radio</a>
+                    <a href="#"  onclick="showWarning({{ emisora.id }})" class="btn btn-primary btn-md action a-btn" role="button"><i class="fas fa-times"></i>Eliminar Radio</a>
                 </div>
                 <div class="info">
                     <p><b>Segmentos registrados:</b> {% get_cant_segmentos emisora %}</p>
@@ -63,7 +63,8 @@
     <script src="{% static 'webAdminRadio/js/componentes/BorrarComponent.js' %}"></script>
     <script>
         function showWarning(id){
-            contenedorBorrar.$data.showModal = true;
-        }
+            contenedorBorrar.$data.objects_to_delete = "emisoras";
+            contenedorBorrar.$data.id = id;
+            contenedorBorrar.$data.showModal = true;        }
     </script>
 {% endblock %}
