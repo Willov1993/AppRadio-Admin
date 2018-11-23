@@ -200,7 +200,7 @@ def agregar_emisora(request):
 
 @login_required
 def agregar_publicidad(request):
-    list_emisoras = Emisora.objects.all()
+    list_emisoras = Emisora.objects.filter(activo='A')
     context = {'title': 'Agregar Publicidad', 'emisoras': list_emisoras}
     if request.POST:
         print(request.POST)
@@ -426,7 +426,7 @@ def modificar_publicidad(request, id_publicidad):
     horarios = Frecuencia.objects.filter(pk__in=frecuencia_publicidad.objects.filter(idPublicidad=edit_publicidad))
     list_emisoras = Emisora.objects.all()
     list_segmentos = Segmento.objects.filter(pk__in=segmento_publicidad.objects.filter(idPublicidad=edit_publicidad).values('idSegmento'))
-    print(segmento_publicidad.objects.filter(idPublicidad=edit_publicidad))
+    list_segmentos_publicidad = segmento_publicidad.objects.filter(idPublicidad=edit_publicidad)
     context = {
         'title': 'Editar Publicidad',
         'publicidad': edit_publicidad,
@@ -439,7 +439,7 @@ def modificar_publicidad(request, id_publicidad):
         if publicidad_form.is_valid():
             publicidad_form.save()
             horarios.delete()
-            list_segmentos.delete()
+            list_segmentos_publicidad.delete()
             for i in range(len(request.POST.getlist('dia'))):
                 frecuencia_form = FrecuenciaForm({
                     'tipo': request.POST.getlist('tipo')[i],
@@ -457,10 +457,12 @@ def modificar_publicidad(request, id_publicidad):
                     context['error'] = frecuencia_form.errors
                     break
             for s in request.POST.getlist('segmento'):
+                print(s)
                 segmento_publicidad.objects.create(
                     idPublicidad=edit_publicidad,
                     idSegmento=Segmento.objects.get(id=s)
-                )                    
+                )
+            if 'error' not in context:                   
                 context['success'] = '¡El registro ha sido modificado con éxito!'
         else:
             context['error'] = publicidad_form.errors

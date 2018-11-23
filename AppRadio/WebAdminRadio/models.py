@@ -96,7 +96,7 @@ class Publicidad(models.Model):
     cliente = models.CharField(max_length = 80)
     descripcion = models.CharField(max_length = 350)
     url = models.CharField(max_length = 150)
-    estado = models.CharField(max_length = 1)
+    estado = models.CharField(max_length = 1, default='A')
     imagen = models.ImageField(upload_to = upload_location, blank=None)
 
     def __str__(self):
