@@ -68,7 +68,7 @@
     <div class="form-group">
         <div class="custom-file">
             <label for="imgSegmento" class="custom-file-label">Foto</label>
-            <input type="file" name="imagen" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg" oninvalid="this.setCustomValidity('Ingrese una imagen para la publicidad')" oninput="this.setCustomValidity('')" required>
+            <input type="file" name="imagen" class="custom-file-input" id="imgSegmento" src="{{ segmento.imagen.url }}" accept=".png, .jpg, .jpeg" oninvalid="this.setCustomValidity('Ingrese una imagen para la publicidad')" oninput="this.setCustomValidity('')" required>
             <div class="img-holder">
                 <img id="preview" class="image" src="{{ publicidad.imagen.url }}">
             </div>

@@ -38,7 +38,7 @@ const Horario = {
                 </select>
             </div>
 
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
                 <label>Dia</label>
                 <select v-model="horario.dia_semana" name="dia_semana" id="diaInput" class="custom-select form-control" required>
                     <option value="Lunes">Lunes</option>
@@ -50,15 +50,15 @@ const Horario = {
                     <option value="Domingo">Domingo</option>
                 </select>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
                 <label>Hora de inicio</label>
                 <input v-model="horario.hora_inicio" name="hora_inicio" type="time" class="form-control" required>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
                 <label>Hora fin</label>
                 <input v-model="horario.hora_fin" name = "hora_fin" type="time" class="form-control" required>
             </div>
-            <div class="form-group col-md-3" id="btn-eliminar-div">
+            <div class="form-group col-md-2" id="btn-eliminar-div">
                 <div id="btn-eliminar"">
                 <button v-if="index != 0" type="button" class="btn btn-primary" id="addHorario" @click="eliminarDia">Eliminar</button>
                 </div>

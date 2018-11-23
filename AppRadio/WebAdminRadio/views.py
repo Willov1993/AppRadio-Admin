@@ -27,7 +27,7 @@ def emisoras(request):
 
 @login_required
 def publicidad(request):   
-    publicidad = Publicidad.objects.filter(estado='A')   
+    publicidad = Publicidad.objects.filter(estado='A')
 
     list_segmentos = Segmento.objects.filter(activo='A')
     context = {
@@ -36,8 +36,6 @@ def publicidad(request):
         'publicidad':publicidad
     }
     return render(request, 'webAdminRadio/publicidad.html', context)
-
-
 
 @login_required
 def agregar_emisora(request):
@@ -449,6 +447,7 @@ def modificar_publicidad(request, id_publicidad):
                 })
                 if frecuencia_form.is_valid():
                     frecuencia_form.save()
+                    print("Se guardo la frecuencia")
                     frecuencia_publicidad.objects.create(
                         idPublicidad=edit_publicidad,
                         idFrecuencia=Frecuencia.objects.order_by('-id')[0]
