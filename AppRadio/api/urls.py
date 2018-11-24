@@ -18,4 +18,5 @@ urlpatterns = [
     path('rest-auth/facebook/', FacebookLogin.as_view(), name='fb_login'),
     path('rest-auth/twitter/', TwitterLogin.as_view(), name='twitter_login'),
     path('rest-auth/register/', CreateUser.as_view(), name='usuario_register'),
+    path('publicidad/<int:id_publicidad>/frecuencias', views.ListFrecuencias.as_view(), name='frecuencias'),
 ]

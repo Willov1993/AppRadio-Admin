@@ -217,7 +217,7 @@ def agregar_publicidad(request):
                     frecuencia_form.save()
                     frecuencia_publicidad.objects.create(
                         idPublicidad=Publicidad.objects.order_by('-id')[0],
-                        idFrecuencia = Frecuencia.objects.order_by('-id')[0]
+                        idFrecuencia=Frecuencia.objects.order_by('-id')[0]
                     )
                 else:
                     context['error'] = frecuencia_form.errors
@@ -475,6 +475,14 @@ def borrar_emisora(request, id_emisora):
     delete_segmento.save()
     messages.success(request, 'La emisora ha sido eliminada')
     return redirect('webadminradio:emisoras')
+
+@login_required
+def borrar_segmento(request, id_segmento):
+    delete_segmento = Segmento.objects.get(id=id_segmento)
+    delete_segmento.activo = 'I'
+    delete_segmento.save()
+    messages.success(request, 'El segmento ha sido eliminado')
+    return redirect('webadminradio:segmentos')
 
 @login_required
 def borrar_publicidad(request, id_publicidad):

@@ -10,6 +10,7 @@ urlpatterns = [
     path('segmentos/agregar', views.agregar_segmento, name="agregar_segmento"), # Muestra la pantalla para agregar segmento
     path('segmentos/<int:id_segmento>', views.ver_segmento, name="ver_segmento"), # Muestra la información un segmento
     path('segmentos/<int:id_segmento>/editar', views.modificar_segmento, name="editar_segmento"), # Muestra la pantalla para modificar un segmento    
+    path('segmentos/<int:id_segmento>/eliminar', views.borrar_segmento, name="borrar_segmento"), # URL para borrar un segmento
     path('emisoras', views.emisoras, name='emisoras'), #Pagina donde se muestran las emisoras
     path('emisoras/agregar', views.agregar_emisora, name="agregar_emisora"), # Muestra la pantalla para agregar emisora
     path('emisoras/<int:id_emisora>/editar', views.modificar_emisora, name='editar_emisora'), # Muestra la pantalla para modificar emisora

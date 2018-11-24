@@ -114,5 +114,11 @@ class ListPublicidad(generics.ListAPIView):
 
     def get_queryset(self):
         segmento = self.kwargs['id_segmento']
-        return models.Publicidad.objects.filter(id__in=models.segmento_publicidad.objects.filter(idSegmento=segmento).values('idPublicidad'), estado = 'A')    
-        
+        return models.Publicidad.objects.filter(id__in=models.segmento_publicidad.objects.filter(idSegmento=segmento).values('idPublicidad'), estado='A')
+
+class ListFrecuencias(generics.ListAPIView):
+    serializer_class = serializers.FrecuenciaSerializer
+
+    def get_queryset(self):
+        publicidad = self.kwargs['id_publicidad']
+        return models.Frecuencia.objects.filter(id__in=models.frecuencia_publicidad.objects.filter(idPublicidad=publicidad))
