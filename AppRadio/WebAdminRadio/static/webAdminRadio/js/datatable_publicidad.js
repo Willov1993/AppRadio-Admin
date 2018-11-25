@@ -9,7 +9,7 @@ function getPublicidad(segmento) {
         "destroy": true,
         "ajax": {
             "method": "GET",
-            "url": "/api/segmento/"+ segmento +"/publicidad",
+            "url": "/api/segmento/"+ segmento + "/publicidad",
             "dataSrc": "",
             "error": function(xhr, status, error) {
                 console.log("readyState: " + xhr.readyState);
@@ -25,7 +25,7 @@ function getPublicidad(segmento) {
             { data: "titulo"},
             { data: "cliente"},            
             { data: "emisora"},
-            { data: "frecuencia"},            
+            { data: "id"},            
             { data: "id"}
         ],
         columnDefs: [
@@ -37,7 +37,7 @@ function getPublicidad(segmento) {
             { width: 100, targets: 3},
             { width: 200, targets: 4},            
             { width: 80, className: "text-center", targets:5 , render: function(data){
-                return `<a href="api/publicidad" + publicidad + "/frecuencias/"` + data + `" class="btn btn-primary btn-md ml-auto action" role="button">Ver frecuencias</i></a>
+                return `<a href="#" onclick="showTable(` + data + `)" class="btn btn-primary btn-md ml-auto action" role="button">Ver frecuencias</i></a>
                         `
             }},                    
             { width: 150, className: "text-center", targets: 6, render: function(data){

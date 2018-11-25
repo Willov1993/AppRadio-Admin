@@ -1,9 +1,11 @@
 function getFrecuencias(publicidad) {
-    $('#data_table').DataTable({
+    console.log("/api/publicidad/"+ publicidad + "/frecuencias");
+    console.log($('#table_frecuencias').length);
+    $('#table_frecuencias').DataTable({
         "destroy": true,
         "ajax": {
             "method": "GET",
-            "url": "/api/publicidad/"+ publicidad +"/frecuencias",
+            "url": "/api/publicidad/"+ publicidad + "/frecuencias",
             "dataSrc": "",
             "error": function(xhr, status, error) {
                 console.log("readyState: " + xhr.readyState);
@@ -14,7 +16,6 @@ function getFrecuencias(publicidad) {
             },
         },
         "columns": [
-            { data: "id"},
             { data: "tipo"},
             { data: "dia_semana"},
             { data: "hora_inicio"},            
@@ -22,10 +23,9 @@ function getFrecuencias(publicidad) {
         ],
         columnDefs: [
             { width: 150, targets: 0},
-            { width: 150, targets: 1},
-            { width: 250, targets: 2},
-            { width: 100, targets: 3},
-            { width: 200, targets: 4},            
+            { width: 250, targets: 1},
+            { width: 100, targets: 2},
+            { width: 200, targets: 3},
         ],
     });
 }

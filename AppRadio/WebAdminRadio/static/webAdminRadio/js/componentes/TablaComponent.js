@@ -1,13 +1,10 @@
-const modalBorrar = {
+const modalTabla = {
     data(){
         return {
         }
     },
     methods: {
-        redirectToPage(){
-            location.href = this.$parent.getURL;
-        },
-        cancelar(){
+        aceptar(){
             this.$parent.showModal = false;
         }
     },
@@ -27,21 +24,23 @@ const modalBorrar = {
                             <slot name="body"></slot>
                         </div>
                         <div class="table-container">
-                            <table id="data_table" class="table table-striped table-bordered dt-body-center">
+                            <table id="table_frecuencias" class="table table-striped table-bordered dt-body-center">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Imagen</th>
-                                        <th>Titulo</th>
-                                        <th>Cliente</th>
-                                        <th>Emisora</th>
-                                        <th>Frecuencias</th>
-                                        <th>Acciones</th>
+                                        <th>Frecuencia</th>
+                                        <th>Dia</th>
+                                        <th>Hora Inicio</th>
+                                        <th>Hora Fin</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="modal-dafault-button btn btn-primary btn-sm" @click="aceptar">
+                                Acpetar
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -51,19 +50,13 @@ const modalBorrar = {
     `
 }
 
-var contenedorBorrar = new Vue({
-    el: '#componente_borrar',
+var contenedorTable = new Vue({
+    el: '#componente_table',
     data: {
         showModal: false,
         id: null,
-        objects_to_delete: null, 
     },
     components: {
-        'modal-borrar': modalBorrar
-    },
-    computed:{
-        getURL(){
-            return '/webadmin/' + this.$data.objects_to_delete + '/' + this.$data.id + '/eliminar'
-        }
+        'modal-borrar': modalTabla
     }
 })

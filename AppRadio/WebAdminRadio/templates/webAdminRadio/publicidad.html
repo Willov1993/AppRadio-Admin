@@ -25,12 +25,20 @@
             </modal-info>
         </div>
     {% endif %}
+    <!-- Pop-up de borrar -->
     <div id="componente_borrar">
         <modal-borrar v-if="showModal">
             <h3 slot="header" class="action"><i class="fas fa-exclamation-triangle "></i>¡Aviso!</h3>
             <div slot="body">
                 <p>¿Está seguro de que desea eliminar esta publicidad?</p>
             </div>
+        </modal-borrar>
+    </div>
+    <!-- Pop-up de la tabla de frecuencias -->
+    <div id="componente_table">
+        <modal-borrar v-if="showModal">
+            <h3 slot="header" class="action"></i>Frecuencias</h3>
+            <div slot="body"></div>
         </modal-borrar>
     </div>
     <label for="segmentoSelect">Seleccione un segmento</label>
@@ -64,11 +72,18 @@
     <script src="{% static 'webAdminRadio/js/datatable_publicidad.js' %}"></script>
     <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
     <script src="{% static 'webAdminRadio/js/componentes/BorrarComponent.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/TablaComponent.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/ver_frecuencias.js' %}"></script>
     <script>
         function showWarning(id){
             contenedorBorrar.$data.objects_to_delete = "publicidad";
             contenedorBorrar.$data.id = id;
             contenedorBorrar.$data.showModal = true;        
-            }
+        }
+
+        function showTable(id){
+            contenedorTable.$data.showModal = true;
+            getFrecuencias(id);
+        }
     </script>
 {% endblock %}
