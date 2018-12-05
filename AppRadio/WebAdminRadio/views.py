@@ -379,7 +379,6 @@ def sugerencias(request):
     page = request.GET.get('page')
 
     list_sugerencias = paginator.get_page(page)
-
     context = {'title': 'Sugerencias', 'sugerencias': list_sugerencias}
     return render(request, 'webAdminRadio/sugerencias.html', context)
 

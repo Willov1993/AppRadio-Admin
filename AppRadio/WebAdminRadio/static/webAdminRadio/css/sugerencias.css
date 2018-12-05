@@ -8,3 +8,12 @@
 .sg_lbl {
     font-weight: bold;
 }
+
+.pagination .active a {
+    background: #3A7390 !important;
+    color: white !important; 
+}
+
+.pagination a {
+    color: #3A7390 !important;
+}
