@@ -17,3 +17,31 @@
 .pagination a {
     color: #3A7390 !important;
 }
+
+/* Reglas de estilo para la barra de buscar */
+.search-container {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.has-search .form-control {
+    padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+
+.info-container {
+    padding: 50px;
+    margin-bottom: 5px;
+    background: #EBEFF5;
+}

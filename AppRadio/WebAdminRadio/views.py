@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Q
 from accounts.models import Usuario
 from .models import *
 from .forms import *
@@ -374,10 +375,16 @@ def modificar_publicidad(request, id_publicidad):
 @login_required
 def sugerencias(request):
     list_sugerencias = Sugerencia.objects.all()
-    paginator = Paginator(list_sugerencias, 2)
-
+    query = request.GET.get("q")
+    if query:
+        list_sugerencias = list_sugerencias.filter(
+            Q(mensaje__icontains=query) |
+            Q(fecha_creacion__icontains=query) |
+            Q(idUsuario__first_name__icontains=query) |
+            Q(idUsuario__last_name__icontains=query)
+        ).distinct()
+    paginator = Paginator(list_sugerencias, 1)
     page = request.GET.get('page')
-
     list_sugerencias = paginator.get_page(page)
     context = {'title': 'Sugerencias', 'sugerencias': list_sugerencias}
     return render(request, 'webAdminRadio/sugerencias.html', context)
