@@ -105,7 +105,6 @@ def agregar_publicidad(request):
     list_emisoras = Emisora.objects.filter(activo='A')
     context = {'title': 'Agregar Publicidad', 'emisoras': list_emisoras}
     if request.POST:
-        print(request.POST)
         publicidad_form = PublicidadForm(request.POST, request.FILES)
         if publicidad_form.is_valid():
             publicidad_form.save()
@@ -351,7 +350,6 @@ def modificar_publicidad(request, id_publicidad):
                 })
                 if frecuencia_form.is_valid():
                     frecuencia_form.save()
-                    print("Se guardo la frecuencia")
                     frecuencia_publicidad.objects.create(
                         idPublicidad=edit_publicidad,
                         idFrecuencia=Frecuencia.objects.order_by('-id')[0]
@@ -360,7 +358,6 @@ def modificar_publicidad(request, id_publicidad):
                     context['error'] = frecuencia_form.errors
                     break
             for s in request.POST.getlist('segmento'):
-                print(s)
                 segmento_publicidad.objects.create(
                     idPublicidad=edit_publicidad,
                     idSegmento=Segmento.objects.get(id=s)
@@ -377,13 +374,17 @@ def sugerencias(request):
     list_sugerencias = Sugerencia.objects.all()
     query = request.GET.get("q")
     if query:
-        list_sugerencias = list_sugerencias.filter(
-            Q(mensaje__icontains=query) |
-            Q(fecha_creacion__icontains=query) |
-            Q(idUsuario__first_name__icontains=query) |
-            Q(idUsuario__last_name__icontains=query)
-        ).distinct()
-    paginator = Paginator(list_sugerencias, 1)
+        try:
+            list_sugerencias = list_sugerencias.filter(Q(fecha_creacion__year=query))
+        except ValueError:
+            list_sugerencias = list_sugerencias.filter(
+                Q(mensaje__icontains=query) |
+                Q(idUsuario__first_name__icontains=query) |
+                Q(idUsuario__last_name__icontains=query) |
+                Q(idSegmento__nombre__icontains=query) |
+                Q(idEmisora__nombre__icontains=query)
+            ).distinct()
+    paginator = Paginator(list_sugerencias, 2)
     page = request.GET.get('page')
     list_sugerencias = paginator.get_page(page)
     context = {'title': 'Sugerencias', 'sugerencias': list_sugerencias}

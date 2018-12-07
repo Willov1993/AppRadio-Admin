@@ -111,11 +111,12 @@ class Tipo_sugerencia(models.Model):
 
 class Sugerencia(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-    mensaje = models.CharField(max_length = 250)
-    idUsuario = models.ForeignKey(Usuario, on_delete = models.DO_NOTHING)
-    idEmisora = models.ForeignKey(Emisora, on_delete = models.DO_NOTHING)
-    idTipo = models.ForeignKey(Tipo_sugerencia, on_delete = models.DO_NOTHING)
-    activo = models.CharField(max_length = 1, default='A')
+    mensaje = models.CharField(max_length=250)
+    idUsuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
+    idEmisora = models.ForeignKey(Emisora, on_delete=models.DO_NOTHING)
+    idSegmento = models.ForeignKey(Segmento, on_delete=models.DO_NOTHING, null=True, blank=True)
+    idTipo = models.ForeignKey(Tipo_sugerencia, on_delete=models.DO_NOTHING)
+    activo = models.CharField(max_length=1, default='A')
 
     def __str__(self):
         return str(self.idUsuario) + " : " + str(self.idTipo)

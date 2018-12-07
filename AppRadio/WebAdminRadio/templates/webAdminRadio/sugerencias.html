@@ -28,14 +28,20 @@
             <div class="row">
                 <div class="col-sm">
                     <label class="sg_lbl">Usuario:</label>
-                    {{ sugerencia.idUsuario }}
+                    <p>{{ sugerencia.idUsuario }}</p>
+                    <label class="sg_lbl">Tipo:</label>
+                    <p>{{ sugerencia.idTipo }}</p>
                 </div>
                 <div class="col-sm">
-                    <label class="sg_lbl">Segmento:</label>
-                    {{ sugerencia.idEmisora }}
+                    <label class="sg_lbl">Emisora:</label>
+                    <p>{{ sugerencia.idEmisora }}</p>
+                    {% if sugerencia.idSegmento %}
+                        <label class="sg_lbl">Segmento</label>
+                        <p>{{ sugerencia.idSegmento }}</p>
+                    {% endif %}
                 </div>
             </div>
-            <label class="sg_lbl">Sugerencia:</label>
+            <label class="sg_lbl">Mensaje:</label>
             <p>{{ sugerencia.mensaje }}</p>
         </div>
         {% endfor %}
