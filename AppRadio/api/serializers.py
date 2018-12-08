@@ -84,6 +84,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
             'last_name',
             'password',
             'fecha_nac',
+            'is_active',
             'rol',
         )
         model = Usuario
