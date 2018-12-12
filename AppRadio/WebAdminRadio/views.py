@@ -371,7 +371,7 @@ def modificar_publicidad(request, id_publicidad):
 
 @login_required
 def sugerencias(request):
-    list_sugerencias = Sugerencia.objects.all()
+    list_sugerencias = Sugerencia.objects.all().order_by("-fecha_creacion")
     query = request.GET.get("q")
     if query:
         try:
