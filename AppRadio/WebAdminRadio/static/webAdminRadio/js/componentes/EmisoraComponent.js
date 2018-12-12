@@ -63,17 +63,25 @@ const Segmento = {
         <div v-for="(segmento, index) in segmentosLocutor" v-bind:key="index">
             <!-- SelectBox de las emisoras -->
             <label for="emisoraSelect">Seleccione la Emisora</label>
-            <select v-model="selected" id="emisoraSelect" class="custom-select form-control" name="emisora" oninvalid="this.setCustomValidity('Ingrese una emisora válida')" required oninput="this.setCustomValidity('')" @change="fillSegmentos($event,index)">
+            <select v-if="segmento.nombre==null" v-model="selected" id="emisoraSelect" class="custom-select form-control" name="emisora" oninvalid="this.setCustomValidity('Ingrese una emisora válida')" required oninput="this.setCustomValidity('')" @change="fillSegmentos($event,index)">
                 <option selected disabled>Seleccione la emisora</option>
                 <option v-for="em in $parent.emisoras" :value="em.id">{{em.nombre}}</option>
+            </select>
+            <select v-else v-model="selected" id="emisoraSelect" class="custom-select form-control" name="emisora" oninvalid="this.setCustomValidity('Ingrese una emisora válida')" required oninput="this.setCustomValidity('')" @change="fillSegmentos($event,index)">
+                <option selected :value="segmento.id">{{segmento.nombre}}</option>
+                <!--option v-for="em in $parent.emisoras" :value="em.id">{{em.nombre}}</option-->
             </select>
             <!-- SelectBox de los segmentos -->
             <label for="segmentoSelect" id="lblSegmento">Seleccione el Segmento</label>
             <div class="form-row">
                 <div class="form-group col-md-2">
-                    <select id="segmentoSelect" name="segmento" class="custom-select form-control" v-bind:disabled="SelectedEmisora()">
+                    <select v-if="segmento.nombre==null" id="segmentoSelect" name="segmento" class="custom-select form-control" v-bind:disabled="SelectedEmisora()">
                         <option selected disabled>Seleccione el segmento</option>
                         <option v-for="seg in $parent.segmentos" :value="seg.id">{{seg.nombre}}</option>
+                    </select>
+                    <select v-else id="segmentoSelect" name="segmento" class="custom-select form-control" v-bind:disabled="SelectedEmisora()">
+                        <option selected :value="segmento.id" >{{segmento.nombre}}</option>
+                        <!--option v-for="seg in $parent.segmentos" :value="seg.id">{{seg.nombre}}</option-->
                     </select>
                 </div>
                 <!-- Boton para eliminar -->

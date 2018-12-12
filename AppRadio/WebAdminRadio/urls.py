@@ -27,4 +27,5 @@ urlpatterns = [
     path('locutores/<int:id_locutor>/eliminar', views.borrar_locutor, name='borrar_locutor'), # URL para borrar un locutor
     path('locutores/asignar/<int:id_locutor>/segmento/<int:id_segmento>', views.asignar_locutor_segmento, name="asignar_locutor_segmento"), # Este URL permite asignar un usuario como locuor a un segmento
     path('sugerencias', views.sugerencias, name="sugerencias"), # URL para ver las sugerencias
+    path('usuarios', views.usuarios, name='usuarios') # URL para ver los usuarios del sistema,
 ]

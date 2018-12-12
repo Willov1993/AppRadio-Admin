@@ -391,6 +391,11 @@ def sugerencias(request):
     return render(request, 'webAdminRadio/sugerencias.html', context)
 
 @login_required
+def usuarios(request):
+    context = {'title': 'Usuarios'}
+    return render(request, 'webAdminRadio/usuarios.html', context)
+
+@login_required
 def borrar_emisora(request, id_emisora):
     delete_segmento = Emisora.objects.get(id=id_emisora)
     delete_segmento.activo = 'I'
