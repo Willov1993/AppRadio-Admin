@@ -66,7 +66,6 @@ def agregar_emisora(request):
         return render(request, 'webAdminRadio/agregar_emisora.html', context)
     return render(request, 'webAdminRadio/agregar_emisora.html', context)    
 
-
 @login_required
 def agregar_segmento(request):
     list_emisoras = Emisora.objects.all()
@@ -101,9 +100,26 @@ def agregar_segmento(request):
     return render(request, 'webAdminRadio/agregar_segmento.html', context)
 
 @login_required
+def agregar_concurso(request):
+    list_usuarios = Usuario.objects.all()
+    list_emisoras = Emisora.objects.filter(activo='A')
+    list_segmentos = Segmento.objects.filter(activo='A')
+    context ={
+        'title': 'Agregar Concurso',
+        'usuarios': list_usuarios,
+        'emisoras': list_emisoras,
+        'segmentos': list_segmentos
+        }
+    return render(request, 'webAdminRadio/agregar_concurso.html', context)
+
+
+@login_required
 def agregar_publicidad(request):
     list_emisoras = Emisora.objects.filter(activo='A')
-    context = {'title': 'Agregar Publicidad', 'emisoras': list_emisoras}
+    context = {
+        'title': 'Agregar Publicidad',
+        'emisoras': list_emisoras
+        }
     if request.POST:
         publicidad_form = PublicidadForm(request.POST, request.FILES)
         if publicidad_form.is_valid():
@@ -136,8 +152,6 @@ def agregar_publicidad(request):
             context['error'] = publicidad_form.errors
         return render(request, 'webAdminRadio/agregar_publicidad.html', context)
     return render(request, 'webAdminRadio/agregar_publicidad.html', context)
-
-
 
 @login_required
 def ver_segmento(request, id_segmento):
@@ -426,4 +440,3 @@ def borrar_locutor(request, id_locutor):
     delete_locutor.save()
     messages.success(request, 'El locutor ha sido eliminado')
     return redirect('webadminradio:locutores')
-
