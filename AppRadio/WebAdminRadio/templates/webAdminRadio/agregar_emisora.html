@@ -5,7 +5,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/componentes/modal_info.css' %}">
 {% endblock %}
 {% block content %}
-    {% if error %}
+    {% if errors %}
+        {% for error in errors %}
         <div id="componente_modal_info">
             <modal-info v-if="showModal" url_redirect="">
                 <h3 slot="header">Error</h3>
@@ -18,6 +19,7 @@
                 </div>
             </modal-info>
         </div>
+        {% endfor %}
     {% endif %}
     {% if success %}
     <div id="componente_modal_info">
@@ -83,7 +85,7 @@
         <div class="form-group">
             <div class="custom-file">
                 <label for="imgSegmento" class="custom-file-label">Logotipo</label>
-                <input name="logo" type="file" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg">
+                <input name="logotipo" type="file" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg">
                 <div class="img-holder">
                     <img id="preview" src="{% static 'webAdminRadio/images/placeholder.png' %}">
                 </div>
@@ -136,7 +138,7 @@
 
         <!-- Div de Redes Sociales-->
         <div class="form-group">
-            <label for="">Redes Sociales (Opcional)</label>
+            <label for="">Redes Sociales</label>
             <div id="componente_redsocial">
                 <redsocial></redsocial>
             </div>

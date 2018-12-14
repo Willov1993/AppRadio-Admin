@@ -36,7 +36,7 @@ class Emisora(models.Model):
     slug = models.SlugField(unique=True)
     frecuencia_dial = models.CharField(max_length=8)
     url_streaming = models.CharField(max_length=150)
-    sitio_web = models.CharField(max_length=150)
+    sitio_web = models.CharField(max_length=150, null=True, blank=True)
     direccion = models.CharField(max_length=250)
     descripcion = models.CharField(max_length=500)
     ciudad = models.CharField(max_length=50)

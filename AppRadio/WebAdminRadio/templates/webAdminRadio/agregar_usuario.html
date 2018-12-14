@@ -1,0 +1,78 @@
+{% extends 'webAdminRadio/base_site.html' %}
+{% load static from staticfiles %}
+{% block page_style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/agregar_segmento.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/componentes/modal_info.css' %}">
+{% endblock %}
+{% block content %}
+    {% if error %}
+        <div id="componente_modal_info">
+            <modal-info v-if="showModal" url_redirect="">
+                <h3 slot="header">Error</h3>
+                <div slot="body">
+                    <p>Existen algunos errores en los siguientes campos:</p>
+                    {% for campo,e in error.items %}
+                        <h5>{{campo}}</h5>
+                        {{e}}
+                    {% endfor %}
+                </div>
+            </modal-info>
+        </div>
+    {% endif %}
+    {% if success %}
+    <div id="componente_modal_info">
+        <modal-info v-if="showModal" url_redirect="{% url 'webadminradio:locutores' %}">
+            <h3 slot="header">Información</h3>
+            <p slot="body">{{success}}</p>
+        </modal-info>
+    </div>
+    {% endif %}
+    <h4><b>Información del Usuario</b></h4>
+    <form id="addLocutor" onsubmit="return validate()" action="{% url 'webadminradio:agregar_usuario' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- Nombre del locutor -->
+        <div class="form-group row">
+            <label for="nombre" class="col-sm-1 col-form-label">Nombres</label>
+            <div class="col-sm-11">
+                <input id="nombre" name="nombre" type="text" class="form-control" value="{{ locutor.first_name }}" oninvalid="this.setCustomValidity('Ingrese un nombre válido')" oninput="this.setCustomValidity('')" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="apellido" class="col-sm-1 col-form-label">Apellidos</label>
+            <div class="col-sm-11">
+                <input id="apellido" name="apellido" type="text" class="form-control" value="{{ locutor.last_name }}" oninvalid="this.setCustomValidity('Ingrese un apellido válido')" oninput="this.setCustomValidity('')" required>
+            </div>
+        </div>
+        <!-- Fecha de Nacimiento -->
+        <div class="form-group">
+            <label for="fechaNac">Fecha de Nacimiento</label>
+            <input id="fechaNac" name="fechaNac" type="date" class="form-control" value="{{ locutor.fecha_nac|date:'Y-m-d' }}"oninvalid="this.setCustomValidity('Ingrese una fecha')" oninput="this.setCustomValidity('')" required>
+        </div>
+        <!-- E-mail -->
+        <div class="form-group">
+            <label for="email">Direccion de correo electrónico</label>
+            <input id="email" name="email" type="email" class="form-control" value="{{ locutor.email }}" oninvalid="this.setCustomValidity('Ingrese una direccion válida')" oninput="this.setCustomValidity('')" required> 
+        </div>
+        <!-- Teléfono --> 
+        <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input id="telefono" name="telefono" type="tel" pattern="[0-9]{10}" class="form-control" value="{{ telefono.nro_telefono }}" oninvalid="this.setCustomValidity('Ingrese un teleofno válido')" oninput="this.setCustomValidity('')" required>
+        </div>
+        <!-- Rol -->
+        <div class="form-group">
+            <label for="tipo_usuario">Rol del usuario</label>
+            <select name="tipo_select" id="tipo" class="custom-select">
+                <option value="" selected disabled>Seleccione el rol del usuario</option>
+                <option value="L">Locutor</option>
+                <option value="A">Administrador</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg submit"><i class="fas fa-plus-circle"></i>Agregar Usuario</button>
+    </form>
+{% endblock %}
+{% block page_script %}
+    <script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/EmisoraComponent.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/RedSocialComponent.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
+{% endblock %}

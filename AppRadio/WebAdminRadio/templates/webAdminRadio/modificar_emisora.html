@@ -56,7 +56,7 @@
         <!-- Div de descripcion -->
         <div class="form-group">
             <label for="descInput">Descripción</label>
-            <textarea required class="form-control" name="descripcion" id="descInput" rows="3" value = "{{emisora.descripcion}}" maxlength=300></textarea>
+            <textarea required class="form-control" name="descripcion" id="descInput" rows="3" value = "{{emisora.descripcion}}" maxlength=300>{{ emisora.descripcion }}</textarea>
         </div>
 
         <!-- Div de Streaming -->
@@ -100,7 +100,7 @@
                 <div class="form-group col-md-2">
                  <label>Provincia</label>
                  <select required name="provincia" class="custom-select form-control">
-                     <option disabled selected value="">Provincia</option>
+                     <option disabled selected value="{{ emisora.provincia }}">{{ emisora.provincia }}</option>
                      <option value="Azuay" selected="selected">Azuay</option>
                      <option value="Cañar">Cañar</option>
                      <option value="Loja">Loja</option>
@@ -129,7 +129,7 @@
                 </div>
                 <div class="form-group col-md-2">
                     <label>Ciudad</label>
-                    <input required name="ciudad" type="text" class="form-control" placeholder="Ciudad" pattern="([A-Za-z]|\s)+">
+                    <input required name="ciudad" type="text" class="form-control" value="{{ emisora.ciudad }}" pattern="([A-Za-z]|\s)+">
                 </div>
             </div>
         </div>

@@ -43,12 +43,17 @@ def publicidad(request):
 def agregar_emisora(request):
     context = {'title': 'Agregar Emisora'}
     if request.POST:
+        print(request.FILES)
         emisora_form = EmisoraForm(request.POST, request.FILES)
         telefono = request.POST['telefono']
-        redsocial= request.POST['red_social_url']
+        link_redsocial = request.POST['red_social_url']
+        nombre_redsocial = request.POST['red_social_nombre']
         telefono_form = TelefonoForm({'telefono': telefono})
-        red_form = RedSocialForm({'red_social_url':redsocial})
-        if (emisora_form.is_valid() and telefono_form.is_valid() and red_form.isvalid()):
+        red_form = RedSocialForm({
+            'link': link_redsocial,
+            'nombre': nombre_redsocial
+            })
+        if (emisora_form.is_valid() and telefono_form.is_valid() and red_form.is_valid()):
             emisora_form.save()
             Telefono_emisora.objects.create(
                 idEmisora=Emisora.objects.order_by('-id')[0],
@@ -56,14 +61,17 @@ def agregar_emisora(request):
                 )
             RedSocial_emisora.objects.create(
                 idEmisora = Emisora.objects.order_by('-id')[0],
-                nombre= Emisora.objects.getlist('red_social_nombre'),
-                link=redsocial
+                nombre = nombre_redsocial,
+                link = link_redsocial
                 )
-        else:   
-            context['error'] = emisora_form.errors
+        else:
+            list_errors = []
+            list_errors.append(emisora_form.errors)
+            list_errors.append(telefono_form.errors)
+            list_errors.append(red_form.errors)
+            context['errors'] = list_errors
         if 'error' not in context:
             context['success'] = '¡El registro de la emisora ha sido creado con éxito!'
-        return render(request, 'webAdminRadio/agregar_emisora.html', context)
     return render(request, 'webAdminRadio/agregar_emisora.html', context)    
 
 @login_required
@@ -382,6 +390,31 @@ def modificar_publicidad(request, id_publicidad):
             context['error'] = publicidad_form.errors
         return render(request, 'webAdminRadio/editar_publicidad.html', context)
     return render(request, 'webAdminRadio/editar_publicidad.html', context)
+
+@login_required
+def agregar_usuario(request):
+    context = {'title': 'Agregar Usuario'}
+    if request.POST:
+        nombre = request.POST['nombre']
+        apellidos = request.POST['apellido']
+        username = nombre[0].lower() + apellidos.partition(' ')[0].lower()
+        password = Usuario.objects.make_random_password()
+        user_form = UsuarioForm({
+            'nombre': nombre,
+            'apellido': apellidos,
+            'username': username,
+            'password': password,
+            'email': request.POST['email'],
+            'fechaNac': request.POST['fechaNac'],
+            'rol': request.POST['tipo_select']
+        })
+        print(user_form)
+        if user_form.is_valid():
+            user_form.save()
+            context['success'] = '¡El usuario ha sido registrado'
+        else:
+            context['error'] = user_form.errors
+    return render(request, 'webAdminRadio/agregar_usuario.html', context)
 
 @login_required
 def sugerencias(request):
