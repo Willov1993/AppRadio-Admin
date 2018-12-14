@@ -5,6 +5,7 @@ from . import views
 from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
+    path('hora_actual/',views.ListTime.as_view()),
     path('emisoras/', views.ListEmisora.as_view()),
     path('segmentos/', views.ListSegmento.as_view()),
     path('usuarios', views.ListUsuarios.as_view(), name="list_usuarios"),
