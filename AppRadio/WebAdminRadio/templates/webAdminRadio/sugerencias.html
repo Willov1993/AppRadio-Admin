@@ -1,0 +1,83 @@
+{% extends 'webAdminRadio/base_site.html' %}
+{% load static from staticfiles %}
+{% block page_style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/sugerencias.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="search-container">
+        <form method="GET" action="">
+            <div class="form-group has-search">
+                <span class="fa fa-search form-control-feedback"></span>
+                <input type="text" name="q" class="form-control" placeholder="Buscar" value="{{ request.GET.q }}">
+            </div>
+        </form>
+    </div>
+    {% if sugerencias %}
+        {% for sugerencia in sugerencias %}
+        <div class="sugerencia-wrapper">
+            <div class="row">
+                <div class="col-sm">
+                    <label class="sg_lbl">Fecha:</label>
+                    {{ sugerencia.fecha_creacion|date:"l d F Y" }}
+                </div>
+                <div class="col-sm">
+                    <label class="sg_lbl">Hora:</label>
+                    {{ sugerencia.fecha_creacion|time:"H:i" }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <label class="sg_lbl">Usuario:</label>
+                    <p>{{ sugerencia.idUsuario }}</p>
+                    <label class="sg_lbl">Tipo:</label>
+                    <p>{{ sugerencia.idTipo }}</p>
+                </div>
+                <div class="col-sm">
+                    <label class="sg_lbl">Emisora:</label>
+                    <p>{{ sugerencia.idEmisora }}</p>
+                    {% if sugerencia.idSegmento %}
+                        <label class="sg_lbl">Segmento</label>
+                        <p>{{ sugerencia.idSegmento }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <label class="sg_lbl">Mensaje:</label>
+            <p>{{ sugerencia.mensaje }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="info-container">
+            <h2><i class="fas fa-exclamation-circle"></i> No hay sugerencias para mostrar</h2>
+        </div>
+    {% endif %}
+    <nav class="paginacion">
+        <ul class="pagination justify-content-end">
+            {% if sugerencias.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ sugerencias.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" aria-label="Previous">
+                        <span aria-hideen="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% for num in sugerencias.paginator.page_range %}
+                {% if sugerencias.number == num %}
+                    <li class="page-item active"><a class="page-link" href="#">{{ num }} <span class="sr-only"></span></a></li>    
+                {% elif num > sugerencias.number|add:'-3' and num < sugerencias.number|add:'3' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if sugerencias.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ sugerencias.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endblock %}
+{% block page_script %}
+    
+{% endblock %}
