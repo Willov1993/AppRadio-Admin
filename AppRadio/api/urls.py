@@ -2,6 +2,7 @@
 from django.urls import include, path
 from .views import FacebookLogin,TwitterLogin,CreateUser
 from . import views
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path('emisoras/', views.ListEmisora.as_view()),

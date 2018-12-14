@@ -100,7 +100,7 @@ class Publicidad(models.Model):
     imagen = models.ImageField(upload_to = upload_location, blank=None)
 
     def __str__(self):
-        return self.titulo    
+        return self.titulo
 
 class Tipo_sugerencia(models.Model):
     nombre = models.CharField(max_length = 15)
@@ -122,7 +122,7 @@ class Frecuencia(models.Model):
     activo = models.CharField(max_length = 1, default='A')
 
     def __str__(self):
-        return self.tipo +" "+ self.dia_semana + " [" + str(self.hora_inicio) + " - " + str(self.hora_fin) + "]"    
+        return self.tipo +" "+ self.dia_semana + " [" + str(self.hora_inicio) + " - " + str(self.hora_fin) + "]"
 
 class Contacto(models.Model):
     idPublicidad = models.ForeignKey(Publicidad, on_delete = models.DO_NOTHING)
@@ -221,7 +221,7 @@ class frecuencia_publicidad(models.Model):
     idFrecuencia = models.ForeignKey(Frecuencia, on_delete = models.CASCADE)
 
     def __str__(self):
-        return str(self.idPublicidad) + " : " + str(self.idFrecuencia)     
+        return str(self.idPublicidad) + " : " + str(self.idFrecuencia)
 
 
 class Auditoria(models.Model):

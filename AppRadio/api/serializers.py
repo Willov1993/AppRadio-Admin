@@ -23,20 +23,26 @@ class EmisoraSerializer(serializers.ModelSerializer):
         fields = '__all__'
         model = models.Emisora
 
-#SEGMENTOS CON HORARIOS 
+#SEGMENTOS CON HORARIOS
 class SegmentoSerializerFull(serializers.ModelSerializer):
     horarios = serializers.ReadOnlyField(source="get_horarios")
 
     class Meta:
         model = models.Segmento
-        fields = ('id', 'nombre', 'imagen', 'slogan', 'horarios')
+        fields = ('id', 'nombre', 'imagen','idEmisora', 'slogan', 'horarios')
 
 #SEGMENTOS DEL DIA ACTUAL
 class SegmentoSerializerToday(serializers.ModelSerializer):
     horarios = serializers.ReadOnlyField(source="get_horario_dia_actual")
+    emisora= serializers.SerializerMethodField()
+
+    def get_emisora(self,ob):
+        return EmisoraSerializer(ob.get_emisora()).data
+
+
     class Meta:
         model = models.Segmento
-        fields = ('id', 'nombre', 'imagen', 'horarios')
+        fields = ('id', 'nombre', 'imagen','idEmisora', 'horarios','emisora')
 
 class LocutoresSerializer(serializers.ModelSerializer):
     emisora = serializers.SerializerMethodField()
@@ -50,7 +56,7 @@ class LocutoresSerializer(serializers.ModelSerializer):
             'last_name',
             'emisora',
         )
-    
+
     def get_emisora(self, obj):
         segmento_id = self.context.get('segmento')
         segmento_obj = models.segmento_usuario.objects.get(idSegmento=segmento_id, idUsuario=obj.id)
@@ -100,11 +106,11 @@ class PublicidadSerializer(serializers.ModelSerializer):
             'cliente',
             'emisora',
         )
-    
+
     def get_emisora(self, obj):
         segmento_id = self.context.get('segmento')
         segmento_obj = models.segmento_publicidad.objects.get(idSegmento=segmento_id, idPublicidad=obj.id)
-        return segmento_obj.idSegmento.idEmisora.nombre           
+        return segmento_obj.idSegmento.idEmisora.nombre
 
 class FrecuenciaSerializer(serializers.ModelSerializer):
     class Meta:
