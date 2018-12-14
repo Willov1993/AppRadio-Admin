@@ -7,7 +7,7 @@ from rest_auth.registration.views import SocialLoginView
 from allauth.socialaccount.providers.twitter.views import TwitterOAuthAdapter
 from rest_auth.social_serializers import TwitterLoginSerializer
 
-
+from django.http import HttpResponse, JsonResponse
 from WebAdminRadio import models
 from accounts.models import Usuario
 from . import serializers
@@ -22,6 +22,15 @@ import datetime
 # Create your views here.
 
 DIAS = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
+
+class ListTime(APIView):
+
+    def get(self, request, format=None):
+        dicTime= {'fecha': datetime.datetime.now().date(), 'hora': datetime.datetime.now().time()}
+        serializer= serializers.TimeSerializer(dicTime)
+        return Response(serializer.data)
+
+
 
 class ListUsuarios(generics.ListAPIView):
     serializer_class = serializers.UsuarioSerializer

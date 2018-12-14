@@ -3,6 +3,9 @@ from rest_framework import serializers
 from WebAdminRadio import models
 from accounts.models import Usuario
 
+class TimeSerializer(serializers.Serializer):
+    fecha= serializers.DateField()
+    hora= serializers.TimeField(format='%H:%M:%S')
 
 class SegmentoSerializer(serializers.ModelSerializer):
     horarios = serializers.ReadOnlyField(source="get_horarios")
@@ -43,6 +46,7 @@ class SegmentoSerializerToday(serializers.ModelSerializer):
     class Meta:
         model = models.Segmento
         fields = ('id', 'nombre', 'imagen','idEmisora', 'horarios','emisora')
+
 
 class LocutoresSerializer(serializers.ModelSerializer):
     emisora = serializers.SerializerMethodField()
