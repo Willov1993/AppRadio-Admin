@@ -28,7 +28,7 @@ def emisoras(request):
     return render(request, 'webAdminRadio/emisoras.html', context)
 
 @login_required
-def publicidad(request):   
+def publicidad(request):
     publicidad = Publicidad.objects.filter(estado='A')
 
     list_segmentos = Segmento.objects.filter(activo='A')
@@ -70,9 +70,9 @@ def agregar_emisora(request):
             list_errors.append(telefono_form.errors)
             list_errors.append(red_form.errors)
             context['errors'] = list_errors
-        if 'error' not in context:
+        if 'errors' not in context:
             context['success'] = '¡El registro de la emisora ha sido creado con éxito!'
-    return render(request, 'webAdminRadio/agregar_emisora.html', context)    
+    return render(request, 'webAdminRadio/agregar_emisora.html', context)
 
 @login_required
 def agregar_segmento(request):
@@ -219,7 +219,7 @@ def modificar_emisora(request, id_emisora):
         if emisora_form.is_valid():
             emisora_form.save()
             if 'error' not in context:
-                context['success'] = '¡El registro del segmento se ha sido creado con éxito!'            
+                context['success'] = '¡El registro del segmento se ha sido creado con éxito!'
         else:
             context['error'] = emisora_form.errors
         return render(request, 'webAdminRadio/modificar_emisora.html', context)
@@ -342,7 +342,7 @@ def asignar_locutor_segmento(request, id_locutor, id_segmento):
     )
     messages.success(request, 'El usuario ha sido asignado como locutor')
     return redirect('webadminradio:asignar_locutor')
-    
+
 @login_required
 def modificar_publicidad(request, id_publicidad):
     edit_publicidad = Publicidad.objects.get(id=id_publicidad)
@@ -384,7 +384,7 @@ def modificar_publicidad(request, id_publicidad):
                     idPublicidad=edit_publicidad,
                     idSegmento=Segmento.objects.get(id=s)
                 )
-            if 'error' not in context:                   
+            if 'error' not in context:
                 context['success'] = '¡El registro ha sido modificado con éxito!'
         else:
             context['error'] = publicidad_form.errors
