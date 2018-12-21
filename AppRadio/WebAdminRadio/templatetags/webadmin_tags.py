@@ -16,7 +16,7 @@ def get_cant_segmentos(emisora):
 # Devuelve el teléfono de una emisora
 @register.simple_tag
 def get_telf_emisora(emisora):
-    return Telefono_emisora.objects.get(idEmisora=emisora)
+    return Telefono_emisora.objects.filter(idEmisora=emisora)
 
 @register.simple_tag
 def get_frecuencias(publicidad):

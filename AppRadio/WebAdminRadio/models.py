@@ -207,7 +207,6 @@ class segmento_publicidad(models.Model):
     def __str__(self):
         return str(self.idSegmento) + " : " + str(self.idPublicidad)
 
-
 class Telefono_emisora(models.Model):
     idEmisora = models.ForeignKey(Emisora, on_delete=models.CASCADE)
     nro_telefono = models.CharField(max_length=10)

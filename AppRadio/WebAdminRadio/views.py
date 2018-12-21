@@ -43,35 +43,42 @@ def publicidad(request):
 def agregar_emisora(request):
     context = {'title': 'Agregar Emisora'}
     if request.POST:
-        print(request.FILES)
         emisora_form = EmisoraForm(request.POST, request.FILES)
-        telefono = request.POST['telefono']
-        link_redsocial = request.POST['red_social_url']
-        nombre_redsocial = request.POST['red_social_nombre']
-        telefono_form = TelefonoForm({'telefono': telefono})
-        red_form = RedSocialForm({
-            'link': link_redsocial,
-            'nombre': nombre_redsocial
+        if not emisora_form.is_valid():
+            context['error'] = emisora_form.errors
+            return render(request, 'webAdminRadio/agregar_emisora.html', context)
+        
+        for i in range(len(request.POST.getlist('telefono'))):
+            telefono_form = TelefonoForm({
+                'telefono':request.POST.getlist('telefono')[i]
             })
-        if (emisora_form.is_valid() and telefono_form.is_valid() and red_form.is_valid()):
-            emisora_form.save()
+            if not telefono_form.is_valid():
+                context['error'] = telefono_form.errors
+                return render(request, 'webAdminRadio/agregar_emisora.html', context)
+
+        for i in range(len(request.POST.getlist('red_social_nombre'))):
+            red_form = RedSocialForm({
+                'nombre': request.POST.getlist('red_social_nombre')[i],
+                'link': request.POST.getlist('red_social_url')[i]
+            })
+            if not red_form.is_valid():
+                context['error'] = red_form.errors
+                return render(request, 'webAdminRadio/agregar_emisora.html', context)
+        
+        emisora_form.save()
+        for i in range(len(request.POST.getlist('telefono'))):
             Telefono_emisora.objects.create(
                 idEmisora=Emisora.objects.order_by('-id')[0],
-                nro_telefono = telefono
-                )
+                nro_telefono=request.POST.getlist('telefono')[i]
+            )
+        for i in range(len(request.POST.getlist('red_social_nombre'))):
             RedSocial_emisora.objects.create(
-                idEmisora = Emisora.objects.order_by('-id')[0],
-                nombre = nombre_redsocial,
-                link = link_redsocial
-                )
-        else:
-            list_errors = []
-            list_errors.append(emisora_form.errors)
-            list_errors.append(telefono_form.errors)
-            list_errors.append(red_form.errors)
-            context['errors'] = list_errors
-        if 'error' not in context:
-            context['success'] = '¡El registro de la emisora ha sido creado con éxito!'
+                idEmisora=Emisora.objects.order_by('-id')[0],
+                nombre=request.POST.getlist('red_social_nombre')[i],
+                link=request.POST.getlist('red_social_url')[i]
+            )
+        context['success'] = '¡La emisora ha sido registrada con éxito!'
+        return render(request, 'webAdminRadio/agregar_emisora.html', context)
     return render(request, 'webAdminRadio/agregar_emisora.html', context)    
 
 @login_required
@@ -158,7 +165,6 @@ def agregar_publicidad(request):
                 context['success'] = '¡El registro de la publicidad se ha sido creado con éxito!'
         else:
             context['error'] = publicidad_form.errors
-        return render(request, 'webAdminRadio/agregar_publicidad.html', context)
     return render(request, 'webAdminRadio/agregar_publicidad.html', context)
 
 @login_required
@@ -209,20 +215,79 @@ def modificar_segmento(request, id_segmento):
 
 @login_required
 def modificar_emisora(request, id_emisora):
-    edit_emisora = Emisora.objects.get(id=id_emisora)
+    edit_emisora = Emisora.objects.get(id=id_emisora, activo='A')
+    red_social = RedSocial_emisora.objects.filter(idEmisora=id_emisora)
+    telefono_emisora = Telefono_emisora.objects.filter(idEmisora=id_emisora)
     context = {
         'title': 'Editar Emisora',
         'emisora': edit_emisora,
+        'telefono': telefono_emisora,
+        'redsocial': red_social
     }
     if request.POST:
-        emisora_form = EmisoraForm(request.POST, request.FILES, edit_emisora)
-        if emisora_form.is_valid():
-            emisora_form.save()
-            if 'error' not in context:
-                context['success'] = '¡El registro del segmento se ha sido creado con éxito!'            
-        else:
+        emisora_form = EmisoraForm(request.POST, request.FILES, instance=edit_emisora)
+        if not emisora_form.is_valid():
             context['error'] = emisora_form.errors
+            return render(request, 'webAdminRadio/modificar_emisora.html', context)
+        
+        for i in range(len(request.POST.getlist('telefono'))):
+            telefono_form = TelefonoForm({
+                'telefono': request.POST.getlist('telefono')[i]
+            })
+            if not telefono_form.is_valid():
+                context['error'] = telefono_form.errors
+                return render(request, 'webAdminRadio/modificar_emisora.html', context)
+
+        for i in range(len(request.POST.getlist('red_social_nombre'))):
+            red_form = RedSocialForm({
+                'nombre': request.POST.getlist('red_social_nombre')[i],
+                'link': request.POST.getlist('red_social_url')[i]
+            })
+            if not red_form.is_valid():
+                context['error'] = red_form.errors
+                return render(request, 'webAdminRadio/modificar_emisora.html', context)
+        
+        emisora_form.save()
+        telefono_emisora.delete()
+        red_social.delete()
+        for i in range(len(request.POST.getlist('telefono'))):
+            Telefono_emisora.objects.create(
+                idEmisora=edit_emisora,
+                nro_telefono=request.POST.getlist('telefono')[i]
+            )
+        for i in range(len(request.POST.getlist('red_social_nombre'))):
+            RedSocial_emisora.objects.create(
+                idEmisora=edit_emisora,
+                nombre=request.POST.getlist('red_social_nombre')[i],
+                link=request.POST.getlist('red_social_url')[i]
+            )
+
+        context['success'] = "¡La emisora ha sido registrada con éxito!"
         return render(request, 'webAdminRadio/modificar_emisora.html', context)
+        '''
+        emisora_form = EmisoraForm(request.POST, request.FILES, instance=edit_emisora)
+        new_telefono = request.POST['telefono']
+        new_nombre_redsocial = request.POST['red_social_nombre']
+        new_link_redsocial = request.POST['red_social_url']
+        telefono_form = TelefonoForm({'telefono':new_telefono})
+        red_form = RedSocialForm({
+            'link': new_link_redsocial,
+            'nombre': new_nombre_redsocial
+        })
+        if (emisora_form.is_valid() and telefono_form.is_multipart() and red_form.is_valid()):
+            emisora_form.save()
+            telefono_emisora.nro_telefono = new_telefono
+            telefono_emisora.save()
+            red_social.nombre = new_nombre_redsocial
+            red_social.link = new_link_redsocial
+            red_social.save()
+        else:
+            list_errors = []
+            list_errors.append(emisora_form.errors)
+            list_errors.append(telefono_form.errors)
+            list_errors.append(red_form.errors)
+            context['error'] = list_errors
+        '''
     return render(request, 'webAdminRadio/modificar_emisora.html', context)
 
 @login_required

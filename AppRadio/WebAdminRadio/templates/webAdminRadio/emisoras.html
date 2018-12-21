@@ -39,8 +39,12 @@
                 <h3><b>{{ emisora.nombre }}</b></h3>
                 <p><i>{{ emisora.frecuencia_dial }}</i></p>
                 <p><i class="fas fa-map-marker-alt icon"></i>{{ emisora.direccion }}</p>
-                {% get_telf_emisora emisora as telefono %}
-                <p><i class="fas fa-phone icon"></i>{{ telefono.nro_telefono }}</p>
+                {% get_telf_emisora emisora as telefonos %}
+                    <p><i class="fas fa-phone icon"></i>
+                        {% for tel in telefonos %}
+                            {{ tel.nro_telefono }}
+                        {% endfor %}
+                    </p>
                 <p><i class="fas fa-globe icon"></i><a href="{{ emisora.sitio_web }}">{{ emisora.sitio_web }}</a></p>
             </div>
             <div class="btn-wrapper">

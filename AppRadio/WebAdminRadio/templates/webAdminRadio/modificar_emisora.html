@@ -28,7 +28,7 @@
     </div>
     {% endif %}
     <h4><b>Información de la emisora</b></h4>
-    <form id="addEmisora" onsubmit="return validate()" method="POST" action="{% url 'webadminradio:agregar_emisora' %}" enctype="multipart/form-data">
+    <form id="addEmisora" onsubmit="return validate()" method="POST" action="{% url 'webadminradio:editar_emisora' emisora.id %}" enctype="multipart/form-data">
         {% csrf_token %}
 
         <!-- Div de Nombre -->
@@ -83,7 +83,7 @@
         <div class="form-group">
             <div class="custom-file">
                 <label for="imgSegmento" class="custom-file-label"></label>
-                <input name="logo" type="file" class="custom-file-input" id="imgSegmento" accept=".png, .jpg, .jpeg">
+                <input name="logotipo" type="file" class="custom-file-input" id="imgSegmento" src="{{ emisora.logotipo.url }}" accept=".png, .jpg, .jpeg">
                 <div class="img-holder">
                     <img id="preview" src="{{ emisora.logotipo.url }}">
                 </div>

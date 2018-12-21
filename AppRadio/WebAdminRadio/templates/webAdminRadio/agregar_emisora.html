@@ -5,8 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/componentes/modal_info.css' %}">
 {% endblock %}
 {% block content %}
-    {% if errors %}
-        {% for error in errors %}
+    {% if error %}
         <div id="componente_modal_info">
             <modal-info v-if="showModal" url_redirect="">
                 <h3 slot="header">Error</h3>
@@ -19,7 +18,6 @@
                 </div>
             </modal-info>
         </div>
-        {% endfor %}
     {% endif %}
     {% if success %}
     <div id="componente_modal_info">
