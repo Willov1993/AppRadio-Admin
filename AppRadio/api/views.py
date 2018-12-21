@@ -36,20 +36,41 @@ class ListUsuarios(generics.ListAPIView):
     serializer_class = serializers.UsuarioSerializer
     queryset = Usuario.objects.filter(is_active=True)
 
+
+##
+#GET: Vista que obtiene los segmentos de todas las emisoras
+#
 class ListSegmento(generics.ListCreateAPIView):
     queryset = models.Segmento.objects.all()
     serializer_class = serializers.SegmentoSerializer
 
+
+##
+#GET: Vista que obtiene los segmentos del dia actual
+#
+#PARAMS: provincia (para escoger los segmentos por provincia)
+#
 class ListSegmentosDiaActual(generics.ListAPIView):
     serializer_class= serializers.SegmentoSerializerToday
 
-    day= datetime.datetime.today().weekday()
-    dia_actual=DIAS[day]
-    horariosDelDia= models.Horario.objects.filter(dia=dia_actual)
-    ids_segmentos= models.segmento_horario.objects.filter(idHorario__in=horariosDelDia).distinct()
-    queryset=  models.Segmento.objects.filter(pk__in=ids_segmentos.values('idSegmento'))
+    def get_queryset(self):
+        provincia= self.request.query_params.get('provincia')
+        day= datetime.datetime.today().weekday()
+        dia_actual=DIAS[day]
+        horariosDelDia= models.Horario.objects.filter(dia=dia_actual)
+        ids_segmentos= models.segmento_horario.objects.filter(idHorario__in=horariosDelDia).distinct()
+        queryset=  models.Segmento.objects.filter(pk__in=ids_segmentos.values('idSegmento'))
+        if provincia!= None:
+            emisoras= models.Emisora.objects.filter(provincia=provincia.capitalize())
+            queryset= queryset.filter(idEmisora__in=emisoras.values('id'))
+        return queryset
 
 
+##
+#GET: Vista que obtiene los segmentos del dia actual de una emisora especifica
+#
+#PARAMS: provincia (para escoger los segmentos por provincia)
+#
 class ListSegmentosEmisoraDiaActual(generics.ListAPIView):
     serializer_class= serializers.SegmentoSerializerToday
 
@@ -59,12 +80,25 @@ class ListSegmentosEmisoraDiaActual(generics.ListAPIView):
         dia_actual=DIAS[day]
         horariosDelDia= models.Horario.objects.filter(dia=dia_actual)
         ids_segmentos= models.segmento_horario.objects.filter(idHorario__in=horariosDelDia).distinct()
-        return models.Segmento.objects.filter(pk__in=ids_segmentos.values('idSegmento'),idEmisora=emisora)
+        queryset= models.Segmento.objects.filter(pk__in=ids_segmentos.values('idSegmento'),idEmisora=emisora)
+        return queryset
 
 
+##
+#GET: Vista que obtiene todas las emisoras
+#
+#PARAMS: provincia (para escoger las emisoras por una provincia especifica)
+#
 class ListEmisora(generics.ListCreateAPIView):
-    queryset = models.Emisora.objects.all()
     serializer_class = serializers.EmisoraSerializer
+
+    def get_queryset(self):
+        provincia= self.request.query_params.get('provincia')
+        if provincia!= None:
+            queryset= models.Emisora.objects.filter(provincia=provincia.capitalize())
+        else:
+            queryset = models.Emisora.objects.all()
+        return queryset
 
 class CreateUser(generics.CreateAPIView):
     permission_classes = (AllowAny,)
