@@ -28,6 +28,9 @@ urlpatterns = [
     path('locutores/asignar/<int:id_locutor>/segmento/<int:id_segmento>', views.asignar_locutor_segmento, name="asignar_locutor_segmento"), # Este URL permite asignar un usuario como locuor a un segmento
     path('usuarios', views.usuarios, name='usuarios'), # URL para ver los usuarios del sistema,
     path('usuarios/agregar', views.agregar_usuario, name='agregar_usuario'), # Form para agregar un usuario nuevo
+    path('usuarios/<int:id_usuario>', views.ver_usuario, name='ver_usuario'), # URL para ver la informacion del usuario
+    path('usuarios/<int:id_usuario>/editar', views.modificar_usuario, name='editar_usuario'), # URL para editar usuarios
+    path('usuarios/<int:id_usuario>/eliminar', views.borrar_usuario, name='borrar_usuario'), # URL para eliminar un usuario
     path('sugerencias', views.sugerencias, name="sugerencias"), # URL para ver las sugerencias
     path('concursos/agregar', views.agregar_concurso, name="concursos"), # URL para agregar concursos
 ]

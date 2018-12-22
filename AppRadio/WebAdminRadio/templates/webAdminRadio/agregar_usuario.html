@@ -30,7 +30,7 @@
     <h4><b>Información del Usuario</b></h4>
     <form id="addLocutor" onsubmit="return validate()" action="{% url 'webadminradio:agregar_usuario' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <!-- Nombre del locutor -->
+        <!-- Nombre del usuario -->
         <div class="form-group row">
             <label for="nombre" class="col-sm-1 col-form-label">Nombres</label>
             <div class="col-sm-11">

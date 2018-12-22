@@ -1,0 +1,33 @@
+{% extends 'webAdminRadio/base_site.html' %}
+{% load static from staticfiles %}
+{% load webadmin_tags %}
+{% block page_style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/ver_locutor.css' %}">
+{% endblock %}
+{% block content %}
+    <h2><b>{{ usuario.first_name }}  {{ usuario.last_name }}</b></h2>
+    <div class="row info">
+        <label class="col-sm-3"><b>Nombre de usuario:</b></label>
+        <label class="col-sm-9">{{ usuario.username }}</label>
+    </div>
+    <div class="row info">
+        <label class="col-sm-3"><b>Fecha de nacimiento:</b></label>
+        <label class="col-sm-9">{{ usuario.fecha_nac }}</label>
+    </div>
+    <div class="row info">
+        <label class="col-sm-3"><b>Telefono:</b></label>
+        <label class="col-sm-9">{{ telefono.nro_telefono }}</label>
+    </div>
+    <div class="row info">
+        <label class="col-sm-3"><b>Correo electrónico:</b></label>
+        <label class="col-sm-9">{{ usuario.email }}</label>
+    </div>
+    <div class="row info">
+        <label class="col-sm-3"><b>Rol: </b></label>
+        {% if usuario.rol == "A" %}
+            <label class="col-sm-9">Administrador</label>
+        {% elif usuario.rol == "L" %}
+            <label class="col-sm-9">Locutor</label>
+        {% endif %}
+    </div>
+{% endblock %}
