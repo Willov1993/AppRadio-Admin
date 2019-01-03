@@ -126,3 +126,29 @@ class FrecuenciaSerializer(serializers.ModelSerializer):
             'hora_inicio',
             'hora_fin',
         )
+
+class TelefonoEmisoraSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Telefono_emisora
+        fields= '__all__'
+
+class RedSocialEmisoraSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.RedSocial_emisora
+        fields= '__all__'
+
+class LocutoresSegmentoSerializer(serializers.ModelSerializer):
+    redes_sociales= serializers.ReadOnlyField(source="get_redes_sociales")
+
+    class Meta:
+        model = Usuario
+        fields=(
+            'id',
+            'imagen',
+            'first_name',
+            'last_name',
+            'fecha_nac',
+            'hobbies',
+            'apodo',
+            'redes_sociales',
+        )

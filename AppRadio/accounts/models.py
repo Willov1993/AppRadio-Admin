@@ -1,4 +1,5 @@
 from django.db import models
+from WebAdminRadio import models as adminModels
 
 
 from django.contrib.auth.models import AbstractUser
@@ -12,9 +13,19 @@ class Usuario(AbstractUser):
     fecha_nac = models.DateField(blank=True,null=True)
     imagen = models.ImageField(upload_to=upload_location, blank=True,null=True)
     rol = models.CharField(max_length=1,blank=True,null=True)
+    biografia= models.CharField(max_length=500,blank=True,null=True)
+    apodo= biografia= models.CharField(max_length=50,blank=True,null=True)
+    biografia= models.CharField(max_length=500,blank=True,null=True)
+    hobbies= models.CharField(max_length=250,blank=True,null=True)
+
 
     def __str__(self):
         return self.first_name + " " + self.last_name
+
+    #obtiene las redes sociales del Usuario (Locutor)
+    def get_redes_sociales(self):
+        return adminModels.RedSocial_usuario.objects.filter(idUsuario=self.pk)
+
 
 class Prueba(models.Model):
     #idHorario = models.AutoField(primary_key = True)
