@@ -47,7 +47,7 @@ def agregar_emisora(request):
         if not emisora_form.is_valid():
             context['error'] = emisora_form.errors
             return render(request, 'webAdminRadio/agregar_emisora.html', context)
-        
+
         for i in range(len(request.POST.getlist('telefono'))):
             telefono_form = TelefonoForm({
                 'telefono':request.POST.getlist('telefono')[i]
@@ -64,7 +64,7 @@ def agregar_emisora(request):
             if not red_form.is_valid():
                 context['error'] = red_form.errors
                 return render(request, 'webAdminRadio/agregar_emisora.html', context)
-        
+
         emisora_form.save()
         for i in range(len(request.POST.getlist('telefono'))):
             Telefono_emisora.objects.create(
@@ -79,7 +79,7 @@ def agregar_emisora(request):
             )
         context['success'] = '¡La emisora ha sido registrada con éxito!'
         return render(request, 'webAdminRadio/agregar_emisora.html', context)
-    return render(request, 'webAdminRadio/agregar_emisora.html', context)    
+    return render(request, 'webAdminRadio/agregar_emisora.html', context)
 
 @login_required
 def agregar_segmento(request):
@@ -229,7 +229,7 @@ def modificar_emisora(request, id_emisora):
         if not emisora_form.is_valid():
             context['error'] = emisora_form.errors
             return render(request, 'webAdminRadio/modificar_emisora.html', context)
-        
+
         for i in range(len(request.POST.getlist('telefono'))):
             telefono_form = TelefonoForm({
                 'telefono': request.POST.getlist('telefono')[i]
@@ -246,7 +246,7 @@ def modificar_emisora(request, id_emisora):
             if not red_form.is_valid():
                 context['error'] = red_form.errors
                 return render(request, 'webAdminRadio/modificar_emisora.html', context)
-        
+
         emisora_form.save()
         telefono_emisora.delete()
         red_social.delete()
@@ -465,7 +465,7 @@ def modificar_usuario(request, id_usuario):
 @login_required
 def ver_usuario(request, id_usuario):
     usuario = Usuario.objects.get(id=id_usuario)
-    telefono = Telefono_Usuario.objects.get(id=id_usuario)
+    telefono = Telefono_Usuario.objects.get(idUsuario=id_usuario)
     context = {
         'title': 'Información del Usuario',
         'usuario': usuario,

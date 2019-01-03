@@ -167,3 +167,33 @@ class ListFrecuencias(generics.ListAPIView):
     def get_queryset(self):
         publicidad = self.kwargs['id_publicidad']
         return models.Frecuencia.objects.filter(id__in=models.frecuencia_publicidad.objects.filter(idPublicidad=publicidad))
+
+##
+#GET: Vista que obtiene los telefonos de una emisora
+#
+class ListTelefonosEmisora(generics.ListCreateAPIView):
+    serializer_class = serializers.TelefonoEmisoraSerializer
+
+    def get_queryset(self):
+        idemisora= self.kwargs['id_emisora']
+        return models.Telefono_emisora.objects.filter(idEmisora=idemisora)
+
+
+##
+#GET: Vista que obtiene las redes sociales de una emisora
+#
+class ListRedSocialEmisora(generics.ListCreateAPIView):
+    serializer_class = serializers.RedSocialEmisoraSerializer
+
+    def get_queryset(self):
+        idemisora= self.kwargs['id_emisora']
+        return models.RedSocial_emisora.objects.filter(idEmisora=idemisora)
+
+
+class ListLocutoresSegmento(generics.ListAPIView):
+    serializer_class= serializers.LocutoresSegmentoSerializer
+
+    def get_queryset(self):
+        id_segmento= self.kwargs['id_segmento']
+        results= models.segmento_usuario.objects.filter(idSegmento=id_segmento)
+        return Usuario.objects.filter(pk__in=results.values('idUsuario'))
