@@ -67,7 +67,42 @@
             <option value="A">Administrador</option>
         </select>
     </div>
-    <button type="submit" class="btn btn-primary btn-lg submit"><i class="fas fa-plus-circle"></i>Agregar Usuario</button>
+    <!-- Imange del usuario -->
+    <div class="form-group">
+        <div class="custom-file">
+            <label for="imgSegmento" class="custom-file-label">Imagen del Usuario</label>
+            <input type="file" name="imagen" class="custom-file-input" id="imgUsuario" accept=".png, .jpg, .jpeg" oninvalid="this.setCustomValidity('Ingrese una imagen para el segmento')" oninput="this.setCustomValidity('')" required>
+            <div class="img-holder">
+                <img id="preview" src="{{ usuario.image.url }}">
+            </div>
+        </div>
+    </div>
+    <hr>
+    <!-- Información que se llenará si se quiere ingresar un locutor -->
+    <h4><b>Información adicional</b> (Opcional)</h4>
+    <!-- Apodo -->
+    <div class="form-group">
+        <label for="apodo">Apodo</label>
+        <input id="apodo" class="form-control" name="apodo" type="text" value="{{ usuario.apodo }}"oninvalid="this.setCustomValidity('Ingrese un apodo válido')" oninput="this.setCustomValidity('')">
+    </div>
+    <!-- Biografia -->
+    <div class="form-group">
+        <label for="biografia">Biografia</label>
+        <textarea id="biografia" class="form-control" name="biografia" rows="3" placeholder="Ingrese la biografia del usuario" oninvalid="this.setCustomValidity('Ingrese la biografia del usuario')" oninput="this.setCustomValidity('')" maxlength="250">{{ usuario.biografia }}</textarea>
+    </div>
+    <!-- Hobbies -->
+    <div class="form-group">
+        <label for="hobbies">Hobbies (separado por comas)</label>
+        <input id="hobbies" class="form-control" name="hobbies" type="text" value="{{ usuario.hobbies }}">
+    </div>
+    <!-- Div de Redes Sociales-->
+    <div class="form-group">
+        <label for="">Redes Sociales</label>
+        <div id="componente_redsocial">
+            <redsocial></redsocial>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg submit"><i class="fas fa-plus-circle"></i>Guardar cambios</button>
     </form>
     {% endblock %}
 {% block page_script %}

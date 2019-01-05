@@ -23,13 +23,6 @@ def upload_location(instance, filename):
     #Esta función guarda las imágenes de los usuarios en media_cdn/<id_usuario>
     return "usuarios/%s/%s" %(instance.id, filename)
 
-"""class Usuario(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    fecha_nac = models.DateField()
-    imagen = models.ImageField(upload_to=upload_location, blank=True)
-    rol = models.CharField(max_length=1)"""
-
-
 class Emisora(models.Model):
     #idEmisora = models.AutoField(primary_key = True)
     nombre = models.CharField(max_length=150)
@@ -176,7 +169,6 @@ class Alternativa(models.Model):
     contenido = models.CharField(max_length = 150)
     idPregunta = models.ForeignKey(Pregunta, on_delete=models.CASCADE)
 
-
 class Telefono_Usuario(models.Model):
     idUsuario = models.ForeignKey(Usuario, on_delete = models.CASCADE)
     nro_telefono = models.CharField(max_length=10)
@@ -188,6 +180,9 @@ class RedSocial_usuario(models.Model):
     idUsuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
     nombre = models.CharField(max_length = 20)
     link = models.CharField(max_length = 50)
+
+    def __str__(self):
+        return self.idUsuario.first_name + ' ' + self.idUsuario.last_name + ' : ' + self.nombre
 
 class segmento_horario(models.Model):
     idSegmento = models.ForeignKey(Segmento, on_delete=models.CASCADE)
@@ -228,7 +223,6 @@ class frecuencia_publicidad(models.Model):
 
     def __str__(self):
         return str(self.idPublicidad) + " : " + str(self.idFrecuencia)
-
 
 class Auditoria(models.Model):
     accion = models.CharField(max_length = 50)
