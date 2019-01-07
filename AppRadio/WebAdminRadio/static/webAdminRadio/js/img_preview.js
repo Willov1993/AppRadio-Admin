@@ -12,6 +12,10 @@ $('#imgSegmento').change(function(){
     previewImg(this);
 })
 
+$('#imgUsuario').change(function(){
+    previewImg(this);
+})
+
 /* Función para validar el SelectBox */
 function validate() {
     var select = document.getElementById('emisoraSelect');

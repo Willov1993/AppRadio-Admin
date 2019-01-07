@@ -30,4 +30,26 @@
             <label class="col-sm-9">Locutor</label>
         {% endif %}
     </div>
+    {% if usuario.rol == "L" %}
+        <div class="row info">
+            <label class="col-sm-3"><b>Apodo:</b></label>
+            <label class="col-sm-9">{{ usuario.apodo }}</label>
+        </div>
+        <div class="row info">
+            <label class="col-sm-3"><b>Biografia:</b></label>
+            <label class="col-sm-9">{{ usuario.biografia }}</label>
+        </div>
+        <div class="row info">
+            <label class="col-sm-3"><b>Hobbies:</b></label>
+            <label class="col-sm-9">{{ usuario.hobbies }}</label>
+        </div>
+        <div class="row info">
+            <label class="col-sm-3"><b>Redes Sociales:</b></label>
+            <ul>
+            {% for red in redes %}
+                <li class="col-sm-3"><a href="{{ red.link }}">{{ red.nombre }}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 {% endblock %}
