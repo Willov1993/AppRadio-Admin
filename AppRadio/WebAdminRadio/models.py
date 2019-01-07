@@ -185,7 +185,7 @@ class Telefono_Usuario(models.Model):
         return self.idUsuario.first_name + ' ' + self.idUsuario.last_name + ' : ' + self.nro_telefono
 
 class RedSocial_usuario(models.Model):
-    idUsuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
+    idUsuario= models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
     nombre = models.CharField(max_length = 20)
     link = models.CharField(max_length = 50)
 

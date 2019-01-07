@@ -24,7 +24,7 @@ class Usuario(AbstractUser):
 
     #obtiene las redes sociales del Usuario (Locutor)
     def get_redes_sociales(self):
-        return adminModels.RedSocial_usuario.objects.filter(idUsuario=self.pk)
+        return adminModels.RedSocial_usuario.objects.filter(idUsuario=self.pk).values()
 
 
 class Prueba(models.Model):
