@@ -1,6 +1,5 @@
 from django import forms
-from .models import Segmento, Horario, Publicidad, Frecuencia, Emisora
-from accounts.models import Usuario
+from .models import Segmento, Horario, Publicidad, Frecuencia, Emisora, Concurso, Pregunta, Respuesta, Usuario
 
 # field_name_mapping es el diccionario con los names que estarán en los forms,
 # que no deben ser iguales a los campos de los modelos
@@ -65,7 +64,6 @@ class FrecuenciaForm(forms.ModelForm):
         field_name = field_name_mapping.get(field_name, field_name)
         return super(FrecuenciaForm, self).add_prefix(field_name)
 
-
 class SegmentoForm(forms.ModelForm):
     class Meta:
         model = Segmento
@@ -76,8 +74,6 @@ class SegmentoForm(forms.ModelForm):
             'idEmisora',
             'imagen'
         ]
-
-
     # Esta función define el atributo 'name' con el valor del diccionario
     def add_prefix(self, field_name):
         field_name_mapping = {
@@ -125,3 +121,27 @@ class UsuarioForm(forms.ModelForm):
         }
         field_name = field_name_mapping.get(field_name, field_name)
         return super(UsuarioForm, self).add_prefix(field_name)
+
+class ConcursoForm(forms.ModelForm):
+    class Meta:
+        model: Concurso
+        fields = [ 
+            'premio',
+            'ganador'
+        ]
+
+class PreguntaForm(forms.ModelForm):
+    class Meta:
+        model: Pregunta
+        fields = [
+            'descripcion',
+            'respuesta'
+        ]
+
+class RespuestaForm(forms.ModelForm):
+    class Meta:
+        model: Respuesta
+        fields = [
+            'descripcion',
+            'correcta'
+        ]
