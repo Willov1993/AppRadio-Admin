@@ -110,7 +110,11 @@ class UsuarioForm(forms.ModelForm):
             'email', 
             'fecha_nac', 
             'imagen', 
-            'rol'
+            'rol',
+            'apodo',
+            'biografia',
+            'hobbies',
+            'imagen'
         ]
 
     def add_prefix(self, field_name):

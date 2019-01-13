@@ -30,33 +30,33 @@
     <h4><b>Información del Usuario</b></h4>
     <form id="addLocutor" onsubmit="return validate()" action="{% url 'webadminradio:agregar_usuario' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <!-- Nombre del locutor -->
+        <!-- Nombre del usuario -->
         <div class="form-group row">
             <label for="nombre" class="col-sm-1 col-form-label">Nombres</label>
             <div class="col-sm-11">
-                <input id="nombre" name="nombre" type="text" class="form-control" value="{{ locutor.first_name }}" oninvalid="this.setCustomValidity('Ingrese un nombre válido')" oninput="this.setCustomValidity('')" required>
+                <input id="nombre" name="nombre" type="text" class="form-control" oninvalid="this.setCustomValidity('Ingrese un nombre válido')" oninput="this.setCustomValidity('')" required>
             </div>
         </div>
         <div class="form-group row">
             <label for="apellido" class="col-sm-1 col-form-label">Apellidos</label>
             <div class="col-sm-11">
-                <input id="apellido" name="apellido" type="text" class="form-control" value="{{ locutor.last_name }}" oninvalid="this.setCustomValidity('Ingrese un apellido válido')" oninput="this.setCustomValidity('')" required>
+                <input id="apellido" name="apellido" type="text" class="form-control" oninvalid="this.setCustomValidity('Ingrese un apellido válido')" oninput="this.setCustomValidity('')" required>
             </div>
         </div>
         <!-- Fecha de Nacimiento -->
         <div class="form-group">
             <label for="fechaNac">Fecha de Nacimiento</label>
-            <input id="fechaNac" name="fechaNac" type="date" class="form-control" value="{{ locutor.fecha_nac|date:'Y-m-d' }}"oninvalid="this.setCustomValidity('Ingrese una fecha')" oninput="this.setCustomValidity('')" required>
+            <input id="fechaNac" name="fechaNac" type="date" class="form-control" oninvalid="this.setCustomValidity('Ingrese una fecha')" oninput="this.setCustomValidity('')" required>
         </div>
         <!-- E-mail -->
         <div class="form-group">
             <label for="email">Direccion de correo electrónico</label>
-            <input id="email" name="email" type="email" class="form-control" value="{{ locutor.email }}" oninvalid="this.setCustomValidity('Ingrese una direccion válida')" oninput="this.setCustomValidity('')" required> 
+            <input id="email" name="email" type="email" class="form-control" oninvalid="this.setCustomValidity('Ingrese una direccion válida')" oninput="this.setCustomValidity('')" required> 
         </div>
         <!-- Teléfono --> 
         <div class="form-group">
             <label for="telefono">Teléfono</label>
-            <input id="telefono" name="telefono" type="tel" pattern="[0-9]{10}" class="form-control" value="{{ telefono.nro_telefono }}" oninvalid="this.setCustomValidity('Ingrese un teleofno válido')" oninput="this.setCustomValidity('')" required>
+            <input id="telefono" name="telefono" type="tel" pattern="[0-9]{10}" class="form-control" oninvalid="this.setCustomValidity('Ingrese un teleofno válido')" oninput="this.setCustomValidity('')" required>
         </div>
         <!-- Rol -->
         <div class="form-group">
@@ -66,6 +66,41 @@
                 <option value="L">Locutor</option>
                 <option value="A">Administrador</option>
             </select>
+        </div>
+        <!-- Imange del usuario -->
+        <div class="form-group">
+            <div class="custom-file">
+                <label for="imgSegmento" class="custom-file-label">Imagen del Usuario</label>
+                <input type="file" name="imagen" class="custom-file-input" id="imgUsuario" accept=".png, .jpg, .jpeg" oninvalid="this.setCustomValidity('Ingrese una imagen para el segmento')" oninput="this.setCustomValidity('')" required>
+                <div class="img-holder">
+                    <img id="preview" src="{% static 'webAdminRadio/images/placeholder.png' %}">
+                </div>
+            </div>
+        </div>
+        <hr>
+        <!-- Información que se llenará si se quiere ingresar un locutor -->
+        <h4><b>Información adicional</b> (Opcional)</h4>
+        <!-- Apodo -->
+        <div class="form-group">
+            <label for="apodo">Apodo</label>
+            <input id="apodo" class="form-control" name="apodo" type="text" oninvalid="this.setCustomValidity('Ingrese un apodo válido')" oninput="this.setCustomValidity('')">
+        </div>
+        <!-- Biografia -->
+        <div class="form-group">
+            <label for="biografia">Biografia</label>
+            <textarea id="biografia" class="form-control" name="biografia" rows="3" placeholder="Ingrese la biografia del usuario" oninvalid="this.setCustomValidity('Ingrese la biografia del usuario')" oninput="this.setCustomValidity('')" maxlength="250"></textarea>
+        </div>
+        <!-- Hobbies -->
+        <div class="form-group">
+            <label for="hobbies">Hobbies (separado por comas)</label>
+            <input id="hobbies" class="form-control" name="hobbies" type="text">
+        </div>
+        <!-- Div de Redes Sociales-->
+        <div class="form-group">
+            <label for="">Redes Sociales</label>
+            <div id="componente_redsocial">
+                <redsocial></redsocial>
+            </div>
         </div>
         <button type="submit" class="btn btn-primary btn-lg submit"><i class="fas fa-plus-circle"></i>Agregar Usuario</button>
     </form>

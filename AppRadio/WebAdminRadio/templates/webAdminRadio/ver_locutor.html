@@ -25,6 +25,18 @@
         <label class="col-sm-3"><b>Correo electrónico:</b></label>
         <label class="col-sm-9">{{ locutor.email }}</label>
     </div>
+    <div class="row info">
+        <label class="col-sm-3"><b>Apodo:</b></label>
+        <label class="col-sm-9">{{ locutor.apodo }}</label>
+    </div>
+    <div class="row info">
+        <label class="col-sm-3"><b>Biografia:</b></label>
+        <label class="col-sm-9">{{ locutor.biografia }}</label>
+    </div>
+    <div class="row info">
+        <label class="col-sm-3"><b>Hobbies:</b></label>
+        <label class="col-sm-9">{{ locutor.hobbies }}</label>
+    </div>
     <h4><b>Programas</b></h4>
     <ul class="list-group col-sm-8">
         {% for seg in segmentos %}

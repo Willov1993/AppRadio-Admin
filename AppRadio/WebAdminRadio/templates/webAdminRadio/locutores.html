@@ -33,13 +33,15 @@
             </div>
         </modal-borrar>
     </div>
-    <label for="segmentoSelect">Seleccione un segmento</label>
-    <select name="dia" id="segmentoSelect" class="custom-select">
-        <option selected disabled>--</option>
-        {% for segmento in segmentos %}
-            <option value="{{ segmento.id }}">{{ segmento.nombre }}</option>
+    <label for="emisoraSelect" class="col-sm-1"><b>Emisora</b></label>
+    <select id="emisoraSelect" class="custom-select form-control col-sm-4" name="emisora" oninvalid="this.setCustomValidity('Ingrese una emisora válida')" required oninput="this.setCustomValidity('')">
+        <option selected disabled>Elja una emisora</option>
+        {% for emisora in emisoras %}
+                <option value="{{ emisora.id }}">{{ emisora.nombre }}</option>
         {% endfor %}
     </select>
+    <label for="segmentoSelect" class="col-sm-1"><b>Segmento</b></label>
+    <select id="segmentoSelect" class="custom-select form-control col-sm-4" name="segmento" oninvalid="this.setCustomValidity('Ingrese una emisora válida')" required oninput="this.setCustomValidity('')"></select>
     <div class="table-container">
         <table id="data_table" class="table table-striped table-bordered dt-body-center">
             <thead>
@@ -62,6 +64,7 @@
     <script src="{% static 'webAdminRadio/js/datatables_locutores.js' %}"></script>
     <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
     <script src="{% static 'webAdminRadio/js/componentes/BorrarComponent.js' %}"></script>
+    <script type="text/javascript" src="{% static 'webAdminRadio/js/asignar_locutor.js' %}"></script>
     <script>
         function showWarning(id){
             contenedorBorrar.$data.objects_to_delete = "locutores";

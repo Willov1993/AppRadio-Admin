@@ -54,10 +54,15 @@ INSTALLED_APPS = [
 ]
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER= 'appradiosoftware@gmail.com'
+EMAIL_HOST_PASSWORD= 'appradio123'
 
 
-SITE_ID = 1
+SITE_ID = 2
 
 
 REST_FRAMEWORK = {
@@ -162,3 +167,9 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media_cdn")
 MEDIA_URL = '/media/'
 
 LOGIN_URL = '/login/'
+
+
+
+
+
+

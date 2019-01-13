@@ -21,4 +21,7 @@ urlpatterns = [
     path('rest-auth/twitter/', TwitterLogin.as_view(), name='twitter_login'),
     path('rest-auth/register/', CreateUser.as_view(), name='usuario_register'),
     path('publicidad/<int:id_publicidad>/frecuencias', views.ListFrecuencias.as_view(), name='frecuencias'),
+    path('emisoras/<int:id_emisora>/telefonos',views.ListTelefonosEmisora.as_view(),name='telefonos_emisora'),
+    path('emisoras/<int:id_emisora>/redes_sociales',views.ListRedSocialEmisora.as_view(),name='redes_sociales_emisora'),
+    path('segmentos/<int:id_segmento>/locutores',views.ListLocutoresSegmento.as_view(),name='locutores_segmento'),
 ]

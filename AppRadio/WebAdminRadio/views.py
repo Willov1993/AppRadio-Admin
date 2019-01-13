@@ -47,7 +47,7 @@ def agregar_emisora(request):
         if not emisora_form.is_valid():
             context['error'] = emisora_form.errors
             return render(request, 'webAdminRadio/agregar_emisora.html', context)
-        
+
         for i in range(len(request.POST.getlist('telefono'))):
             telefono_form = TelefonoForm({
                 'telefono':request.POST.getlist('telefono')[i]
@@ -64,7 +64,7 @@ def agregar_emisora(request):
             if not red_form.is_valid():
                 context['error'] = red_form.errors
                 return render(request, 'webAdminRadio/agregar_emisora.html', context)
-        
+
         emisora_form.save()
         for i in range(len(request.POST.getlist('telefono'))):
             Telefono_emisora.objects.create(
@@ -79,7 +79,7 @@ def agregar_emisora(request):
             )
         context['success'] = '¡La emisora ha sido registrada con éxito!'
         return render(request, 'webAdminRadio/agregar_emisora.html', context)
-    return render(request, 'webAdminRadio/agregar_emisora.html', context)    
+    return render(request, 'webAdminRadio/agregar_emisora.html', context)
 
 @login_required
 def agregar_segmento(request):
@@ -229,7 +229,7 @@ def modificar_emisora(request, id_emisora):
         if not emisora_form.is_valid():
             context['error'] = emisora_form.errors
             return render(request, 'webAdminRadio/modificar_emisora.html', context)
-        
+
         for i in range(len(request.POST.getlist('telefono'))):
             telefono_form = TelefonoForm({
                 'telefono': request.POST.getlist('telefono')[i]
@@ -246,7 +246,7 @@ def modificar_emisora(request, id_emisora):
             if not red_form.is_valid():
                 context['error'] = red_form.errors
                 return render(request, 'webAdminRadio/modificar_emisora.html', context)
-        
+
         emisora_form.save()
         telefono_emisora.delete()
         red_social.delete()
@@ -264,38 +264,16 @@ def modificar_emisora(request, id_emisora):
 
         context['success'] = "¡La emisora ha sido registrada con éxito!"
         return render(request, 'webAdminRadio/modificar_emisora.html', context)
-        '''
-        emisora_form = EmisoraForm(request.POST, request.FILES, instance=edit_emisora)
-        new_telefono = request.POST['telefono']
-        new_nombre_redsocial = request.POST['red_social_nombre']
-        new_link_redsocial = request.POST['red_social_url']
-        telefono_form = TelefonoForm({'telefono':new_telefono})
-        red_form = RedSocialForm({
-            'link': new_link_redsocial,
-            'nombre': new_nombre_redsocial
-        })
-        if (emisora_form.is_valid() and telefono_form.is_multipart() and red_form.is_valid()):
-            emisora_form.save()
-            telefono_emisora.nro_telefono = new_telefono
-            telefono_emisora.save()
-            red_social.nombre = new_nombre_redsocial
-            red_social.link = new_link_redsocial
-            red_social.save()
-        else:
-            list_errors = []
-            list_errors.append(emisora_form.errors)
-            list_errors.append(telefono_form.errors)
-            list_errors.append(red_form.errors)
-            context['error'] = list_errors
-        '''
     return render(request, 'webAdminRadio/modificar_emisora.html', context)
 
 @login_required
 def locutores(request):
     list_segmentos = Segmento.objects.filter(activo='A')
+    emisoras = Emisora.objects.filter(activo='A')
     context = {
         'title': 'Locutores',
-        'segmentos': list_segmentos
+        'segmentos': list_segmentos,
+        'emisoras': emisoras
     }
     return render(request, 'webAdminRadio/locutores.html', context)
 
@@ -319,30 +297,6 @@ def ver_locutor(request, id_locutor):
         'telefono': telefono,
         'segmentos': edit_segmento
     }
-    if request.POST:
-        segmento_form = SegmentoForm(request.POST, request.FILES, instance=edit_segmento)
-        if segmento_form.is_valid():
-            segmento_form.save()
-            # Iterar por todos los horarios
-            for i in range(len(request.POST.getlist('dia'))):
-                dia = request.POST.getlist('dia')[i]
-                horario_form = HorarioForm({
-                    'dia': request.POST.getlist('dia')[i],
-                    'inicio': request.POST.getlist('inicio')[i],
-                    'fin': request.POST.getlist('fin')[i]
-                })
-                if horario_form.is_valid():
-                    # Falta implementar
-                    horario, created = Horario.objects.get(dia=dia)
-                    if created:
-                        segmento_horario.objects.create(
-                            idSegment=Segmento.objects.order_by('-id')[0],
-                            idHorario=Horario.objects.order_by('-id')[0]
-                        )
-                    else:
-                        horario.fecha_inicio = request.POST.getlist('inicio')[i]
-                        horario.fecha_fin = request.POST.getlist('fin')[i]
-
     return render(request, 'webAdminRadio/ver_locutor.html', context)
 
 
@@ -471,15 +425,118 @@ def agregar_usuario(request):
             'password': password,
             'email': request.POST['email'],
             'fechaNac': request.POST['fechaNac'],
-            'rol': request.POST['tipo_select']
+            'rol': request.POST['tipo_select'],
+            'apodo': request.POST['apodo'],
+            'biografia': request.POST['biografia'],
+            'hobbies': request.POST['hobbies']
         })
-        print(user_form)
+
+        telefono_form = TelefonoForm({
+            'telefono': request.POST['telefono']
+        })
+
+        if not telefono_form.is_valid():
+            context['error'] = telefono_form.errors
+            return render(request, 'webAdminRadio/agregar_usuario.html', context)
+
+        for i in range(len(request.POST.getlist('red_social_nombre'))):
+            red_social_form = RedSocialForm({
+                'nombre': request.POST.getlist('red_social_nombre')[i],
+                'link': request.POST.getlist('red_social_url')[i]
+            })
+            if not red_social_form.is_valid():
+                context['error'] = red_social_form.errors
+                return render(request, 'webAdminRadio/agregar_usuario.html', context)
+
         if user_form.is_valid():
             user_form.save()
-            context['success'] = '¡El usuario ha sido registrado'
+            Telefono_Usuario.objects.create(
+                idUsuario=Usuario.objects.order_by('-id')[0],
+                nro_telefono=request.POST['telefono']
+            )
+            for i in range(len(request.POST.getlist('red_social_nombre'))):
+                RedSocial_usuario.objects.create(
+                    idUsuario=Usuario.objects.order_by('-id')[0],
+                    nombre=request.POST.getlist('red_social_nombre')[i],
+                    link=request.POST.getlist('red_social_url')[i]
+                )
+            context['success'] = '¡El usuario ha sido registrado!'
         else:
             context['error'] = user_form.errors
     return render(request, 'webAdminRadio/agregar_usuario.html', context)
+
+@login_required
+def modificar_usuario(request, id_usuario):
+    edit_usuario = Usuario.objects.get(id=id_usuario)
+    edit_telefono = Telefono_Usuario.objects.get(idUsuario=id_usuario)
+    redes = RedSocial_usuario.objects.filter(idUsuario=id_usuario)
+    context = {
+        'title': 'Editar Usuario',
+        'usuario': edit_usuario,
+        'telefono': edit_telefono
+    }
+    if request.POST:
+        nombre = request.POST['nombre']
+        apellidos = request.POST['apellido']
+        username = nombre[0].lower() + apellidos.partition(' ')[0].lower()
+        password = Usuario.objects.make_random_password()
+        user_form = UsuarioForm({
+            'nombre': nombre,
+            'apellido': apellidos,
+            'username': username,
+            'password': password,
+            'email': request.POST['email'],
+            'fechaNac': request.POST['fechaNac'],
+            'rol': request.POST['tipo_select'],
+            'apodo': request.POST['apodo'],
+            'biografia': request.POST['biografia'],
+            'hobbies': request.POST['hobbies']
+        }, instance=edit_usuario)
+
+        telefono_form = TelefonoForm({
+            'telefono': request.POST['telefono']
+        })
+
+        if not telefono_form.is_valid():
+            context['error'] = telefono_form.errors
+            return render(request, 'webAdminRadio/editar_usuario.html', context)
+
+        for i in range(len(request.POST.getlist('red_social_nombre'))):
+            red_social_form = RedSocialForm({
+                'nombre': request.POST.getlist('red_social_nombre')[i],
+                'link': request.POST.getlist('red_social_url')[i]
+            })
+            if not red_social_form.is_valid():
+                context['error'] = red_social_form.errors
+                return render(request, 'webAdminRadio/editar_usuario.html', context)
+
+        if user_form.is_valid():
+            user_form.save()
+            edit_telefono.nro_telefono = request.POST['telefono']
+            redes.delete()
+            for i in range(len(request.POST.getlist('red_social_nombre'))):
+                RedSocial_usuario.objects.create(
+                    idUsuario=edit_usuario,
+                    nombre=request.POST.getlist('red_social_nombre')[i],
+                    link=request.POST.getlist('red_social_url')[i]
+                )
+            context['success'] = '¡El usuario ha sido modificado exitosamente!'
+        else:
+            context['error'] = user_form.errors
+    return render(request, 'webAdminRadio/editar_usuario.html', context)
+
+@login_required
+def ver_usuario(request, id_usuario):
+    usuario = Usuario.objects.get(id=id_usuario)
+    telefono = Telefono_Usuario.objects.get(idUsuario=id_usuario)
+    redes = RedSocial_usuario.objects.filter(idUsuario=id_usuario)
+    context = {
+        'title': 'Información del Usuario',
+        'usuario': usuario,
+        'telefono': telefono,
+        'redes': redes
+    }
+    return render(request, 'webAdminRadio/ver_usuario.html', context)
 
 @login_required
 def sugerencias(request):
@@ -538,3 +595,11 @@ def borrar_locutor(request, id_locutor):
     delete_locutor.save()
     messages.success(request, 'El locutor ha sido eliminado')
     return redirect('webadminradio:locutores')
+
+@login_required
+def borrar_usuario(request, id_usuario):
+    delete_usuario = Usuario.objects.get(id=id_usuario)
+    delete_usuario.is_active = False
+    delete_usuario.save()
+    messages.success(request, 'El usuario ha sido eliminado')
+    return redirect('webadminradio:usuarios')

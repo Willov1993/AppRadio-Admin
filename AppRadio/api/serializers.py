@@ -32,7 +32,7 @@ class SegmentoSerializerFull(serializers.ModelSerializer):
 
     class Meta:
         model = models.Segmento
-        fields = ('id', 'nombre', 'imagen','idEmisora', 'slogan', 'horarios')
+        fields = ('id', 'nombre', 'imagen','idEmisora', 'slogan','descripcion', 'horarios')
 
 #SEGMENTOS DEL DIA ACTUAL
 class SegmentoSerializerToday(serializers.ModelSerializer):
@@ -45,7 +45,7 @@ class SegmentoSerializerToday(serializers.ModelSerializer):
 
     class Meta:
         model = models.Segmento
-        fields = ('id', 'nombre', 'imagen','idEmisora', 'horarios','emisora')
+        fields = ('id', 'nombre', 'imagen','idEmisora', 'horarios','descripcion','emisora')
 
 
 class LocutoresSerializer(serializers.ModelSerializer):
@@ -125,4 +125,45 @@ class FrecuenciaSerializer(serializers.ModelSerializer):
             'dia_semana',
             'hora_inicio',
             'hora_fin',
+        )
+
+class TelefonoEmisoraSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Telefono_emisora
+        fields= '__all__'
+
+class RedSocialEmisoraSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.RedSocial_emisora
+        fields= '__all__'
+
+class TelefonoUsuarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Telefono_Usuario
+        fields= '__all__'
+
+class RedSocialUsuarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.RedSocial_usuario
+        fields= '__all__'
+
+class LocutoresSegmentoSerializer(serializers.ModelSerializer):
+    redes_sociales= serializers.ReadOnlyField(source="get_redes_sociales")
+
+    #def get_redes_sociales(self,ob):
+    #    return RedSocialUsuarioSerializer(ob.get_redes_sociales()).data
+
+
+    class Meta:
+        model = Usuario
+        fields=(
+            'id',
+            'imagen',
+            'first_name',
+            'last_name',
+            'biografia',
+            'fecha_nac',
+            'hobbies',
+            'apodo',
+            'redes_sociales',
         )
