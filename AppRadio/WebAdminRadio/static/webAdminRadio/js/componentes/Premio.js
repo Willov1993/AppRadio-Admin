@@ -26,10 +26,8 @@ const Premio = {
     <div>
         <div v-for="(premio, index) in premios" v-bind:key="index" class="form-row">
             <div class="form-group col-lg-4">
-            <span>Premios:</span>
             <p style="white-space: pre-line;">{{ premio.descripcion }}</p>
-            <br>
-            <textarea style="width:100%" v-model="premio.descripcion" placeholder="Ingrese cada premio en una línea"></textarea>
+            <textarea id="desc" style="width:100%" v-model="premio.descripcion" placeholder="Ingrese cada premio en una línea"></textarea>
             </div>
         </div>
     </div>

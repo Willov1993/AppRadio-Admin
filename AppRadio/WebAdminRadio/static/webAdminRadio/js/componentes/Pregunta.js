@@ -24,21 +24,21 @@ const Pregunta = {
     template:/*html*/`
     <div>
         <div v-for="(pregunta, index) in preguntas" v-bind:key="index" class="form-row">
-            <div class="form-group col-md-4">
-                <span>Preguntas:</span>
+            <div class="form-group col-md-10">
                 <label for="preguntaInput">Agregue las preguntas para su concurso</label>
                 <input required name="pregunta" id="preguntaInput" type="text" class="form-control" placeholder="Ingrese pregunta" maxlength=150>
+            </div>
+            <div class="form-group col-md-10">
                 <label for="respuestaInput">Respuesta:</label>
-                <input required name="pregunta" id="preguntaInput" type="text" class="form-control" placeholder="Opcion" maxlength=150>
-                <button type="button" class="btn btn-primary" id="addHorario" @click="agregarPregunta">Agregar pregunta</button>
-                <div class="form-group col-md-3" id="btn-eliminar-div">
-                    <div id="btn-eliminar"">
-                        <button type="button" class="btn btn-primary" id="addHorario" @click="eliminarPregunta">Eliminar</button>
-                    </div>
+                <input required name="respuestaInput" id="respuestaInput" type="text" class="form-control" placeholder="Opcion" maxlength=150>
+            </div>
+            <div class="form-group col-md-2" id="btn-eliminar-div">
+                <div id="btn-eliminar"">
+                    <button v-if="index != 0" type="button" class="btn btn-primary" id="addHorario" @click="eliminarPregunta">Eliminar</button>
                 </div>
             </div>
         </div>
-        <button type="button" class="btn btn-primary" id="addHorario" @click="agregarPregunta">Agregar pregunta</button>
+        <button type="button" class="btn btn-primary" id="addPregunta" @click="agregarPregunta">Agregar otra pregunta</button>
     </div>
     `
 }
