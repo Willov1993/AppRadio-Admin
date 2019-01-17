@@ -202,3 +202,10 @@ class ListLocutoresSegmento(generics.ListAPIView):
 class ListImagenes(generics.ListAPIView):
     serializer_class = serializers.ImagenesSerializer
     queryset = models.Imagenes.objects.all()
+
+
+class ListVideos(generics.ListAPIView):
+    serializer_class = serializers.VideosSerializer
+    queryset = models.Videos.objects.all()
+
+

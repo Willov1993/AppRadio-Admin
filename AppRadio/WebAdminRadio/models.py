@@ -6,8 +6,6 @@ from django.utils.text import slugify
 from django.core import serializers
 from accounts.models import Usuario
 from datetime import datetime
-from django.contrib.sites.models import Site
-
 
 DIAS=["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"]
 
@@ -32,6 +30,7 @@ def upload_location_image(instance, filename):
 def upload_location_video(instance, filename):
     #Esta función guarda los videos de los segmentos en media_cdn/videos/filename
     return "videos/%s" %(filename)
+
 
 class Emisora(models.Model):
     #idEmisora = models.AutoField(primary_key = True)
@@ -84,7 +83,7 @@ class Encuesta(models.Model):
     fecha_inicio = models.DateTimeField(auto_now_add=True)
     activo = models.CharField(max_length = 1, default='A')
     idEmisora = models.ForeignKey(Emisora, on_delete=models.DO_NOTHING)
-    idSegmento = models.ForeignKey(Segmento, on_delete=models.DO_NOTHING, null=True, blank=True) 
+    idSegmento = models.ForeignKey(Segmento, on_delete=models.DO_NOTHING, null=True, blank=True)
 
 class Horario(models.Model):
     #idHorario = models.AutoField(primary_key = True)
@@ -262,7 +261,6 @@ def pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_slug(instance, sender)
 
-
 class Imagenes(models.Model):
     fecha_creacion = models.DateField(auto_now_add=True)
     segmento = models.ForeignKey(Segmento, on_delete = models.CASCADE)
@@ -272,4 +270,27 @@ class Imagenes(models.Model):
 
     def __str__(self):
         return self.url.name
+
+
+class Videos(models.Model):
+    fecha_creacion = models.DateField(auto_now_add=True)
+    segmento = models.ForeignKey(Segmento, on_delete = models.CASCADE)
+    descripcion = models.CharField(max_length = 350)
+    url = models.FileField(upload_to = upload_location_video)
+
+
+    def __str__(self):
+        return self.url.name
+
+
+
+
+
+
+
+
+
+
+
+
 

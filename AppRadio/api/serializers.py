@@ -173,3 +173,8 @@ class ImagenesSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Imagenes
         fields= '__all__'
+
+class VideosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Videos
+        fields= '__all__'

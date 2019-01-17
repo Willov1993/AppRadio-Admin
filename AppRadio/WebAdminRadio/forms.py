@@ -102,14 +102,14 @@ class HorarioForm(forms.ModelForm):
 class UsuarioForm(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = [ 
-            'first_name', 
+        fields = [
+            'first_name',
             'last_name',
             'username',
             'password',
-            'email', 
-            'fecha_nac', 
-            'imagen', 
+            'email',
+            'fecha_nac',
+            'imagen',
             'rol',
             'apodo',
             'biografia',
@@ -128,15 +128,15 @@ class UsuarioForm(forms.ModelForm):
 
 class ConcursoForm(forms.ModelForm):
     class Meta:
-        model: Concurso
-        fields = [ 
-            'premio',
+        model = Concurso
+        fields = [
+            'premios',
             'ganador'
         ]
 
 class PreguntaForm(forms.ModelForm):
     class Meta:
-        model: Pregunta
+        model = Pregunta
         fields = [
             'contenido',
             'idEncuesta'
@@ -144,15 +144,15 @@ class PreguntaForm(forms.ModelForm):
 
 class RespuestaForm(forms.ModelForm):
     class Meta:
-        model: Respuesta
+        model = Respuesta
         fields = [
-            'descripcion',
+            'contenido',
             'correcta'
         ]
 
 class EncuestaFrom(forms.ModelForm):
     class Meta:
-        model: Encuesta
+        model = Encuesta
         fields = [
             'titulo',
             'descripcion',

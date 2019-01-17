@@ -73,7 +73,7 @@ def sugerencias(request):
     page = request.GET.get('page')
     list_sugerencias = paginator.get_page(page)
     context = {'title': 'Sugerencias', 'sugerencias': list_sugerencias}
-    return render(request, 'webAdminRadio/sugerencias.html', context) 
+    return render(request, 'webAdminRadio/sugerencias.html', context)
 
 @login_required
 def publicidad(request):
@@ -290,7 +290,7 @@ def agregar_publicidad(request):
             context['error'] = publicidad_form.errors
     return render(request, 'webAdminRadio/agregar_publicidad.html', context)
 
-<<<<<<< HEAD
+
 @login_required
 def agregar_encuesta(request):
     emisoras = Emisora.objects.filter(activo='A')
@@ -326,7 +326,7 @@ def ver_segmento(request, id_segmento):
     }
     return render(request, 'webAdminRadio/ver_segmento.html', context)
 
-# Sección modificar 
+# Sección modificar
 
 @login_required
 def modificar_emisora(request, id_emisora):
@@ -452,7 +452,7 @@ def modificar_locutor(request, id_locutor):
                 context['error'] = usuario_form.errors
             return render(request, 'webAdminRadio/editar_locutor.html', context)
         context['success'] = '¡El registro del locutor se ha sido creado con éxito!'
-    return render(request, 'webAdminRadio/editar_locutor.html', context)    
+    return render(request, 'webAdminRadio/editar_locutor.html', context)
 
 @login_required
 def modificar_usuario(request, id_usuario):
@@ -562,7 +562,7 @@ def modificar_publicidad(request, id_publicidad):
         return render(request, 'webAdminRadio/editar_publicidad.html', context)
     return render(request, 'webAdminRadio/editar_publicidad.html', context)
 
-#Sección ver 
+#Sección ver
 
 @login_required
 def ver_segmento(request, id_segmento):
@@ -597,7 +597,7 @@ def ver_usuario(request, id_usuario):
         'telefono': telefono,
         'redes': redes
     }
-    return render(request, 'webAdminRadio/ver_usuario.html', context)    
+    return render(request, 'webAdminRadio/ver_usuario.html', context)
 
 @login_required
 def ver_publicidad(request, id_publicidad):
