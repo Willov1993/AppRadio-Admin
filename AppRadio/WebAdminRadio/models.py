@@ -80,9 +80,11 @@ class Encuesta(models.Model):
     #idEncuesta = models.AutoField(primary_key = True)
     titulo = models.CharField(max_length = 150)
     descripcion = models.CharField(max_length = 250)
-    imagen = models.CharField(max_length = 250)
+    #imagen = models.CharField(max_length = 250)
     fecha_inicio = models.DateTimeField(auto_now_add=True)
     activo = models.CharField(max_length = 1, default='A')
+    idEmisora = models.ForeignKey(Emisora, on_delete=models.DO_NOTHING)
+    idSegmento = models.ForeignKey(Segmento, on_delete=models.DO_NOTHING, null=True, blank=True) 
 
 class Horario(models.Model):
     #idHorario = models.AutoField(primary_key = True)
@@ -165,9 +167,9 @@ class Concurso(models.Model):
 
 class Pregunta(models.Model):
     contenido = models.CharField(max_length = 150)
-    tipo = models.CharField(max_length = 1)
-    respuesta_c = models.CharField(max_length = 150)
-    idConcurso = models.ForeignKey(Concurso, on_delete=models.CASCADE)
+    #tipo = models.CharField(max_length = 1)
+    respuesta_c = models.CharField(max_length = 150, null=True, blank=True)
+    idEncuesta = models.ForeignKey(Concurso, on_delete=models.CASCADE)
 
 class Respuesta(models.Model):
     idPregunta = models.ForeignKey(Pregunta, on_delete=models.CASCADE)

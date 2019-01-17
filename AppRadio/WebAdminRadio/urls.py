@@ -33,4 +33,6 @@ urlpatterns = [
     path('usuarios/<int:id_usuario>/eliminar', views.borrar_usuario, name='borrar_usuario'), # URL para eliminar un usuario
     path('sugerencias', views.sugerencias, name="sugerencias"), # URL para ver las sugerencias
     path('concursos/agregar', views.agregar_concurso, name="concursos"), # URL para agregar concursos
+    path('encuestas', views.encuestas, name='encuestas'), # Página para ver las encuestas de las emisoras
+    path('encuestas/agregar', views.agregar_encuesta, name="agregar_encuesta")
 ]
