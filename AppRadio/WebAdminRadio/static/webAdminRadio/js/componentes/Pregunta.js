@@ -1,8 +1,12 @@
 /* -- Componente Preguntas -- 
     Este componente crea las preguntas para el concurso
 */
+//import OpcionesComponente from './OpcionesComponent.js'
 
 const Pregunta = {
+    /*components: {
+        'option': OpcionesComponente
+    },*/
     data() {
         return{
            preguntas:[]
@@ -25,15 +29,15 @@ const Pregunta = {
     <div>
         <div v-for="(pregunta, index) in preguntas" v-bind:key="index" class="form-row">
             <div class="form-group col-md-10">
-                <label for="preguntaInput">Agregue las preguntas para su concurso</label>
-                <input required name="pregunta" id="preguntaInput" type="text" class="form-control" placeholder="Ingrese pregunta" maxlength=150>
+                <label for="preguntaInput">Pregunta:</label>
+                <input required v-bind:name="'pregunta' + index" id="preguntaInput" type="text" class="form-control" placeholder="Ingrese pregunta" maxlength=150>
             </div>
             <div class="form-group col-md-10">
                 <label for="respuestaInput">Respuesta:</label>
-                <input required name="respuestaInput" id="respuestaInput" type="text" class="form-control" placeholder="Opcion" maxlength=150>
+                <input required v-bind:name="'respuesta' + index" id="respuestaInput" type="text" class="form-control" placeholder="Opcion" maxlength=150>
             </div>
             <div class="form-group col-md-2" id="btn-eliminar-div">
-                <div id="btn-eliminar"">
+                <div id="btn-eliminar">
                     <button v-if="index != 0" type="button" class="btn btn-primary" id="addHorario" @click="eliminarPregunta">Eliminar</button>
                 </div>
             </div>

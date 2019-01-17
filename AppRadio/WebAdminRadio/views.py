@@ -40,6 +40,26 @@ def publicidad(request):
     return render(request, 'webAdminRadio/publicidad.html', context)
 
 @login_required
+def locutores(request):
+    list_segmentos = Segmento.objects.filter(activo='A')
+    emisoras = Emisora.objects.filter(activo='A')
+    context = {
+        'title': 'Locutores',
+        'segmentos': list_segmentos,
+        'emisoras': emisoras
+    }
+    return render(request, 'webAdminRadio/locutores.html', context)
+
+@login_required
+def encuestas(request):
+    emisoras = Emisora.objects.filter(activo='A')
+    context = {
+        'title': "Encuestas",
+        'emisoras': emisoras
+    }
+    return render(request, 'webAdminRadio/encuestas.html', context)
+
+@login_required
 def agregar_emisora(request):
     context = {'title': 'Agregar Emisora'}
     if request.POST:
@@ -168,6 +188,32 @@ def agregar_publicidad(request):
     return render(request, 'webAdminRadio/agregar_publicidad.html', context)
 
 @login_required
+def agregar_encuesta(request):
+    emisoras = Emisora.objects.filter(activo='A')
+    '''
+    if request.POST:
+        encuesta_form = EncuestaFrom(request.POST)
+        if encuesta_form.is_valid():
+            new_encuesta = encuesta_form.save()
+            for i in range(len(request.POST.getlist('pregunta'))):
+                pregunta_form = PreguntaForm({
+                    'contenido': request.POST.getlist('pregunta')[i],
+                    'idEncuesta': new_encuesta
+                })
+                if pregunta_form.is_valid():
+                    pregunta_form.save()
+            for i in range(len(request.POST.getlist('respuesta'))):
+                respuesta_form = RespuestaForm({
+                    ''
+                })
+    '''
+    context = {
+        'title': "Agregar Encuesta",
+        'emisoras': emisoras,
+    }
+    return render(request, 'webAdminRadio/agregar_encuesta.html', context)
+
+@login_required
 def ver_segmento(request, id_segmento):
     segmento = Segmento.objects.get(id=id_segmento)
     context = {
@@ -265,17 +311,6 @@ def modificar_emisora(request, id_emisora):
         context['success'] = "¡La emisora ha sido registrada con éxito!"
         return render(request, 'webAdminRadio/modificar_emisora.html', context)
     return render(request, 'webAdminRadio/modificar_emisora.html', context)
-
-@login_required
-def locutores(request):
-    list_segmentos = Segmento.objects.filter(activo='A')
-    emisoras = Emisora.objects.filter(activo='A')
-    context = {
-        'title': 'Locutores',
-        'segmentos': list_segmentos,
-        'emisoras': emisoras
-    }
-    return render(request, 'webAdminRadio/locutores.html', context)
 
 @login_required
 def asignar_locutor(request):
