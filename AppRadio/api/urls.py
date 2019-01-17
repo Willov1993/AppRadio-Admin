@@ -25,5 +25,9 @@ urlpatterns = [
     path('emisoras/<int:id_emisora>/redes_sociales',views.ListRedSocialEmisora.as_view(),name='redes_sociales_emisora'),
     path('segmentos/<int:id_segmento>/locutores',views.ListLocutoresSegmento.as_view(),name='locutores_segmento'),
     path('imagenes/', views.ListImagenes.as_view(), name="list_imagenes"),
+    path('imagenes/<int:id_segmento>',views.ListImagenesSegmento.as_view(),name='imagenes_segmento'),
     path('videos/',views.ListVideos.as_view(),name="list_videos"),
+    path('videos/<int:id_segmento>',views.ListVideosSegmento.as_view(),name='videos_segmento'),
+    path('favoritos/',views.ListFavoritos.as_view(),name="list_favoritos"),
+    path('favoritos/<int:id_usuario>',views.ListFavoritosUsuario.as_view(),name='favoritos_usuario'),
 ]

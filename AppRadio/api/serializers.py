@@ -178,3 +178,10 @@ class VideosSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Videos
         fields= '__all__'
+
+class FavoritoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Favorito
+        fields = '__all__'
+
+

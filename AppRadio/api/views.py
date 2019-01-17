@@ -203,9 +203,39 @@ class ListImagenes(generics.ListAPIView):
     serializer_class = serializers.ImagenesSerializer
     queryset = models.Imagenes.objects.all()
 
+class ListImagenesSegmento(generics.ListAPIView):
+    serializer_class= serializers.ImagenesSerializer
+
+    def get_queryset(self):
+        id_segmento= self.kwargs['id_segmento']
+        results= models.Imagenes.objects.filter(segmento=id_segmento)
+        return results
+
 
 class ListVideos(generics.ListAPIView):
     serializer_class = serializers.VideosSerializer
     queryset = models.Videos.objects.all()
+
+class ListVideosSegmento(generics.ListAPIView):
+    serializer_class= serializers.VideosSerializer
+
+    def get_queryset(self):
+        id_segmento= self.kwargs['id_segmento']
+        results= models.Videos.objects.filter(segmento=id_segmento)
+        return results
+
+
+class ListFavoritos(generics.ListAPIView):
+    serializer_class = serializers.FavoritoSerializer
+    queryset = models.Favorito.objects.all()
+
+class ListFavoritosUsuario(generics.ListAPIView):
+    serializer_class= serializers.VideosSerializer
+
+    def get_queryset(self):
+        id_usuario= self.kwargs['id_usuario']
+        results= models.Favorito.objects.filter(usuario=id_usuario)
+        return results
+
 
 

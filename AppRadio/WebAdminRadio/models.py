@@ -283,10 +283,13 @@ class Videos(models.Model):
         return self.url.name
 
 
+class Favorito(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete = models.CASCADE)
+    segmento = models.ForeignKey(Segmento,on_delete = models.CASCADE)
 
 
-
-
+    def __str__(self):
+        return self.usuario.nombre + "-" + self.segmento.nombre
 
 
 
