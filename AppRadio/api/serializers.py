@@ -167,3 +167,9 @@ class LocutoresSegmentoSerializer(serializers.ModelSerializer):
             'apodo',
             'redes_sociales',
         )
+
+
+class ImagenesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Imagenes
+        fields= '__all__'

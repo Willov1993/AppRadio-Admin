@@ -197,3 +197,8 @@ class ListLocutoresSegmento(generics.ListAPIView):
         id_segmento= self.kwargs['id_segmento']
         results= models.segmento_usuario.objects.filter(idSegmento=id_segmento)
         return Usuario.objects.filter(pk__in=results.values('idUsuario'))
+
+
+class ListImagenes(generics.ListAPIView):
+    serializer_class = serializers.ImagenesSerializer
+    queryset = models.Imagenes.objects.all()

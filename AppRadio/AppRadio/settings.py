@@ -62,7 +62,7 @@ EMAIL_HOST_USER= 'appradiosoftware@gmail.com'
 EMAIL_HOST_PASSWORD= 'appradio123'
 
 
-SITE_ID = 2
+SITE_ID = 1
 
 
 REST_FRAMEWORK = {

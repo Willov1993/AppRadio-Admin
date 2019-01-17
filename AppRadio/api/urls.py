@@ -24,4 +24,5 @@ urlpatterns = [
     path('emisoras/<int:id_emisora>/telefonos',views.ListTelefonosEmisora.as_view(),name='telefonos_emisora'),
     path('emisoras/<int:id_emisora>/redes_sociales',views.ListRedSocialEmisora.as_view(),name='redes_sociales_emisora'),
     path('segmentos/<int:id_segmento>/locutores',views.ListLocutoresSegmento.as_view(),name='locutores_segmento'),
+    path('imagenes/', views.ListImagenes.as_view(), name="list_imagenes"),
 ]
