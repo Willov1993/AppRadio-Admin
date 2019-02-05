@@ -21,7 +21,7 @@
     {% endif %}
     {% if success %}
         <div id="componente_modal_info">
-        <modal-info v-if="showModal" url_redirect="{% url 'webadminradio:locutores' %}">
+        <modal-info v-if="showModal" url_redirect="{% url 'webadminradio:usuarios' %}">
             <h3 slot="header">Información</h3>
             <p slot="body">{{success}}</p>
         </modal-info>
@@ -62,7 +62,6 @@
     <div class="form-group">
         <label for="tipo_usuario">Rol del usuario</label>
         <select name="tipo_select" id="tipo" class="custom-select">
-            <option value="" selected disabled>{{ usuario.rol }}</option>
             <option value="L">Locutor</option>
             <option value="A">Administrador</option>
         </select>
@@ -70,10 +69,14 @@
     <!-- Imange del usuario -->
     <div class="form-group">
         <div class="custom-file">
-            <label for="imgSegmento" class="custom-file-label">Imagen del Usuario</label>
-            <input type="file" name="imagen" class="custom-file-input" id="imgUsuario" accept=".png, .jpg, .jpeg" oninvalid="this.setCustomValidity('Ingrese una imagen para el segmento')" oninput="this.setCustomValidity('')" required>
+            <label for="imgUsuario" class="custom-file-label">Imagen del Usuario</label>
+            <input type="file" name="imagen" src="{{ usuario.imagen.url }}" class="custom-file-input" id="imgUsuario" accept=".png, .jpg, .jpeg" oninvalid="this.setCustomValidity('Ingrese una imagen para el segmento')" oninput="this.setCustomValidity('')">
             <div class="img-holder">
-                <img id="preview" src="{{ usuario.image.url }}">
+                {% if usuario.imagen %}
+                    <img id="preview" src="{{ usuario.imagen.url }}">
+                {% else %}
+                    <img id="preview" src="{% static 'webAdminRadio/images/placeholder.png' %}">
+                {% endif %}
             </div>
         </div>
     </div>
@@ -83,17 +86,17 @@
     <!-- Apodo -->
     <div class="form-group">
         <label for="apodo">Apodo</label>
-        <input id="apodo" class="form-control" name="apodo" type="text" value="{{ usuario.apodo }}"oninvalid="this.setCustomValidity('Ingrese un apodo válido')" oninput="this.setCustomValidity('')">
+        <input id="apodo" class="form-control" name="apodo" type="text" value="{% if usuario.apodo != 'None' %}{{ usuario.apodo }}{% endif %}"oninvalid="this.setCustomValidity('Ingrese un apodo válido')" oninput="this.setCustomValidity('')">
     </div>
     <!-- Biografia -->
     <div class="form-group">
         <label for="biografia">Biografia</label>
-        <textarea id="biografia" class="form-control" name="biografia" rows="3" placeholder="Ingrese la biografia del usuario" oninvalid="this.setCustomValidity('Ingrese la biografia del usuario')" oninput="this.setCustomValidity('')" maxlength="250">{{ usuario.biografia }}</textarea>
+        <textarea id="biografia" class="form-control" name="biografia" rows="3" placeholder="Ingrese la biografia del usuario" oninvalid="this.setCustomValidity('Ingrese la biografia del usuario')" oninput="this.setCustomValidity('')" maxlength="250">{% if usuario.biografia != 'None' %}{{ usuario.biografia }}{% endif %}</textarea>
     </div>
     <!-- Hobbies -->
     <div class="form-group">
         <label for="hobbies">Hobbies (separado por comas)</label>
-        <input id="hobbies" class="form-control" name="hobbies" type="text" value="{{ usuario.hobbies }}">
+        <input id="hobbies" class="form-control" name="hobbies" type="text" value="{% if usuario.hobbies != 'None' %}{{ usuario.hobbies }}{% endif %}">
     </div>
     <!-- Div de Redes Sociales-->
     <div class="form-group">
@@ -107,7 +110,22 @@
     {% endblock %}
 {% block page_script %}
     <script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>
-    <script src="{% static 'webAdminRadio/js/componentes/EmisoraComponent.js' %}"></script>
     <script src="{% static 'webAdminRadio/js/componentes/RedSocialComponent.js' %}"></script>
     <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
+    <script text="text/javascript">
+        var user_rol = "{{ usuario.rol|safe }}";
+        var selectbox = document.getElementById('tipo');
+        var opts = selectbox.options;
+        var redes = {{ redes|safe }};
+        for (var opt, j = 0; opt = opts[j]; j++) {
+            if (opt.value == user_rol) {
+                selectbox.selectedIndex = j;
+                break;
+            }
+        }
+        contenedorRedesSociales.$children[0].$data.redes_sociales.pop();
+        for (var i = 0; i < redes.length; i++) {
+            contenedorRedesSociales.$children[0].$data.redes_sociales.push(redes[i]);
+        }
+    </script>
 {% endblock %}

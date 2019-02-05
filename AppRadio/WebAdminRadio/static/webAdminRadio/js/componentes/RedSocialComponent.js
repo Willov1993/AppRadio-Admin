@@ -7,7 +7,7 @@ const RedSocial=  {
     },
     methods:{
       agregarRegistro(){
-        this.redes_sociales.push({'nombre': null,'url': null, esOtra:false})
+        this.redes_sociales.push({'nombre': null,'link': null, esOtra:false})
       },
       eliminarRegistro(indice){
         this.redes_sociales.splice(indice,1)
@@ -24,7 +24,7 @@ const RedSocial=  {
     <div>
       <div v-for="(red,index) in redes_sociales" v-bind:key="index" class="form-row">
         <div class="form-group col-md-4">
-            <input required v-model="red.url" v-bind:name="'red_social_url'" type="url" class="form-control" placeholder="Ingrese la url de la red social">
+            <input v-model="red.link" v-bind:name="'red_social_url'" type="url" class="form-control" placeholder="Ingrese la url de la red social">
         </div>
         <div class="form-group col-md-2">
             <select @change="verificarOtraRed($event,index)" v-bind:name="'red_social_nombre'" class="custom-select form-control">
@@ -36,7 +36,7 @@ const RedSocial=  {
             </select>
         </div>
         <div v-if="red.esOtra == true" class="form-group col-md-2">
-            <input required v-model="red.nombre" class="form-control" v-bind:name="'red_social_nombre'" placeholder="Ingrese el nombre de la red social">
+            <input v-model="red.nombre" class="form-control" v-bind:name="'red_social_nombre'" placeholder="Ingrese el nombre de la red social">
         </div>
         <div v-if="index != 0" class="form-group col-md-2">
             <button type="button" class="btn btn-primary" @click="eliminarRegistro(index)" >Eliminar</button>

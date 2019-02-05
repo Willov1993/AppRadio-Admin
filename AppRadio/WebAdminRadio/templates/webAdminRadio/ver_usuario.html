@@ -33,21 +33,21 @@
     {% if usuario.rol == "L" %}
         <div class="row info">
             <label class="col-sm-3"><b>Apodo:</b></label>
-            <label class="col-sm-9">{{ usuario.apodo }}</label>
+            <label class="col-sm-9">{% if usuario.apodo != 'None' %}{{ usuario.apodo }}{% else %}{{ 'No ha sido definido' }}{% endif %}</label>
         </div>
         <div class="row info">
             <label class="col-sm-3"><b>Biografia:</b></label>
-            <label class="col-sm-9">{{ usuario.biografia }}</label>
+            <label class="col-sm-9">{% if usuario.biografia != 'None' %}{{ usuario.biografia }}{% else %}{{ 'No ha sido definido' }}{% endif %}</label>
         </div>
         <div class="row info">
             <label class="col-sm-3"><b>Hobbies:</b></label>
-            <label class="col-sm-9">{{ usuario.hobbies }}</label>
+            <label class="col-sm-9">{% if usuario.hobbies != 'None' %}{{ usuario.hobbies }}{% else %}{{ 'No ha sido definido' }}{% endif %}</label>
         </div>
         <div class="row info">
             <label class="col-sm-3"><b>Redes Sociales:</b></label>
             <ul>
             {% for red in redes %}
-                <li class="col-sm-3"><a href="{{ red.link }}">{{ red.nombre }}</a></li>
+                <li class="col-sm-3"><a target="_blank" rel="noopener noreferrer" href="{{ red.link }}">{{ red.nombre }}</a></li>
             {% endfor %}
             </ul>
         </div>

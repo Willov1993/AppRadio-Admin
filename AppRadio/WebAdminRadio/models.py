@@ -21,11 +21,11 @@ def segmento_file_location(instance, filename):
 
 def upload_location(instance, filename):
     #Esta función guarda las imágenes de los usuarios en media_cdn/<id_usuario>
-    return "usuarios/%s/%s" %(instance.id, filename)
+    return "usuarios/%s/%s" %(instance.username, filename)
 
 def upload_location_image(instance, filename):
     #Esta función guarda las imágenes de los usuarios en media_cdn/videos/filename
-    return "imagenes/%s" %( filename)
+    return "imagenes/%s" %(filename)
 
 def upload_location_video(instance, filename):
     #Esta función guarda los videos de los segmentos en media_cdn/videos/filename
@@ -243,6 +243,34 @@ class Auditoria(models.Model):
     fecha_creado = models.DateTimeField()
     fecha_modificado = models.DateTimeField(auto_now_add=True)
 
+class Imagenes(models.Model):
+    fecha_creacion = models.DateField(auto_now_add=True)
+    segmento = models.ForeignKey(Segmento, on_delete = models.CASCADE)
+    descripcion = models.CharField(max_length = 350)
+    url = models.ImageField(upload_to = upload_location_image)
+
+
+    def __str__(self):
+        return self.url.name
+
+class Videos(models.Model):
+    fecha_creacion = models.DateField(auto_now_add=True)
+    segmento = models.ForeignKey(Segmento, on_delete = models.CASCADE)
+    descripcion = models.CharField(max_length = 350)
+    url = models.FileField(upload_to = upload_location_video)
+
+
+    def __str__(self):
+        return self.url.name
+
+class Favorito(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete = models.CASCADE)
+    segmento = models.ForeignKey(Segmento,on_delete = models.CASCADE)
+
+
+    def __str__(self):
+        return self.usuario.nombre + "-" + self.segmento.nombre
+
 # Creación de Slugs
 def create_slug(instance, sender, new_slug=None):
     slug = slugify(instance.nombre)
@@ -260,40 +288,3 @@ def create_slug(instance, sender, new_slug=None):
 def pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_slug(instance, sender)
-
-class Imagenes(models.Model):
-    fecha_creacion = models.DateField(auto_now_add=True)
-    segmento = models.ForeignKey(Segmento, on_delete = models.CASCADE)
-    descripcion = models.CharField(max_length = 350)
-    url = models.ImageField(upload_to = upload_location_image)
-
-
-    def __str__(self):
-        return self.url.name
-
-
-class Videos(models.Model):
-    fecha_creacion = models.DateField(auto_now_add=True)
-    segmento = models.ForeignKey(Segmento, on_delete = models.CASCADE)
-    descripcion = models.CharField(max_length = 350)
-    url = models.FileField(upload_to = upload_location_video)
-
-
-    def __str__(self):
-        return self.url.name
-
-
-class Favorito(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete = models.CASCADE)
-    segmento = models.ForeignKey(Segmento,on_delete = models.CASCADE)
-
-
-    def __str__(self):
-        return self.usuario.nombre + "-" + self.segmento.nombre
-
-
-
-
-
-
-
