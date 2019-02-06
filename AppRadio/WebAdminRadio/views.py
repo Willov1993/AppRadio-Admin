@@ -84,7 +84,7 @@ def publicidad(request):
         'segmentos': list_segmentos,
         'emisoras': list_emisoras,
     }
-    return render(request, 'webAdminRadio/concursos.html', context)
+    return render(request, 'webAdminRadio/publicidad.html', context)
 
 # Sección agregar
 

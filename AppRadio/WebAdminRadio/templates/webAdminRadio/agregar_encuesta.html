@@ -33,20 +33,17 @@
             <textarea class="form-control" id="descripcion" name="descripcion" row="3" placeholder="Descripción de la encuesta" oninvalid="this.setCustomValidity=('Ingrese una descipción válida para la encuesta')" oninput="this.setCustomValidity('')" maxlength="250" required></textarea>
         </div>
         <hr>
-        <h5><b>Preguntas</b></h5>
+        <h5><b>Creación de preguntas con sus alternativas</b></h5>
         <div class="form-group">
             <div id="componente_pregunta">
-                <pregunta></pregunta>
+                <encuesta v-on:update-question="updatePregunta($event, index)" v-on:eliminar-pregunta="eliminarPregunta(index)" v-on:agregar-opcion="agregarOpcion(index)" v-on:eliminar-opcion="eliminarOpcion($event, index)" v-for="(preg, index) in preguntas" :key="index" :question="preg.pregunta" :options="preg.opciones" :indice="length"></encuesta>
+                <button type="button" class="btn btn-primary" @click="agregarPregunta()">Agregar otra pregunta</button>
             </div>
         </div>
-        <div class="form-group">
-            <div id="componente_pregunta">
-                <pregunta></pregunta>
-            </div>
-        </div>
+        <button type="submit" class="btn btn-primary btn-lg submit"><i class="fas fa-plus-circle"></i>Agregar Encuesta</button>
     </form>
 {% endblock %}
 {% block page_script %}
-    <script src="{% static 'webAdminRadio/js/componentes/Pregunta.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/MultipleQA.js' %}"></script>
     <script type="text/javascript" src="{% static 'webAdminRadio/js/select_em_seg.js' %}"></script>
 {% endblock %}
