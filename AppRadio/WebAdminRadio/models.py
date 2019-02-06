@@ -23,6 +23,9 @@ def upload_location(instance, filename):
     #Esta función guarda las imágenes de los usuarios en media_cdn/<id_usuario>
     return "usuarios/%s/%s" %(instance.username, filename)
 
+def upload_location_publicidad(instance,filename):
+    return "publicidades/%s" %(filename) 
+
 def upload_location_image(instance, filename):
     #Esta función guarda las imágenes de los usuarios en media_cdn/videos/filename
     return "imagenes/%s" %(filename)
@@ -101,7 +104,7 @@ class Publicidad(models.Model):
     descripcion = models.CharField(max_length = 350)
     url = models.CharField(max_length = 150)
     estado = models.CharField(max_length = 1, default='A')
-    imagen = models.ImageField(upload_to = upload_location, blank=None)
+    imagen = models.ImageField(upload_to = upload_location_publicidad, blank=None)
 
     def __str__(self):
         return self.titulo

@@ -3,6 +3,12 @@ function getFrecuencias(publicidad) {
     console.log($('#table_frecuencias').length);
     $('#table_frecuencias').DataTable({
         "destroy": true,
+        "bPaginate": false,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "searching": false,
         "ajax": {
             "method": "GET",
             "url": "/api/publicidad/"+ publicidad + "/frecuencias",

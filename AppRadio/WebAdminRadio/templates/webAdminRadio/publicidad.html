@@ -36,10 +36,10 @@
     </div>
     <!-- Pop-up de la tabla de frecuencias -->
     <div id="componente_table">
-        <modal-borrar v-if="showModal">
+        <modal-mostrar v-if="showModal">
             <h3 slot="header" class="action"></i>Frecuencias</h3>
             <div slot="body"></div>
-        </modal-borrar>
+        </modal-mostrar>
     </div>
     <label for="segmentoSelect">Seleccione un segmento</label>
     <select name="dia" id="segmentoSelect" class="custom-select">
@@ -61,10 +61,8 @@
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody>
-            </tbody>
         </table>
-    </div>
+    </div> 
 {% endblock %}
 {% block page_script %}
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
@@ -86,4 +84,5 @@
             getFrecuencias(id);
         }
     </script>
+    
 {% endblock %}
