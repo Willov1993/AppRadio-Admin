@@ -84,6 +84,8 @@ class Encuesta(models.Model):
     descripcion = models.CharField(max_length = 250)
     #imagen = models.CharField(max_length = 250)
     fecha_inicio = models.DateTimeField(auto_now_add=True)
+    hora_fin = models.TimeField()
+    dia_fin = models.DateField()
     activo = models.CharField(max_length = 1, default='A')
     idEmisora = models.ForeignKey(Emisora, on_delete=models.DO_NOTHING)
     idSegmento = models.ForeignKey(Segmento, on_delete=models.DO_NOTHING, null=True, blank=True)

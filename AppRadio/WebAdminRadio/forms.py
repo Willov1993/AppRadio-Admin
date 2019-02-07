@@ -165,6 +165,8 @@ class EncuestaFrom(forms.ModelForm):
         fields = [
             'titulo',
             'descripcion',
+            'hora_fin',
+            'dia_fin',
             'idEmisora',
             'idSegmento'
         ]
@@ -172,7 +174,9 @@ class EncuestaFrom(forms.ModelForm):
     def add_prefix(self, field_name):
         field_name_mapping = {
             'idEmisora': 'emisora',
-            'idSegmento': 'segmento'
+            'idSegmento': 'segmento',
+            'hora_fin': 'hora',
+            'dia_fin': 'dia'
         }
         field_name = field_name_mapping.get(field_name, field_name)
         return super(EncuestaFrom, self).add_prefix(field_name)

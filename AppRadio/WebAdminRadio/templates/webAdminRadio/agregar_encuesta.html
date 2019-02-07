@@ -55,6 +55,17 @@
             <label id="descripcion">Descripción</label>
             <textarea class="form-control" id="descripcion" name="descripcion" row="3" placeholder="Descripción de la encuesta" oninvalid="this.setCustomValidity=('Ingrese una descipción válida para la encuesta')" oninput="this.setCustomValidity('')" maxlength="250" required></textarea>
         </div>
+        <!-- Fecha fin de la encuesta -->
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label>Dia inicio:</label>
+                <input type= "date" name="dia" id="fecha_incioInput" class="custom-select form-control" required>
+            </div>
+            <div class="form-group col-md-3">
+                <label>Fecha fin:</label>
+                <input name="hora" type="time" class="form-control" required>
+            </div>
+        </div>
         <hr>
         <h5><b>Creación de preguntas con sus alternativas</b></h5>
         <div class="form-group">

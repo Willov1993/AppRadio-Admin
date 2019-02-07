@@ -89,17 +89,6 @@ def publicidad(request):
 # Sección agregar
 
 @login_required
-def locutores(request):
-    list_segmentos = Segmento.objects.filter(activo='A')
-    emisoras = Emisora.objects.filter(activo='A')
-    context = {
-        'title': 'Locutores',
-        'segmentos': list_segmentos,
-        'emisoras': emisoras
-    }
-    return render(request, 'webAdminRadio/locutores.html', context)
-
-@login_required
 def encuestas(request):
     emisoras = Emisora.objects.filter(activo='A')
     context = {
