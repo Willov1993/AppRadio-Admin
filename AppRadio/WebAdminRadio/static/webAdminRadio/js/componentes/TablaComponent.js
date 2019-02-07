@@ -33,13 +33,11 @@ const modalTabla = {
                                         <th>Hora Fin</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                </tbody>
                             </table>
                         </div>
                         <div class="modal-footer">
                             <button class="modal-dafault-button btn btn-primary btn-sm" @click="aceptar">
-                                Acpetar
+                                Aceptar
                             </button>
                         </div>
                     </div>
@@ -57,6 +55,6 @@ var contenedorTable = new Vue({
         id: null,
     },
     components: {
-        'modal-borrar': modalTabla
+        'modal-mostrar': modalTabla
     }
 })
