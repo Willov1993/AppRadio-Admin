@@ -150,6 +150,15 @@ class RespuestaForm(forms.ModelForm):
             'correcta'
         ]
 
+class AlternativaForm(forms.ModelForm):
+    class Meta:
+        model = Alternativa
+        fields = [
+            'contenido',
+            'idPregunta',
+        ]
+        
+
 class EncuestaFrom(forms.ModelForm):
     class Meta:
         model = Encuesta

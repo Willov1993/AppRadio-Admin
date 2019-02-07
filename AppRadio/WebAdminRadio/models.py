@@ -85,6 +85,9 @@ class Encuesta(models.Model):
     idEmisora = models.ForeignKey(Emisora, on_delete=models.DO_NOTHING)
     idSegmento = models.ForeignKey(Segmento, on_delete=models.DO_NOTHING, null=True, blank=True)
 
+    def __str__(self):
+        return self.titulo
+
 class Horario(models.Model):
     #idHorario = models.AutoField(primary_key = True)
     dia = models.CharField(max_length=9)
@@ -168,7 +171,10 @@ class Pregunta(models.Model):
     contenido = models.CharField(max_length = 150)
     #tipo = models.CharField(max_length = 1)
     respuesta_c = models.CharField(max_length = 150, null=True, blank=True)
-    idEncuesta = models.ForeignKey(Concurso, on_delete=models.CASCADE)
+    idEncuesta = models.ForeignKey(Encuesta, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.idEncuesta.titulo + ' : ' + self.contenido
 
 class Respuesta(models.Model):
     idPregunta = models.ForeignKey(Pregunta, on_delete=models.CASCADE)
@@ -179,6 +185,9 @@ class Respuesta(models.Model):
 class Alternativa(models.Model):
     contenido = models.CharField(max_length = 150)
     idPregunta = models.ForeignKey(Pregunta, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.idPregunta.id) + ' : ' + self.contenido
 
 class Telefono_Usuario(models.Model):
     idUsuario = models.ForeignKey(Usuario, on_delete = models.CASCADE)

@@ -27,14 +27,13 @@
     </modal-info>
     </div>
     {% endif %}
-    <form id="addEncuesta" onsubmit="return validate()" action="{% url 'webadminradio:agregar_encuesta' %}" method="POST">
+    <form id="addEncuesta" onsubmit="return validate()" action="{% url 'webadminradio:modificar_encuesta' encuesta.id %}" method="POST">
         {% csrf_token %}
         <!-- Selección de emisora y segmento-->
         <h5><b>Seleccion de Emisora</b></h5>
         <div class="form-group">
             <label for="emisoraSelect" class="col-sm-1"><b>Emisora</b></label>
             <select id="emisoraSelect" class="custom-select form-control col-sm-4" name="emisora" oninvalid="this.setCustomValidity('Ingrese una emisora válida')" required oninput="this.setCustomValidity('')">
-                <option selected disabled>Elja una emisora</option>
                 {% for emisora in emisoras %}
                     <option value="{{ emisora.id }}">{{ emisora.nombre }}</option>
                 {% endfor %}
@@ -42,18 +41,22 @@
         </div>
         <div class="form-group">
             <label for="segmentoSelect" class="col-sm-1"><b>Segmento</b></label>
-            <select id="segmentoSelect" class="custom-select form-control col-sm-4" name="segmento" oninvalid="this.setCustomValidity('Ingrese una emisora válida')" required oninput="this.setCustomValidity('')"></select>
+            <select id="segmentoSelect" class="custom-select form-control col-sm-4" name="segmento" oninvalid="this.setCustomValidity('Ingrese una emisora válida')" required oninput="this.setCustomValidity('')">
+                {% for segmento in segmentos %}
+                    <option value="{{ segmento.id }}">{{ segmento.nombre }}</option>
+                {% endfor %}
+            </select>
         </div>
         <hr>
         <!-- Información de la encuesta -->
         <h5><b>Informacion de la encuesta</b></h5>
         <div class="form-group">
             <label id="titulo">Título</label>
-            <input id="titulo" name="titulo" class="form-control col-sm-11" type="text" oninvalid="this.setCustomValidity('Ingrese un título de la encuesta')" oninput="this.setCustomValidity('')" required> 
+            <input id="titulo" name="titulo" class="form-control col-sm-11" type="text" value="{{ encuesta.titulo }}" oninvalid="this.setCustomValidity('Ingrese un título de la encuesta')" oninput="this.setCustomValidity('')" required> 
         </div>
         <div class="form-group">
             <label id="descripcion">Descripción</label>
-            <textarea class="form-control" id="descripcion" name="descripcion" row="3" placeholder="Descripción de la encuesta" oninvalid="this.setCustomValidity=('Ingrese una descipción válida para la encuesta')" oninput="this.setCustomValidity('')" maxlength="250" required></textarea>
+            <textarea class="form-control" id="descripcion" name="descripcion" row="3" oninvalid="this.setCustomValidity=('Ingrese una descipción válida para la encuesta')" oninput="this.setCustomValidity('')" maxlength="250" required>{{ encuesta.descripcion }}</textarea>
         </div>
         <hr>
         <h5><b>Creación de preguntas con sus alternativas</b></h5>
@@ -70,4 +73,10 @@
     <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
     <script src="{% static 'webAdminRadio/js/componentes/MultipleQA.js' %}"></script>
     <script type="text/javascript" src="{% static 'webAdminRadio/js/select_em_seg.js' %}"></script>
+    <script type="text/javascript" charset="utf-8">
+        var e_emisora = "{{ encuesta.idEmisora.id|safe }}";
+        var e_segmento = "{{ encuesta.idSegmento.id|safe }}";
+        var list_preguntas = {{ preguntas|safe }};
+    </script>
+    <script type="text/javascript" charset="utf-8" src="{% static 'webAdminRadio/js/edit_encuesta_select.js' %}"></script>
 {% endblock %}

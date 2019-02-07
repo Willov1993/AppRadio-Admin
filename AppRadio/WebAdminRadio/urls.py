@@ -34,5 +34,6 @@ urlpatterns = [
     path('sugerencias', views.sugerencias, name="sugerencias"), # URL para ver las sugerencias
     path('concursos/agregar', views.agregar_concurso, name="concursos"), # URL para agregar concursos
     path('encuestas', views.encuestas, name='encuestas'), # Página para ver las encuestas de las emisoras
-    path('encuestas/agregar', views.agregar_encuesta, name="agregar_encuesta")
+    path('encuestas/agregar', views.agregar_encuesta, name="agregar_encuesta"),
+    path('encuestas/<int:id_encuesta>/editar', views.modificar_encuesta, name="modificar_encuesta")
 ]

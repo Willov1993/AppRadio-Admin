@@ -1,15 +1,15 @@
 /* -- Componente de preguntas y respuestas múltiples -- */
 Vue.component('encuesta', {
-    props: ['question', 'options', 'indice'],
+    props: ['question', 'options', 'size', 'indice'],
     template:
     /*html*/`
     <div>
         <div class="form-group col-md-10" >
             <div class="form-group">
                 <label for="pregunta">Pregunta:</label>
-                <button v-if="indice > 1" type="button" class="float-right btn btn-primary" @click="eliminar_pregunta">Eliminar Pregunta</button>
+                <button v-if="size > 1" type="button" class="float-right btn btn-primary" @click="eliminar_pregunta">Eliminar Pregunta</button>
             </div>
-            <input required type="text" name="pregunta" class="form-control" v-model="question" v-on:input="update(question)">
+            <input required type="text" name="preguntas" class="form-control" v-model="question" v-on:input="update(question)">
         </div>
         <div class="form-group col-md-10">
             <label for="opcion">Respuestas:</label>
@@ -17,7 +17,7 @@ Vue.component('encuesta', {
         </div>
         <div class="form-row col-md-12" v-for="(opt, index) in options" :key="index">
             <div class="form-group col-md-10">
-                <input required v-bind:name="opcion" class="form-control" v-model="opt.opcion">
+                <input required v-bind:name="'respuesta' + indice" class="form-control" v-model="opt.opcion">
             </div>
             <div class="form-group col-md-1" id="btn-eliminar-div">
                 <div id="btn-eliminar">
@@ -43,7 +43,7 @@ Vue.component('encuesta', {
     }
 })
 
-new Vue({
+encuesta_component = new Vue({
     el: '#componente_pregunta',
     data() {
         return {
