@@ -21,14 +21,26 @@
     {% endif %}
     {% if success %}
     <div id="componente_modal_info">
-    <modal-info v-if="showModal" url_redirect="{% url 'webadminradio:encuestas' %}">
+    <modal-info v-if="showModal" url_redirect="{% url 'webadminradio:concursos' %}">
         <h3 slot="header">Información</h3>
         <p slot="body">{{success}}</p>
     </modal-info>
     </div>
     {% endif %}
-    <form id="addEncuesta" onsubmit="return validate()" action="{% url 'webadminradio:modificar_encuesta' encuesta.id %}" method="POST">
+    <form id="addEncuesta" onsubmit="return validate()" action="{% url 'webadminradio:modificar_concurso' concurso.id %}" method="POST">
         {% csrf_token %}
+
+        <!-- Div del creador -->
+        <div class="form-group">
+            <label for="emisoraSelect">Creador del concurso</label>
+            <select id="usuarioSelect" class="custom-select form-control" name="usuario" oninvalid="this.setCustomValidity('Ingrese una usuario de la lista')" required oninput="this.setCustomValidity('')">
+                <option selected disabled>Seleccione usuario</option>
+                {% for usuario in usuarios %}
+                    <option value="{{ usuario.id}}">{{ usuario.first_name }} {{ usuario.last_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
         <!-- Selección de emisora y segmento-->
         <h5><b>Seleccion de Emisora</b></h5>
         <div class="form-group">
@@ -58,6 +70,7 @@
             <label id="descripcion">Descripción</label>
             <textarea class="form-control" id="descripcion" name="descripcion" row="3" oninvalid="this.setCustomValidity=('Ingrese una descipción válida para la encuesta')" oninput="this.setCustomValidity('')" maxlength="250" required>{{ encuesta.descripcion }}</textarea>
         </div>
+        <hr>
         <!-- Fecha fin de la encuesta -->
         <div class="form-row">
             <div class="form-group col-md-3">
@@ -70,18 +83,27 @@
             </div>
         </div>
         <hr>
+        <!-- Sección de premios -->
+        <h5><b>Premios</b></h5>
+        <div>
+            <div class="form-group col-lg-4">
+                <p style="white-space: pre-line;">{{ premio.premios }}</p>
+                <textarea name='premios' class= 'form-control' id="premios" style="width:100%">{{ concurso.premios }}</textarea>
+            </div>
+        </div>
+        <hr>
+
         <h5><b>Creación de preguntas con sus alternativas</b></h5>
         <div class="form-group">
             <div id="componente_pregunta">
-                <encuesta v-on:update-question="updatePregunta($event, index)" v-on:eliminar-pregunta="eliminarPregunta(index)" v-on:agregar-opcion="agregarOpcion(index)" v-on:eliminar-opcion="eliminarOpcion($event, index)" v-for="(preg, index) in preguntas" :key="index" :question="preg.pregunta" :options="preg.opciones" :size="length" :indice="index"></encuesta>
+                <encuesta v-on:update-question="updatePregunta($event, index)" v-on:eliminar-pregunta="eliminarPregunta(index)" v-on:agregar-opcion="agregarOpcion(index)" v-on:eliminar-opcion="eliminarOpcion($event, index)" v-for="(preg, index) in preguntas" :key="index" :question="preg.pregunta" :options="preg.opciones" :size="length" :indice="index" :type="preg.tipo" :answer="preg.respuesta_correcta" es-concurso></encuesta>
                 <button type="button" class="btn btn-primary" @click="agregarPregunta()">Agregar otra pregunta</button>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg submit"><i class="fas fa-plus-circle"></i>Agregar Encuesta</button>
+        <button type="submit" class="btn btn-primary btn-lg submit"><i class="fas fa-plus-circle"></i>Editar Concurso</button>
     </form>
 {% endblock %}
 {% block page_script %}
-    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
     <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
     <script src="{% static 'webAdminRadio/js/componentes/MultipleQA.js' %}"></script>
     <script type="text/javascript" src="{% static 'webAdminRadio/js/select_em_seg.js' %}"></script>
@@ -89,6 +111,17 @@
         var e_emisora = "{{ encuesta.idEmisora.id|safe }}";
         var e_segmento = "{{ encuesta.idSegmento.id|safe }}";
         var list_preguntas = {{ preguntas|safe }};
+        var user_rol = "{{ concurso.idUsuario.id|safe }}";
+        var user_lastname = "{{ usuario.last_name|safe }}";
+        var selectbox = document.getElementById('usuarioSelect');
+        var opts = selectbox.options;
+        for (var opt, j = 0; opt = opts[j]; j++) {
+            console.log(user_rol);
+            if (opt.value == user_rol)  {
+                selectbox.selectedIndex = j;
+                break;
+            }
+        }
     </script>
     <script type="text/javascript" charset="utf-8" src="{% static 'webAdminRadio/js/edit_encuesta_select.js' %}"></script>
 {% endblock %}

@@ -21,23 +21,23 @@
     {% endif %}
     {% if success %}
     <div id="componente_modal_info">
-            <modal-info v-if="showModal" url_redirect="{% url 'webadminradio:concursos' %}">
-                <h3 slot="header">Información</h3>
-                <p slot="body">{{success}}</p>
-            </modal-info>
+        <modal-info v-if="showModal" url_redirect="{% url 'webadminradio:concursos' %}">
+            <h3 slot="header">Información</h3>
+            <p slot="body">{{success}}</p>
+        </modal-info>
     </div>
     {% endif %}
     <h4><b>Información del concurso</b></h4>
-    <form id="addSegmento" method="POST" action="" enctype="multipart/form-data">
+    <form id="addSegmento" onsubmit="return validate()" action="{% url 'webadminradio:agregar_concurso' %}" method="POST">
         {% csrf_token %}
 
         <!-- Div del creador -->
         <div class="form-group">
             <label for="emisoraSelect">Creador del concurso</label>
-            <select id="emisoraSelect" class="custom-select form-control" name="emisora" oninvalid="this.setCustomValidity('Ingrese una usuario de la lista')" required oninput="this.setCustomValidity('')">
+            <select id="emisoraSelect" class="custom-select form-control" name="usuario" oninvalid="this.setCustomValidity('Ingrese una usuario de la lista')" required oninput="this.setCustomValidity('')">
                 <option selected disabled>Seleccione usuario</option>
                 {% for usuario in usuarios %}
-                    <option value="{{ usuario.first_name}}{{ usuario.last_name }}">{{ usuario.first_name }} {{ usuario.last_name }}</option>
+                    <option value="{{ usuario.id}}">{{ usuario.first_name }} {{ usuario.last_name }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -50,38 +50,56 @@
                 <segmento></segmento>
             </div>
         </div>
-        
-        <!-- Selección de Frecuencia -->
-        <div class="form-group">
-            <div id="componente_horario">
-                <horario></horario>
-            </div>
-        </div>  
 
-        <hr>
-        <h5><b>Premios</b></h5>
-        <!-- Sección de premios -->
+        <!-- Fecha fin de la encuesta -->
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label>Fecha fin:</label>
+                <input type= "date" name="dia" id="fecha_incioInput" class="custom-select form-control" required>
+            </div>
+            <div class="form-group col-md-3">
+                <label>Hora fin:</label>
+                <input name="hora" type="time" class="form-control" required>
+            </div>
+        </div>
+
+        <!-- Información de la encuesta -->
+        <h5><b>Informacion de la encuesta</b></h5>
         <div class="form-group">
-            <div id="componente_premio">
-                <premio></premio>
+            <label id="titulo">Título</label>
+            <input id="titulo" name="titulo" class="form-control col-sm-11" type="text" oninvalid="this.setCustomValidity('Ingrese un título de la encuesta')" oninput="this.setCustomValidity('')" required>
+        </div>
+        <div class="form-group">
+            <label id="descripcion">Descripción</label>
+            <textarea class="form-control" id="descripcion" name="descripcion" row="3" placeholder="Descripción de la encuesta" oninvalid="this.setCustomValidity=('Ingrese una descipción válida para la encuesta')" oninput="this.setCustomValidity('')" maxlength="250" required></textarea>
+        </div>
+        <hr>
+
+        <!-- Sección de premios -->
+        <h5><b>Premios</b></h5>
+        <div>
+            <div class="form-group col-lg-4">
+                <p style="white-space: pre-line;">{{ premio.premios }}</p>
+                <textarea name='premios' class= 'form-control' id="premios" style="width:100%" v-model="premio.premios" placeholder="Ingrese cada premio en una línea"></textarea>
             </div>
         </div>
 
         <hr>
-        <h5><b>Preguntas</b></h5>
+        <h5><b>Creación de preguntas con sus alternativas</b></h5>
         <div class="form-group">
             <div id="componente_pregunta">
-                <pregunta></pregunta>
+                <encuesta v-on:update-correcta="updateCorrecta($event, index)" v-on:update-question="updatePregunta($event, index)" v-on:eliminar-pregunta="eliminarPregunta(index)" v-on:agregar-opcion="agregarOpcion(index)" v-on:eliminar-opcion="eliminarOpcion($event, index)" v-for="(preg, index) in preguntas" :key="index" :question="preg.pregunta" :options="preg.opciones" :indice="length" es-concurso></encuesta>
+                <button type="button" class="btn btn-primary" @click="agregarPregunta()">Agregar otra pregunta</button>
             </div>
         </div>
         <button type="submit" class="btn btn-primary btn-lg submit"><i class="fas fa-plus-circle"></i>Agregar Concurso</button>
     </form>
 {% endblock %}
 {% block page_script %}
-    <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
-    <script src="{% static 'webAdminRadio/js/img_preview.js' %}"></script>
-    <script src="{% static 'webAdminRadio/js/componentes/Fecha.js' %}"></script>
-    <script src="{% static 'webAdminRadio/js/componentes/Premio.js' %}"></script>
-    <script src="{% static 'webAdminRadio/js/componentes/Pregunta.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
     <script src="{% static 'webAdminRadio/js/componentes/EmisoraComponent.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/Fecha.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
+    <script src="{% static 'webAdminRadio/js/componentes/MultipleQA.js' %}"></script>
+    <script type="text/javascript" src="{% static 'webAdminRadio/js/select_em_seg.js' %}"></script>
 {% endblock %}

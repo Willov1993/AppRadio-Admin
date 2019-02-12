@@ -49,7 +49,7 @@
         <h5><b>Informacion de la encuesta</b></h5>
         <div class="form-group">
             <label id="titulo">Título</label>
-            <input id="titulo" name="titulo" class="form-control col-sm-11" type="text" oninvalid="this.setCustomValidity('Ingrese un título de la encuesta')" oninput="this.setCustomValidity('')" required> 
+            <input id="titulo" name="titulo" class="form-control col-sm-11" type="text" oninvalid="this.setCustomValidity('Ingrese un título de la encuesta')" oninput="this.setCustomValidity('')" required>
         </div>
         <div class="form-group">
             <label id="descripcion">Descripción</label>
@@ -78,6 +78,7 @@
     </form>
 {% endblock %}
 {% block page_script %}
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
     <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
     <script src="{% static 'webAdminRadio/js/componentes/MultipleQA.js' %}"></script>
     <script type="text/javascript" src="{% static 'webAdminRadio/js/select_em_seg.js' %}"></script>

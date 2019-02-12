@@ -38,16 +38,25 @@ def locutores(request):
     }
     return render(request, 'webAdminRadio/locutores.html', context)
 
-'''@login_required
+@login_required
 def concursos(request):
-    concursos = Concurso.objects.filter(estado='A')
     list_segmentos = Segmento.objects.filter(activo='A')
+    emisoras = Emisora.objects.filter(activo='A')
     context = {
-        'title': 'Publicidad',
+        'title': 'Concursos',
         'segmentos': list_segmentos,
-        'publicidad':publicidad
+        'emisoras': emisoras
     }
-    return render(request, 'webAdminRadio/publicidad.html', context)'''
+    return render(request, 'webAdminRadio/concursos.html', context)
+
+@login_required
+def encuestas(request):
+    emisoras = Emisora.objects.filter(activo='A')
+    context = {
+        'title': "Encuestas",
+        'emisoras': emisoras
+    }
+    return render(request, 'webAdminRadio/encuestas.html', context)
 
 @login_required
 def usuarios(request):
@@ -177,13 +186,88 @@ def agregar_concurso(request):
     list_usuarios = Usuario.objects.all()
     list_emisoras = Emisora.objects.filter(activo='A')
     list_segmentos = Segmento.objects.filter(activo='A')
-    context ={
+    context = {
         'title': 'Agregar Concurso',
         'usuarios': list_usuarios,
         'emisoras': list_emisoras,
         'segmentos': list_segmentos
-        }
+    }
+    if request.POST:
+        print(request.POST)
+        encuesta_form = EncuestaFrom(request.POST)
+        if encuesta_form.is_valid():
+            encuesta = encuesta_form.save()
+            for i in range(len(request.POST.getlist('preguntas'))):
+                pregunta_form = PreguntaForm({
+                    'contenido': request.POST.getlist('preguntas')[i],
+                    'tipo': request.POST.getlist('tipo')[i],
+                    'respuesta_c': request.POST.getlist('respuesta_correcta')[i],
+                    'idEncuesta': encuesta.id
+                })
+                if pregunta_form.is_valid():
+                    new_pregunta = pregunta_form.save()
+                    for j in range(len(request.POST.getlist('respuesta' + str(i+1)))):
+                        alternativa_form = AlternativaForm({
+                            'contenido': request.POST.getlist('respuesta' + str(i+1))[j],
+                            'idPregunta': new_pregunta.id
+                        })
+                        if alternativa_form.is_valid():
+                            alternativa_form.save()
+                        else:
+                            context['error'] = alternativa_form.errors
+                            return render(request, 'webAdminRadio/agregar_concurso.html', context)
+                else:
+                    context['error'] = pregunta_form.errors
+            concurso_form = ConcursoForm({
+                'idEncuesta' : encuesta.id,
+                'idUsuario' : request.POST['usuario'],
+                'premios' : request.POST['premios']
+            })
+            if concurso_form.is_valid():
+                concurso = concurso_form.save()
+            else:
+                context['error'] = concurso_form.errors
+        if 'error' not in context:
+            context['success'] = '¡Concurso creado con éxito!'
     return render(request, 'webAdminRadio/agregar_concurso.html', context)
+
+@login_required
+def agregar_encuesta(request):
+    emisoras = Emisora.objects.filter(activo='A')
+    context = {
+        'title': "Agregar Encuesta",
+        'emisoras': emisoras,
+    }
+    if request.POST:
+        encuesta_form = EncuestaFrom(request.POST)
+        if encuesta_form.is_valid():
+            new_encuesta = encuesta_form.save()
+            # Iterando por cada pregunta con sus respectivas alternativas
+            for i in range(len(request.POST.getlist('preguntas'))):
+                pregunta_form = PreguntaForm({
+                    'contenido': request.POST.getlist('preguntas')[i],
+                    'idEncuesta': new_encuesta.id
+                })
+                if pregunta_form.is_valid():
+                    new_pregunta = pregunta_form.save()
+                    for j in range(len(request.POST.getlist('respuesta' + str(i)))):
+                        alternativa_form = AlternativaForm({
+                            'contenido': request.POST.getlist('respuesta' + str(i))[j],
+                            'idPregunta': new_pregunta.id
+                        })
+                        if alternativa_form.is_valid():
+                            alternativa_form.save()
+                        else:
+                            context['error'] = alternativa_form.errors
+                            return render(request, 'webAdminRadio/agregar_encuesta.html', context)
+                else:
+                    context['error'] = pregunta_form.errors
+                    return render(request, 'webAdminRadio/agregar_encuesta.html', context)
+        else:
+            context['error'] = encuesta_form.errors
+        if 'error' not in context:
+            context['success'] = '¡Se ha guardado la encuesta con éxito!'
+    return render(request, 'webAdminRadio/agregar_encuesta.html', context)
 
 @login_required
 def agregar_usuario(request):
@@ -283,54 +367,6 @@ def agregar_publicidad(request):
             context['error'] = publicidad_form.errors
     return render(request, 'webAdminRadio/agregar_publicidad.html', context)
 
-
-@login_required
-def agregar_encuesta(request):
-    emisoras = Emisora.objects.filter(activo='A')
-    context = {
-        'title': "Agregar Encuesta",
-        'emisoras': emisoras,
-    }
-    if request.POST:
-        encuesta_form = EncuestaFrom(request.POST)
-        if encuesta_form.is_valid():
-            new_encuesta = encuesta_form.save()
-            # Iterando por cada pregunta con sus respectivas alternativas
-            for i in range(len(request.POST.getlist('preguntas'))):
-                pregunta_form = PreguntaForm({
-                    'contenido': request.POST.getlist('preguntas')[i],
-                    'idEncuesta': new_encuesta.id
-                })
-                if pregunta_form.is_valid():
-                    new_pregunta = pregunta_form.save()
-                    for j in range(len(request.POST.getlist('respuesta' + str(i)))):
-                        alternativa_form = AlternativaForm({
-                            'contenido': request.POST.getlist('respuesta' + str(i))[j],
-                            'idPregunta': new_pregunta.id
-                        })
-                        if alternativa_form.is_valid():
-                            alternativa_form.save()
-                        else:
-                            context['error'] = alternativa_form.errors
-                            return render(request, 'webAdminRadio/agregar_encuesta.html', context)
-                else:
-                    context['error'] = pregunta_form.errors
-                    return render(request, 'webAdminRadio/agregar_encuesta.html', context)
-        else:
-            context['error'] = encuesta_form.errors
-        if 'error' not in context:
-            context['success'] = '¡Se ha guardado la encuesta con éxito!'
-    return render(request, 'webAdminRadio/agregar_encuesta.html', context)
-
-@login_required
-def ver_segmento(request, id_segmento):
-    segmento = Segmento.objects.get(id=id_segmento)
-    context = {
-        'title': 'Información del segmento',
-        'segmento': segmento
-    }
-    return render(request, 'webAdminRadio/ver_segmento.html', context)
-
 # Sección modificar
 
 @login_required
@@ -341,7 +377,7 @@ def modificar_emisora(request, id_emisora):
     context = {
         'title': 'Editar Emisora',
         'emisora': edit_emisora,
-        'telefono': telefono_emisora,
+        'telefono': json.dumps(list(telefono_emisora.values('nro_telefono')), cls=DjangoJSONEncoder),
         'redsocial': red_social
     }
     if request.POST:
@@ -573,9 +609,88 @@ def modificar_publicidad(request, id_publicidad):
         return render(request, 'webAdminRadio/editar_publicidad.html', context)
     return render(request, 'webAdminRadio/editar_publicidad.html', context)
 
+@login_required
+def modificar_concurso(request, id_encuesta):
+    emisoras = Emisora.objects.filter(activo='A')
+    edit_encuesta = Encuesta.objects.get(id=id_encuesta)
+    edit_concurso = Concurso.objects.get(idEncuesta=edit_encuesta)
+    usuarios = Usuario.objects.all()
+    segmentos = Segmento.objects.filter(idEmisora=edit_encuesta.idEmisora)
+    list_preguntas = Pregunta.objects.filter(idEncuesta=edit_encuesta)
+    preguntas = []
+
+    for pregunta in list_preguntas:
+        objects_preguntas = {}
+        opciones = []
+        objects_preguntas['pregunta'] = pregunta.contenido
+        objects_preguntas['tipo']= pregunta.tipo
+        objects_preguntas['respuesta_correcta']= pregunta.respuesta_c
+        list_alterntivas = Alternativa.objects.filter(idPregunta=pregunta)
+        for alternativa in list_alterntivas:
+            opcion = {}
+            opcion['opcion'] = alternativa.contenido
+            opciones.append(opcion)
+        objects_preguntas['opciones'] = opciones
+        preguntas.append(objects_preguntas)
+
+    context = {
+        'title': "Editar Concurso",
+        'emisoras': emisoras,
+        'concurso': edit_concurso,
+        'encuesta': edit_encuesta,
+        'usuarios': usuarios,
+        'segmentos': segmentos,
+        'preguntas': json.dumps(preguntas, ensure_ascii=False)
+    }
+
+    if request.POST:
+        encuesta_form = EncuestaFrom(request.POST, instance=edit_encuesta)
+        if encuesta_form.is_valid():
+            encuesta_form.save()
+            list_preguntas.delete()
+            # Iterando por cada pregunta con sus respectivas alternativas
+            for i in range(len(request.POST.getlist('preguntas'))):
+                pregunta_form = PreguntaForm({
+                    'contenido': request.POST.getlist('preguntas')[i],
+                    'tipo': request.POST.getlist('tipo')[i],
+                    'respuesta_c': request.POST.getlist('respuesta_correcta')[i],
+                    'idEncuesta': edit_encuesta.id
+                })
+                if pregunta_form.is_valid():
+                    new_pregunta = pregunta_form.save()
+                    for j in range(len(request.POST.getlist('respuesta' + str(i)))):
+                        alternativa_form = AlternativaForm({
+                            'contenido': request.POST.getlist('respuesta' + str(i))[j],
+                            'idPregunta': new_pregunta.id
+                        })
+                        if alternativa_form.is_valid():
+                            alternativa_form.save()
+                        else:
+                            context['error'] = alternativa_form.errors
+                            return render(request, 'webAdminRadio/agregar_concurso.html', context)
+                else:
+                    context['error'] = pregunta_form.errors
+                    return render(request, 'webAdminRadio/agregar_concurso.html', context)
+
+            concurso_form = ConcursoForm({
+                'idEncuesta' : edit_encuesta.id,
+                'idUsuario': request.POST['usuario'],
+                'premios': request.POST['premios']
+            }, instance=edit_concurso)
+            if concurso_form.is_valid():
+                concurso_form.save()
+            else:
+                context['error'] = concurso_form.errors
+        else:
+            context['error'] = encuesta_form.errors
+        if 'error' not in context:
+            context['success'] = '¡Se ha modificado el concuro con éxito!'
+
+    return render(request, 'webAdminRadio/editar_concurso.html', context)
+
 def modificar_encuesta(request, id_encuesta):
     emisoras = Emisora.objects.filter(activo='A')
-    edit_encuesta = Encuesta.objects.get(id=id_encuesta, activo='A')
+    edit_encuesta = Encuesta.objects.get(id=id_encuesta)
     segmentos = Segmento.objects.filter(idEmisora=edit_encuesta.idEmisora)
     list_preguntas = Pregunta.objects.filter(idEncuesta=edit_encuesta)
     preguntas = []
@@ -683,6 +798,30 @@ def ver_publicidad(request, id_publicidad):
     }
     return render(request, 'webAdminRadio/ver_publicidad.html', context)
 
+@login_required
+def ver_concursos(request, id_encuesta):
+    encuesta = Encuesta.objects.get(id=id_encuesta)
+    concurso = Concurso.objects.get(idEncuesta=encuesta)
+    preguntas = Pregunta.objects.filter(idEncuesta=encuesta)
+    context = {
+        'title': "Información del concurso",
+        'concurso': concurso,
+        'encuesta': encuesta,
+        'preguntas': preguntas
+    }
+    return render(request, 'webAdminRadio/ver_concursos.html', context)
+
+@login_required
+def ver_encuesta(request, id_encuesta):
+    encuesta = Encuesta.objects.get(id=id_encuesta)
+    preguntas = Pregunta.objects.filter(idEncuesta=id_encuesta)
+    context = {
+        'title': "Información de la encuesta",
+        'encuesta': encuesta,
+        'preguntas': preguntas
+    }
+    return render(request, 'webAdminRadio/ver_encuesta.html', context)
+
 #Sección borrar
 
 @login_required
@@ -718,6 +857,24 @@ def borrar_locutor(request, id_locutor):
     return redirect('webadminradio:locutores')
 
 @login_required
+def borrar_concurso(request, id_encuesta):
+    delete_concurso = Concurso.objects.get(idEncuesta=id_encuesta)
+    delete_concurso.idEncuesta.activo = 'I'
+    delete_concurso.idEncuesta.save()
+    delete_concurso.activo = 'I'
+    delete_concurso.save()
+    messages.success(request, 'El concurso ha sido eliminado')
+    return redirect('webadminradio:concursos')
+
+@login_required
+def borrar_encuesta(request, id_encuesta):
+    delete_encuesta = Encuesta.objects.get(id=id_encuesta)
+    delete_encuesta.activo = 'I'
+    delete_encuesta.save()
+    messages.success(request, 'La encuesta ha sido eliminada con éxito')
+    return redirect('webadminradio:encuestas')
+
+@login_required
 def borrar_usuario(request, id_usuario):
     delete_usuario = Usuario.objects.get(id=id_usuario)
     delete_usuario.is_active = False
@@ -746,3 +903,4 @@ def asignar_locutor_segmento(request, id_locutor, id_segmento):
     )
     messages.success(request, 'El usuario ha sido asignado como locutor')
     return redirect('webadminradio:asignar_locutor')
+    return render(request, 'webAdminRadio/ver_encuesta.html', context)

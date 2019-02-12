@@ -1,15 +1,38 @@
 /* -- Componente de preguntas y respuestas múltiples -- */
 Vue.component('encuesta', {
-    props: ['question', 'options', 'size', 'indice'],
+    props: {
+        question: String,
+        answer: String,
+        type: String,
+        options: Array,
+        size: Number,
+        indice: Number,
+        esConcurso: Boolean
+    },
     template:
     /*html*/`
     <div>
         <div class="form-group col-md-10" >
             <div class="form-group">
-                <label for="pregunta">Pregunta:</label>
-                <button v-if="size > 1" type="button" class="float-right btn btn-primary" @click="eliminar_pregunta">Eliminar Pregunta</button>
+                <label for="pregunta"><br><b>Pregunta:</b></label>
+                <button v-if="indice > 1" type="button" class="float-right btn btn-primary" @click="eliminar_pregunta">Eliminar Pregunta</button>
             </div>
             <input required type="text" name="preguntas" class="form-control" v-model="question" v-on:input="update(question)">
+        </div>
+        <div v-if='esConcurso' class="form-group col-md-10" >
+            <div class="form-group">
+                <label for="tipo"><b>Tipo Pregunta:</b></label>
+            </div>
+            <select required name="tipo" class="form-control" v-model="type">
+                <option value="F" selected>Pregunta de Filtro</option>
+                <option value="C"> Pregunta de Concurso</option>
+            </select>
+        </div>
+        <div v-if='esConcurso' class="form-group col-md-10" >
+            <div class="form-group">
+                <label for="respuesta_correcta"><b>Respuesta correcta:</b></label>
+            </div>
+            <input required type="text" name="respuesta_correcta" class="form-control" v-model="answer">
         </div>
         <div class="form-group col-md-10">
             <label for="opcion">Respuestas:</label>
@@ -17,7 +40,7 @@ Vue.component('encuesta', {
         </div>
         <div class="form-row col-md-12" v-for="(opt, index) in options" :key="index">
             <div class="form-group col-md-10">
-                <input required v-bind:name="'respuesta' + indice" class="form-control" v-model="opt.opcion">
+                <input v-bind:name="'respuesta' + indice" class="form-control" v-model="opt.opcion">
             </div>
             <div class="form-group col-md-1" id="btn-eliminar-div">
                 <div id="btn-eliminar">
@@ -39,6 +62,9 @@ Vue.component('encuesta', {
         },
         update(value){
             this.$emit('update-question', value)
+        },
+        updateCorrecta(value){
+            this.$emit('update-correcta', value)
         }
     }
 })
@@ -50,6 +76,8 @@ encuesta_component = new Vue({
             preguntas: [
                 {
                     pregunta: null,
+                    respuesta: null,
+                    tipo: null,
                     opciones: [
                         { opcion: null },
                         { opcion: null },
@@ -63,6 +91,8 @@ encuesta_component = new Vue({
         agregarPregunta() {
             this.preguntas.push({
                 'pregunta': null,
+                'respuesta': null,
+                'tipo': null,
                 'opciones': [
                     { 'opcion': null },
                     { 'opcion': null }
@@ -84,6 +114,9 @@ encuesta_component = new Vue({
         },
         updatePregunta(event, index) {
             this.preguntas[index].pregunta = event;
+        },
+        updateCorrecta(event,index){
+            this.preguntas[index].respuesta= event;
         }
     }
 })

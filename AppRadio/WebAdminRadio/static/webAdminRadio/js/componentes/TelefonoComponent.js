@@ -14,7 +14,7 @@ const Telefono=  {
   },
   methods:{
     agregarRegistro(){
-      this.telefonos.push({'num': null})
+      this.telefonos.push({'nro_telefono': null})
     },
     eliminarRegistro(indice){
       this.telefonos.splice(indice,1)
@@ -27,7 +27,7 @@ const Telefono=  {
   <div>
     <div v-for="(tel,index) in telefonos" v-bind:key="index" class="form-row">
       <div class="form-group col-md-4">
-          <input v-model="tel.num" v-bind:name="'telefono'" required maxlength="10" type="tel" class="form-control" placeholder="Ingrese el numero de telefono">          
+          <input v-model="tel.nro_telefono" v-bind:name="'telefono'" required maxlength="10" type="tel" class="form-control" placeholder="Ingrese el numero de telefono">
       </div>
       <div v-if="index != 0" class="form-group col-md-2">
           <button type="button" class="btn btn-primary" @click="eliminarRegistro(index)" >Eliminar</button>

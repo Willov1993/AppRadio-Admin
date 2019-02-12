@@ -1,0 +1,58 @@
+{% extends 'webAdminRadio/base_site.html' %}
+{% load static from staticfiles %}
+{% load webadmin_tags %}
+{% block page_style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'webAdminRadio/css/ver_locutor.css' %}">
+{% endblock %}
+{% block content %}
+    <h4><b>Emisora y segmento de la encuesta</b></h3>
+    <div class="row info">
+        <labal class="col-sm-3"><b>Emisora:</b></labal>
+        <labal class="col-sm-3">{{ encuesta.idEmisora }}</labal>
+    </div>
+    <div class="row info">
+        <label class="col-sm-3"><b>Segmento</b></label>
+        <label class="col-sm-3">{{ encuesta.idSegmento }}</label></div>
+    <hr>
+    <!-- Información de la encuesta -->
+    <h5><b>Informacion de la encuesta</b></h5>
+    <p><b>Título de la encuesta</b></p>
+    <p>{{ encuesta.titulo }}</p>
+    <p><b>Descripción de la encuesta</b></p>
+    <p>{{ encuesta.descripcion }}</p>
+    
+    <!-- Duracción -->
+    <h5><b>Duración de la encuesta</b></h5>
+    <div class="row info">
+        <label class="col-sm-3"><b>Dia de inicio</b></label>
+        <label class="col-sm-3">{{ encuesta.fecha_inicio }}</label>
+    </div>
+    <div class="row info">
+        <label class="col-sm-3"><b>Dia de finalizacion</b></label>
+        <label class="col-sm-3">{{ encuesta.dia_fin }}</label>
+    </div>
+    <div class="row info">
+        <label class="col-sm-3"><b>Hora de finalizacion</b></label>
+        <label class="col-sm-3">{{ encuesta.hora_fin }}</label>
+    </div>
+    <div class="row info">
+        <label class="col-sm-3"><b>Estado:</b></label>
+        {% if encuesta.activo == 'A' %}
+            <label class="col-sm-3">Activa</label>
+        {% else %}
+            <label class="col-sm-3">Inactiva</label>
+        {% endif %}
+    </div>
+
+    <!-- Pregutnas -->
+    <h5><b>Preguntas</b></h5>
+    {% for pregunta in preguntas %}
+        <p>{{ pregunta.contenido }}</p>
+        {% get_alternativas pregunta as alternativas %}
+        <ul>
+            {% for alt in alternativas %}
+                <li>{{ alt.contenido }}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+{% endblock %}

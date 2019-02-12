@@ -24,7 +24,7 @@ def upload_location(instance, filename):
     return "usuarios/%s/%s" %(instance.username, filename)
 
 def upload_location_publicidad(instance,filename):
-    return "publicidades/%s" %(filename) 
+    return "publicidades/%s" %(filename)
 
 def upload_location_image(instance, filename):
     #Esta función guarda las imágenes de los usuarios en media_cdn/videos/filename
@@ -169,12 +169,14 @@ class Concursante(models.Model):
 
 class Concurso(models.Model):
     idEncuesta = models.ForeignKey(Encuesta, on_delete=models.DO_NOTHING)
+    idUsuario = models.ForeignKey(Usuario, null=True, on_delete=models.SET_NULL)
     premios = models.CharField(max_length = 500)
-    ganador = models.ForeignKey(Concursante, on_delete=models.CASCADE)
+    ganador = models.ForeignKey(Concursante, on_delete=models.CASCADE, null=True, blank=True)
+    activo = models.CharField(max_length = 1, default='A')
 
 class Pregunta(models.Model):
     contenido = models.CharField(max_length = 150)
-    #tipo = models.CharField(max_length = 1)
+    tipo = models.CharField(max_length = 1, default='E')
     respuesta_c = models.CharField(max_length = 150, null=True, blank=True)
     idEncuesta = models.ForeignKey(Encuesta, on_delete=models.CASCADE)
 
@@ -280,10 +282,6 @@ class Videos(models.Model):
 class Favorito(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete = models.CASCADE)
     segmento = models.ForeignKey(Segmento,on_delete = models.CASCADE)
-
-
-    def __str__(self):
-        return self.usuario.nombre + "-" + self.segmento.nombre
 
 # Creación de Slugs
 def create_slug(instance, sender, new_slug=None):

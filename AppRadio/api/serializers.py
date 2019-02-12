@@ -180,8 +180,36 @@ class VideosSerializer(serializers.ModelSerializer):
         fields= '__all__'
 
 class FavoritoSerializer(serializers.ModelSerializer):
+    emisora= serializers.SerializerMethodField()
+
+    def get_emisora(self,ob):
+        return EmisoraSerializer(ob.get_emisora()).data
+
+    class Meta:
+        model = models.Segmento
+        fields = ('id', 'nombre', 'imagen','idEmisora','descripcion','emisora')
+
+class EncuestaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Encuesta
+        fields = (
+            'id',
+            'titulo',
+            'fecha_inicio',
+            'hora_fin',
+            'dia_fin',
+            'activo'
+        )
+
+class FavoritoCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Favorito
-        fields = '__all__'
+        fields = "__all__"
+
+
+
+
+
+
 
 

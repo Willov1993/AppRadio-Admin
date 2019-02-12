@@ -130,8 +130,9 @@ class ConcursoForm(forms.ModelForm):
     class Meta:
         model = Concurso
         fields = [
-            'premios',
-            'ganador'
+            'idEncuesta',
+            'idUsuario',
+            'premios'
         ]
 
 class PreguntaForm(forms.ModelForm):
@@ -139,6 +140,8 @@ class PreguntaForm(forms.ModelForm):
         model = Pregunta
         fields = [
             'contenido',
+            'respuesta_c',
+            'tipo',
             'idEncuesta'
         ]
 
@@ -157,7 +160,7 @@ class AlternativaForm(forms.ModelForm):
             'contenido',
             'idPregunta',
         ]
-        
+
 
 class EncuestaFrom(forms.ModelForm):
     class Meta:

@@ -149,4 +149,11 @@
 <script src="{% static 'webAdminRadio/js/componentes/TelefonoComponent.js' %}"></script>
 <script src="{% static 'webAdminRadio/js/componentes/RedSocialComponent.js' %}"></script>
 <script src="{% static 'webAdminRadio/js/componentes/ModalInfoComponent.js' %}"></script>
+<script>
+    var telefonos = {{ telefono|safe }};
+        contenedorTelefonos.$children[0].$data.telefonos.pop();
+        for (var i=0; i < telefonos.length; i++){
+            contenedorTelefonos.$children[0].$data.telefonos.push(telefonos[i]);
+        }
+</script>
 {% endblock %}

@@ -28,6 +28,8 @@ urlpatterns = [
     path('imagenes/<int:id_segmento>',views.ListImagenesSegmento.as_view(),name='imagenes_segmento'),
     path('videos/',views.ListVideos.as_view(),name="list_videos"),
     path('videos/<int:id_segmento>',views.ListVideosSegmento.as_view(),name='videos_segmento'),
-    path('favoritos/',views.ListFavoritos.as_view(),name="list_favoritos"),
-    path('favoritos/<int:id_usuario>',views.ListFavoritosUsuario.as_view(),name='favoritos_usuario'),
+    path('favoritos/<str:usuario>',views.ListFavoritosUsuario.as_view(),name='favoritos_usuario'),
+    path('segmentos/<int:id_segmento>/encuestas', views.ListEncuestas.as_view(), name='encuestas'),
+    path('favoritos_create/<int:id_segmento>/<str:username>', views.CreateFavoritoView, name='create_favorito'),
+
 ]

@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'api',
     'accounts',
     'rest_framework.authtoken',
+    'dbbackup',
 ]
 
 
@@ -115,6 +116,10 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+#
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR}
 
 
 # Password validation

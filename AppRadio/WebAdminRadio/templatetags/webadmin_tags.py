@@ -1,5 +1,5 @@
 from django import template
-from ..models import Segmento, segmento_horario, Telefono_emisora, frecuencia_publicidad
+from ..models import Segmento, segmento_horario, Telefono_emisora, frecuencia_publicidad, Alternativa
 
 register = template.Library()
 
@@ -22,4 +22,6 @@ def get_telf_emisora(emisora):
 def get_frecuencias(publicidad):
 	return frecuencia_publicidad.objects.filter(idPublicidad=publicidad.id)
 
-
+@register.simple_tag
+def get_alternativas(pregunta):
+    return Alternativa.objects.filter(idPregunta=pregunta)

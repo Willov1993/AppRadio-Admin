@@ -17,6 +17,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
+from django.shortcuts import render
 
 import datetime
 # Create your views here.
@@ -230,12 +231,34 @@ class ListFavoritos(generics.ListAPIView):
     queryset = models.Favorito.objects.all()
 
 class ListFavoritosUsuario(generics.ListAPIView):
-    serializer_class= serializers.VideosSerializer
+    serializer_class= serializers.FavoritoSerializer
 
     def get_queryset(self):
-        id_usuario= self.kwargs['id_usuario']
+        usuario= self.kwargs['usuario']
+        id_usuario= Usuario.objects.filter(username=usuario).values('id').get()['id']
         results= models.Favorito.objects.filter(usuario=id_usuario)
+        queryset= models.Segmento.objects.filter(pk__in=results.values('segmento'))
+        return queryset
+
+class ListEncuestas(generics.ListAPIView):
+    serializer_class = serializers.EncuestaSerializer
+
+    def get_queryset(self):
+        id_segmento = self.kwargs['id_segmento']
+        results = models.Encuesta.objects.filter(idSegmento=id_segmento)
         return results
 
+class CreateFavorito(generics.ListCreateAPIView):
+    queryset = models.Favorito.objects.all()
+    serializer_class = serializers.FavoritoCreateSerializer
 
+def CreateFavoritoView(request, id_segmento,username):
+
+    user = Usuario.objects.get(username=username)
+
+    fav = models.Favorito(usuario = user,segmento = models.Segmento.objects.filter(id=id_segmento)[0])
+    fav.save()
+
+    context = {'title': 'Usuarios'}
+    return render(request, 'webAdminRadio/usuarios.html', context)
 
